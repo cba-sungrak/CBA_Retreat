@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1069252633339",
+    "firebase_url": "https://cba-retreat.firebaseio.com",
+    "project_id": "cba-retreat",
+    "storage_bucket": "cba-retreat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069252633339:android:409257390557a651",
+        "android_client_info": {
+          "package_name": "kr.or.sungrak.cba.cba_retreat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069252633339-68cucbmde2jov5mlu5mobapea06ml1e1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9FWZ2iXIui4cr8E0zUtKCegzy3f6wv_A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
