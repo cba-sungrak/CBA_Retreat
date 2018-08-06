@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity
             };
             private final String[] mFragmentNames = new String[] {
                     "teste",
+                    "asdfsdf",
+                    "safasdf",
             };
         };
 
