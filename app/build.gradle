@@ -34,9 +34,11 @@ dependencies {
     implementation 'android.arch.core:runtime:1.1.1'
 
     implementation 'com.firebaseui:firebase-ui-database:4.1.0'
+    implementation 'com.firebaseui:firebase-ui-storage:0.6.0'
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-messaging:17.1.0'
     implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.google.firebase:firebase-storage:16.0.1'
     implementation 'com.firebase:firebase-jobdispatcher:0.6.0'
 
 }

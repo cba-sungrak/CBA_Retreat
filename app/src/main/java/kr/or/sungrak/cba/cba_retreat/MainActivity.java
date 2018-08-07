@@ -1,5 +1,6 @@
 package kr.or.sungrak.cba.cba_retreat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.TimeTableFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,12 +37,13 @@ public class MainActivity extends AppCompatActivity
                     replaceFragment(new PostListFragment());
                     return true;
                 case R.id.navigation_notifications:
-//                    replaceFragment(new RecentPostsFragment());
+                    replaceFragment(new TimeTableFragment());
                     return true;
             }
             return false;
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        DrawerLayout drawer =  findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -73,11 +76,13 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, new PostListFragment()).commit();
     }
+
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -115,13 +120,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        Intent i = new Intent(this, UIActivity.class);
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-
+            i.putExtra("image", "menu.png");
         } else if (id == R.id.nav_slideshow) {
-
+            i.putExtra("image", "mealwork.png");
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -129,7 +134,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
         }
-
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
