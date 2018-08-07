@@ -38,7 +38,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             if (/* Check if data needs to be processed by long running job */ true) {
                 // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-                scheduleJob();
+//                scheduleJob();
             } else {
                 // Handle message within 10 seconds
                 handleNow();
@@ -52,6 +52,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated. See sendNotification method below.
     }
     // [END receive_message]
+    @Override
+    public void onNewToken(String token) {
+        Log.d(TAG, "Refreshed token: " + token);
+
+        // If you want to send messages to this application instance or
+        // manage this apps subscriptions on the server side, send the
+        // Instance ID token to your app server.
+//        sendRegistrationToServer(token);
+    }
+    // [END on_new_token]
 
     /**
      * Schedule a job using FirebaseJobDispatcher.

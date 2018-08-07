@@ -82,7 +82,7 @@ public class PostListFragment extends Fragment {
 
             @Override
             protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
-                viewHolder.bindToPost(model);
+                viewHolder.bindToPost(model,getContext());
             }
         };
         mRecycler.setAdapter(mAdapter);

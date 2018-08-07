@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 
@@ -29,13 +31,13 @@ public class MainActivity extends AppCompatActivity
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
-                case R.id.navigation_home:
+                case R.id.info:
 //                    replaceFragment(new MyPostsFragment());
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.notification:
                     replaceFragment(new PostListFragment());
                     return true;
-                case R.id.navigation_notifications:
+                case R.id.time_table:
                     replaceFragment(new ImageViewFragment("timetable.png"));
                     return true;
             }
@@ -47,18 +49,18 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        FirebaseMessaging.getInstance().subscribeToTopic("2018-summer-retreat");
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -131,7 +133,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.campus_place) {
 
-        }else if (id == R.id.gbs_place) {
+        } else if (id == R.id.gbs_place) {
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -11,16 +11,19 @@ public class Post {
     public String author;
     public String title;
     public String message;
+    public String time;
+    public boolean is_Staff;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Post(String uid, String author, String title, String message) {
+    public Post(String uid, String author, String title, String message, String time, String is_Staff) {
         this.uid = uid;
         this.author = author;
         this.title = title;
         this.message = message;
+        this.time = time;
     }
 
     // [START post_to_map]
@@ -31,6 +34,7 @@ public class Post {
         result.put("author", author);
         result.put("title", title);
         result.put("message", message);
+        result.put("time", time);
         return result;
     }
     // [END post_to_map]
