@@ -3,35 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
-    </group>
-
-    <item android:title="Communicate">
+    <item android:title="안내">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/lecture"
+                android:title="강의 안내" />
+            <!--android:icon="@drawable/ic_menu_share"-->
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/menu"
+                android:title="식단 안내" />
+            <item
+                android:id="@+id/mealwork"
+                android:title="식단/간식봉사" />
+            <item
+                android:id="@+id/cleaning"
+                android:title="청소 구역" />
+        </menu>
+    </item>
+
+    <item android:title="장소">
+        <menu>
+            <item
+                android:id="@+id/room"
+                android:title="숙소 안내" />
+            <item
+                android:id="@+id/campus_place"
+                android:title="캠퍼스 모임" />
+            <item
+                android:id="@+id/gbs_place"
+                android:title="GBS 장소" />
         </menu>
     </item>
 

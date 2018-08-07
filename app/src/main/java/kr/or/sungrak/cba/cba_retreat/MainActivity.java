@@ -1,6 +1,5 @@
 package kr.or.sungrak.cba.cba_retreat;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -20,7 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
-import kr.or.sungrak.cba.cba_retreat.fragment.TimeTableFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity
                     replaceFragment(new PostListFragment());
                     return true;
                 case R.id.navigation_notifications:
-                    replaceFragment(new TimeTableFragment());
+                    replaceFragment(new ImageViewFragment("timetable.png"));
                     return true;
             }
             return false;
@@ -120,22 +119,21 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Intent i = new Intent(this, UIActivity.class);
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-            i.putExtra("image", "menu.png");
-        } else if (id == R.id.nav_slideshow) {
-            i.putExtra("image", "mealwork.png");
-        } else if (id == R.id.nav_manage) {
+        if (id == R.id.lecture) {
+            replaceFragment(new ImageViewFragment("lecture.png"));
+        } else if (id == R.id.menu) {
+            replaceFragment(new ImageViewFragment("menu.png"));
+        } else if (id == R.id.mealwork) {
+            replaceFragment(new ImageViewFragment("mealwork.png"));
+        } else if (id == R.id.cleaning) {
+            replaceFragment(new ImageViewFragment("cleaning.png"));
+        } else if (id == R.id.room) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.campus_place) {
 
-        } else if (id == R.id.nav_send) {
+        }else if (id == R.id.gbs_place) {
 
         }
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(i);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

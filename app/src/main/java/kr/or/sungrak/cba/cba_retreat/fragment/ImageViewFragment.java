@@ -1,5 +1,6 @@
 package kr.or.sungrak.cba.cba_retreat.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,8 +15,11 @@ import com.google.firebase.storage.StorageReference;
 
 import kr.or.sungrak.cba.cba_retreat.R;
 
-public class TimeTableFragment extends Fragment {
-    public TimeTableFragment() {
+public class ImageViewFragment extends Fragment {
+    String mImage;
+    @SuppressLint("ValidFragment")
+    public ImageViewFragment(String image) {
+        mImage = image;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class TimeTableFragment extends Fragment {
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         // Create a reference with an initial file path and name
-        StorageReference pathReference = storageReference.child("menu.png");
+        StorageReference pathReference = storageReference.child(mImage);
 
         // ImageView in your Activity
         ImageView imageView = rootView.findViewById(R.id.imageView2);
