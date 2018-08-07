@@ -24,7 +24,7 @@ import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.models.Post;
 import kr.or.sungrak.cba.cba_retreat.viewholder.PostViewHolder;
 
-public abstract class PostListFragment extends Fragment {
+public class PostListFragment extends Fragment {
 
     private static final String TAG = "PostListFragment";
 
@@ -129,5 +129,15 @@ public abstract class PostListFragment extends Fragment {
             mAdapter.stopListening();
         }
     }
-    public abstract Query getQuery(DatabaseReference databaseReference);
+    public Query getQuery(DatabaseReference databaseReference) {
+        // [START recent_posts_query]
+        // Last 100 posts, these are automatically the 100 most recent
+        // due to sorting by push() keys
+        Query recentPostsQuery = databaseReference.child("messages").limitToFirst(100);
+        // [END recent_posts_query]
+
+        return recentPostsQuery;
+    }
+
+    ;
 }
