@@ -128,11 +128,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.cleaning) {
             replaceFragment(new ImageViewFragment("cleaning.png"));
         } else if (id == R.id.room) {
-            replaceFragment(new SwipeImageFragment());
+            replaceFragment(new SwipeImageFragment("room", new String[]{"1층","2층","3층"}));
         } else if (id == R.id.campus_place) {
 
         } else if (id == R.id.gbs_place) {
-
+            replaceFragment(new SwipeImageFragment("gbs_place",new String[]{"본당","식당","1층 숙소"}));
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

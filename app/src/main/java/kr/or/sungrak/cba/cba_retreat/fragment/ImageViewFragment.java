@@ -15,6 +15,7 @@ import com.google.firebase.storage.StorageReference;
 
 import kr.or.sungrak.cba.cba_retreat.R;
 
+@SuppressLint("ValidFragment")
 public class ImageViewFragment extends Fragment {
     String mImage;
     @SuppressLint("ValidFragment")
