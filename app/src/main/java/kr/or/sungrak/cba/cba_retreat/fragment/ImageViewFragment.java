@@ -14,10 +14,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import kr.or.sungrak.cba.cba_retreat.R;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 @SuppressLint("ValidFragment")
 public class ImageViewFragment extends Fragment {
     String mImage;
+    PhotoViewAttacher mAttacher;
+
     @SuppressLint("ValidFragment")
     public ImageViewFragment(String image) {
         mImage = image;
@@ -35,6 +38,9 @@ public class ImageViewFragment extends Fragment {
 
         // ImageView in your Activity
         ImageView imageView = rootView.findViewById(R.id.imageView2);
+        if(mImage.contains("room")) {
+            mAttacher = new PhotoViewAttacher(imageView);
+        }
 
 // Load the image using Glide
 //       // ImageView in your Activity
