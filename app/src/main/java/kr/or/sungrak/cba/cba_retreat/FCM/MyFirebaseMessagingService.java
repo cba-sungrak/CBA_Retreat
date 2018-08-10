@@ -36,13 +36,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
-//                scheduleJob();
-            } else {
-                // Handle message within 10 seconds
-                handleNow();
-            }
+//            if (/* Check if data needs to be processed by long running job */ true) {
+//                // For long-running tasks (10 seconds or more) use Firebase Job Dispatcher.
+////                scheduleJob();
+//            } else {
+//                // Handle message within 10 seconds
+//                handleNow();
+//            }
         }
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
@@ -50,6 +50,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
+        sendNotification(remoteMessage.getNotification().getBody());
     }
     // [END receive_message]
     @Override
@@ -99,8 +100,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                        .setContentTitle("FCM Message")
+                        .setSmallIcon(R.drawable.ic_notifications_active_black_24dp)
+                        .setContentTitle("공지사항")
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)

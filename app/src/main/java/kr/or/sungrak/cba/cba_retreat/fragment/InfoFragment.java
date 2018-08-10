@@ -49,14 +49,16 @@ public class InfoFragment extends Fragment {
                         startActivity(intent4);
                         break;
                     case R.id.callStaffBtn:
-                        Intent intent5 = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:01025070411"));
+                        Intent intent5 = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:01050254375"));
                         startActivity(intent5);
                         break;
                     case R.id.callCarBtn:
-                        Intent intent6 = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:01025070411"));
+                        Intent intent6 = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:01033974842"));
                         startActivity(intent6);
                         break;
                     case R.id.location:
+                        Intent intent7 = new Intent(Intent.ACTION_VIEW, Uri.parse("http://naver.me/5CxdC0vS"));
+                        startActivity(intent7);
                         break;
 
                 }

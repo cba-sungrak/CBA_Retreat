@@ -129,11 +129,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.cleaning) {
             replaceFragment(new ImageViewFragment("cleaning.png"));
         } else if (id == R.id.room) {
-            replaceFragment(new SwipeImageFragment("room", new String[]{"1층","2층","3층"}));
+            replaceFragment(new SwipeImageFragment("room", new String[]{"1층","2층(형제)","3층(자매)"}));
         } else if (id == R.id.campus_place) {
-
+            replaceFragment(new ImageViewFragment("campus_place1.png"));
         } else if (id == R.id.gbs_place) {
-            replaceFragment(new SwipeImageFragment("gbs_place",new String[]{"본당","식당","1층 숙소"}));
+            replaceFragment(new SwipeImageFragment("gbs_place",new String[]{"본당(C,E)","식당(F,J)","1층(EN,OJ)","2층(OJ)","3층(OJ)"}));
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

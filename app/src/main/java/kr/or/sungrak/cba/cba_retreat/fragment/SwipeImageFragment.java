@@ -30,27 +30,55 @@ public class SwipeImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.ui_swipe_layout, container, false);
-
-        mPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
-
-            private final ImageViewFragment[] mFragments = new ImageViewFragment[] {
-                    new ImageViewFragment(mImage+"1.png"),
-                    new ImageViewFragment(mImage+"2.png"),
-                    new ImageViewFragment(mImage+"3.png"),
-            };
-            @Override
-            public Fragment getItem(int position) {
-                return mFragments[position];
-            }
-            @Override
-            public int getCount() {
-                return mFragments.length;
-            }
-            @Override
-            public CharSequence getPageTitle(int position) {
-                return mFragmentNames[position];
-            }
+if(mImage.equalsIgnoreCase("room")) {
+    mPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
+        private final ImageViewFragment[] mFragments = new ImageViewFragment[]{
+                new ImageViewFragment(mImage + "1.png"),
+                new ImageViewFragment(mImage + "2.png"),
+                new ImageViewFragment(mImage + "3.png"),
         };
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments[position];
+        }
+
+        @Override
+        public int getCount() {
+            return mFragments.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentNames[position];
+        }
+    };
+}else{
+    mPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
+        private final ImageViewFragment[] mFragments = new ImageViewFragment[]{
+                new ImageViewFragment(mImage + "1.png"),
+                new ImageViewFragment(mImage + "2.png"),
+                new ImageViewFragment(mImage + "3.png"),
+                new ImageViewFragment(mImage + "4.png"),
+                new ImageViewFragment(mImage + "5.png"),
+        };
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragments[position];
+        }
+
+        @Override
+        public int getCount() {
+            return mFragments.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentNames[position];
+        }
+    };
+}
         // Set up the ViewPager with the sections adapter.
         mViewPager = rootView.findViewById(R.id.swipe_view);
         mViewPager.setAdapter(mPagerAdapter);
