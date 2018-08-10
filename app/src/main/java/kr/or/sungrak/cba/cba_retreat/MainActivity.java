@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.info:
-//                    replaceFragment(new MyPostsFragment());
+                    replaceFragment(new InfoFragment());
                     return true;
                 case R.id.notification:
                     replaceFragment(new PostListFragment());
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, new PostListFragment()).commit();
+        navigation.setSelectedItemId(R.id.notification);
     }
 
     private void replaceFragment(Fragment fragment) {
