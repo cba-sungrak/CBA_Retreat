@@ -32,6 +32,9 @@
             <item
                 android:id="@+id/gbs_place"
                 android:title="GBS 장소" />
+            <item
+                android:id="@+id/gbs_info"
+                android:title="GBS 정보" />
         </menu>
     </item>
 

@@ -18,6 +18,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.LoginFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 
@@ -134,6 +135,8 @@ public class MainActivity extends AppCompatActivity
             replaceFragment(new ImageViewFragment("campus_place1.png"));
         } else if (id == R.id.gbs_place) {
             replaceFragment(new SwipeImageFragment("gbs_place",new String[]{"본당(C,E)","식당(F,J)","1층(EN,OJ)","2층(OJ)","3층(OJ)"}));
+        }else if (id == R.id.gbs_info) {
+            replaceFragment(new LoginFragment());
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
