@@ -30,18 +30,18 @@ public class SwipeImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.ui_swipe_layout, container, false);
-if(mImage.equalsIgnoreCase("room")) {
-    mPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
-        private final ImageViewFragment[] mFragments = new ImageViewFragment[]{
-                new ImageViewFragment(mImage + "1.png"),
-                new ImageViewFragment(mImage + "2.png"),
-                new ImageViewFragment(mImage + "3.png"),
-        };
+        if (mImage.equalsIgnoreCase("room")) {
+            mPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
+                private final ImageViewFragment[] mFragments = new ImageViewFragment[]{
+                        new ImageViewFragment(mImage + "1.png"),
+                        new ImageViewFragment(mImage + "2.png"),
+                        new ImageViewFragment(mImage + "3.png"),
+                };
 
-        @Override
-        public Fragment getItem(int position) {
-            return mFragments[position];
-        }
+                @Override
+                public Fragment getItem(int position) {
+                    return mFragments[position];
+                }
 
         @Override
         public int getCount() {

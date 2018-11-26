@@ -13,7 +13,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
@@ -45,6 +50,12 @@ public class MainActivity extends AppCompatActivity
     };
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        updateSignInButton();
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -67,15 +78,51 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, new PostListFragment()).commit();
         navigation.setSelectedItemId(R.id.notification);
+
+        updateSignInButton();
+    }
+    
+    public void updateSignInButton() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        RelativeLayout loginOffLayout = headerView.findViewById(R.id.loginOffLayout);
+        LinearLayout loginOnLayout = headerView.findViewById(R.id.loginOnLayout);
+        Button loginBtn = headerView.findViewById(R.id.loginBtn);
+
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            //logOut
+            loginOnLayout.setVisibility(View.GONE);
+            loginOffLayout.setVisibility(View.VISIBLE);
+            loginBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switch (v.getId()) {
+                        case R.id.loginBtn:
+                            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                                replaceFragment(new LoginFragment());
+                            }
+                            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                            drawer.closeDrawer(GravityCompat.START);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        } else {
+            //logIn
+            loginOffLayout.setVisibility(View.GONE);
+            loginOnLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -143,3 +190,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 }
+

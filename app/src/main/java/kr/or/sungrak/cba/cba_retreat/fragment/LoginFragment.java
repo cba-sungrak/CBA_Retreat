@@ -22,6 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import kr.or.sungrak.cba.cba_retreat.MainActivity;
 import kr.or.sungrak.cba.cba_retreat.R;
 
 @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -197,6 +198,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
+        ((MainActivity)getActivity()).updateSignInButton();
         if (user != null) {
             mStatusTextView.setText(getString(R.string.emailpassword_status_fmt,
                     user.getEmail(), user.isEmailVerified()));
@@ -207,6 +209,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             getView().findViewById(R.id.signedInButtons).setVisibility(View.VISIBLE);
 
             getView().findViewById(R.id.verifyEmailButton).setEnabled(!user.isEmailVerified());
+
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
