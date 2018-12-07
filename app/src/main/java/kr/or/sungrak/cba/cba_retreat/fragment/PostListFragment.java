@@ -1,6 +1,9 @@
 package kr.or.sungrak.cba.cba_retreat.fragment;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -35,6 +37,7 @@ public class PostListFragment extends Fragment {
     private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
+    FloatingActionButton mFab;
 
     public PostListFragment() {
     }
@@ -51,9 +54,29 @@ public class PostListFragment extends Fragment {
 
         mRecycler = rootView.findViewById(R.id.messages_list);
         mRecycler.setHasFixedSize(true);
+        mFab = rootView.findViewById(R.id.fab);
+        mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy < 0) {
+                    mFab.show();
+                } else if (dy > 0) {
+                    mFab.hide();
+                }
+            }
+        });
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
         return rootView;
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -82,7 +105,7 @@ public class PostListFragment extends Fragment {
 
             @Override
             protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
-                viewHolder.bindToPost(model,getContext());
+                viewHolder.bindToPost(model, getContext());
             }
         };
         mRecycler.setAdapter(mAdapter);
@@ -129,6 +152,7 @@ public class PostListFragment extends Fragment {
             mAdapter.stopListening();
         }
     }
+
     public Query getQuery(DatabaseReference databaseReference) {
         // [START recent_posts_query]
         // Last 100 posts, these are automatically the 100 most recent
