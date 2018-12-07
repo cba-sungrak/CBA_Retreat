@@ -37,6 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".NewPostActivity"></activity>
         <service
             android:name=".FCM.MyFirebaseMessagingService">
             <intent-filter>

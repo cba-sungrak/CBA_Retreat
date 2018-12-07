@@ -12,7 +12,7 @@ public class Post {
     public String title;
     public String message;
     public String time;
-    public boolean is_Staff;
+    public String is_Staff;
 
     public Post() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
@@ -24,6 +24,7 @@ public class Post {
         this.title = title;
         this.message = message;
         this.time = time;
+        this.is_Staff = is_Staff;
     }
 
     // [START post_to_map]
@@ -35,6 +36,7 @@ public class Post {
         result.put("title", title);
         result.put("message", message);
         result.put("time", time);
+        result.put("isStaff", is_Staff);
         return result;
     }
     // [END post_to_map]
