@@ -6,20 +6,23 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.bumptech.glide.signature.ObjectKey;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 
+import kr.or.sungrak.cba.cba_retreat.FCM.GlideApp;
 import kr.or.sungrak.cba.cba_retreat.R;
-import uk.co.senab.photoview.PhotoViewAttacher;
+import uk.co.senab.photoview.PhotoView;
 
 @SuppressLint("ValidFragment")
 public class ImageViewFragment extends Fragment {
     String mImage;
-
+    String mUpdateTime="";
+    StorageReference pathReference;
+    PhotoView imageView;
     @SuppressLint("ValidFragment")
     public ImageViewFragment(String image) {
         mImage = image;
@@ -33,17 +36,28 @@ public class ImageViewFragment extends Fragment {
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         // Create a reference with an initial file path and name
-        StorageReference pathReference = storageReference.child(mImage);
+         pathReference = storageReference.child(mImage);
 
         // ImageView in your Activity
-        ImageView imageView = rootView.findViewById(R.id.imageView2);
+         imageView = rootView.findViewById(R.id.imageView2);
+
+        pathReference.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+            @Override
+            public void onSuccess(StorageMetadata storageMetadata) {
+                mUpdateTime = String.valueOf(storageMetadata.getCreationTimeMillis());
+                GlideApp.with(getActivity())
+                        .load(pathReference)
+                        .signature(new ObjectKey(mUpdateTime))
+                        .into(imageView);
+            }
+        });
 
 // Load the image using Glide
 //       // ImageView in your Activity
-        Glide.with(this)
-                .using(new FirebaseImageLoader())
-                .load(pathReference)
-                .into(imageView);
+//        GlideApp.with(getActivity())
+//                .load(pathReference)
+//                .signature(new ObjectKey(UUID.randomUUID().toString()))
+//                .into(imageView);
         return rootView;
     }
     // Reference to an image file in Firebase Storage
