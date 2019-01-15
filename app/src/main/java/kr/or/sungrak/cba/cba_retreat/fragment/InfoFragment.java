@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import kr.or.sungrak.cba.cba_retreat.R;
 
@@ -28,6 +31,22 @@ public class InfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.info_layout2, container, false);
+        youtubeBtn = rootView.findViewById(R.id.youtubeButton);
+        instaBtn = rootView.findViewById(R.id.instButton);
+        webBtn = rootView.findViewById(R.id.webButton);
+        blogBtn = rootView.findViewById(R.id.blogButton);
+        callStaffBtn = rootView.findViewById(R.id.callStaffBtn);
+        callCarBtn = rootView.findViewById(R.id.callCarBtn);
+        locationBtn = rootView.findViewById(R.id.location);
+
+        String survey = FirebaseRemoteConfig.getInstance().getString("survey");
+        Log.i("cba", survey);
+        if (survey.equals("na")) {
+            locationBtn.setVisibility(View.GONE);
+        }else{
+            locationBtn.setVisibility(View.VISIBLE);
+        }
+
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,29 +77,20 @@ public class InfoFragment extends Fragment {
                         break;
                     case R.id.location:
                         Intent intent7 = new Intent(Intent.ACTION_VIEW, Uri.parse("http://naver.me/5CxdC0vS"));
+                        //Intent intent7 = new Intent(Intent.ACTION_VIEW, Uri.parse(FirebaseRemoteConfig.getInstance().getString("survey")));
                         startActivity(intent7);
                         break;
 
                 }
             }
         };
-
-        youtubeBtn = rootView.findViewById(R.id.youtubeButton);
         youtubeBtn.setOnClickListener(onClickListener);
-        instaBtn = rootView.findViewById(R.id.instButton);
         instaBtn.setOnClickListener(onClickListener);
-        webBtn = rootView.findViewById(R.id.webButton);
         webBtn.setOnClickListener(onClickListener);
-        blogBtn = rootView.findViewById(R.id.blogButton);
         blogBtn.setOnClickListener(onClickListener);
-        callStaffBtn = rootView.findViewById(R.id.callStaffBtn);
         callStaffBtn.setOnClickListener(onClickListener);
-        callCarBtn = rootView.findViewById(R.id.callCarBtn);
         callCarBtn.setOnClickListener(onClickListener);
-        locationBtn = rootView.findViewById(R.id.location);
         locationBtn.setOnClickListener(onClickListener);
-
-
         return rootView;
     }
 }

@@ -4,114 +4,89 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/infobackground"
     android:orientation="vertical">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_weight="2"
+        android:orientation="vertical" >
 
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/imageView3"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="40dp"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_weight="10"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp" />
-
-                    <ImageButton
-                        android:layout_weight="1"
-                        android:id="@+id/location"
-                        android:layout_width="120dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="right"
-                        android:background="#00000000"
-                        android:scaleType="fitStart"
-                        app:srcCompat="@drawable/ansan" />
-
-                    <ImageButton
-                        android:id="@+id/callCarBtn"
-                        android:layout_weight="1"
-                        android:layout_width="120dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="right"
-                        android:background="#00000000"
-                        android:scaleType="fitStart"
-                        app:srcCompat="@drawable/car" />
-
-                    <ImageButton
-                        android:id="@+id/callStaffBtn"
-                        android:layout_width="120dp"
-                        android:layout_height="6dp"
-                        android:layout_gravity="right"
-                        android:layout_weight="1"
-                        android:background="#00000000"
-                        android:scaleType="fitStart"
-                        app:srcCompat="@drawable/center" />
-                    <ImageView
-                        android:layout_weight="1"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp" />
-                </LinearLayout>
-
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/backgroundtext" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="8"
+        android:layout_weight="6"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/callall"
         android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00000000" />
+
+        <ImageButton
+            android:id="@+id/callCarBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00000000" />
+
+        <ImageButton
+            android:id="@+id/callStaffBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#00000000" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:background="@drawable/infoall"
+        android:orientation="horizontal">
+
         <ImageButton
             android:id="@+id/youtubeButton"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:background="#00000000"
-            app:srcCompat="@drawable/youtube" />
+            android:background="#00000000" />
+
         <ImageButton
             android:id="@+id/instButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:background="#00000000"
-            app:srcCompat="@drawable/instagram" />
+            android:background="#00000000" />
+
         <ImageButton
             android:id="@+id/webButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:background="#00000000"
-            app:srcCompat="@drawable/safari" />
+            android:background="#00000000" />
+
         <ImageButton
             android:id="@+id/blogButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:background="#00000000"
-            app:srcCompat="@drawable/blog" />
+            android:background="#00000000" />
 
     </LinearLayout>
 

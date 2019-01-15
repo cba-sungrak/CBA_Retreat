@@ -162,6 +162,4 @@ public class PostListFragment extends Fragment {
 
         return recentPostsQuery;
     }
-
-    ;
 }

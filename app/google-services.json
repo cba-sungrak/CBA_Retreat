@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "1069252633339-u5opc2r95l9la9j37d001g90jhsv5lf0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kr.or.sungrak.cba.cba_retreat",
+            "certificate_hash": "772d38c82e8e04c5481fe73e8287ba212d817ad9"
+          }
+        },
+        {
+          "client_id": "1069252633339-6bik3u95e3a7j6afeakkcsvdslmgsl9m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kr.or.sungrak.cba.cba_retreat",
+            "certificate_hash": "151200373a4861a198f2d3c9e47a62b2ac4a9ead"
+          }
+        },
+        {
+          "client_id": "1069252633339-jk27ndqjfsuhl3e12konvi6eb590voev.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kr.or.sungrak.cba.cba_retreat",
+            "certificate_hash": "766a8879e718562de7318cfc1780711f214fa24a"
+          }
+        },
+        {
           "client_id": "1069252633339-68cucbmde2jov5mlu5mobapea06ml1e1.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +53,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069252633339-68cucbmde2jov5mlu5mobapea06ml1e1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1069252633339-asenth31864fcoqc01c139ji999p8t6n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "CBA.CBACampProject"
+              }
+            }
+          ]
         },
         "ads_service": {
           "status": 2

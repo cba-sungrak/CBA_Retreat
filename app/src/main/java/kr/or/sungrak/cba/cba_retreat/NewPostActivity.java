@@ -19,7 +19,7 @@ import java.util.Map;
 
 import kr.or.sungrak.cba.cba_retreat.models.Post;
 
-public class NewPostActivity extends BaseActivity {
+public class NewPostActivity  extends AppCompatActivity {
 
     private static final String TAG = "NewPostActivity";
     private static final String REQUIRED = "Required";

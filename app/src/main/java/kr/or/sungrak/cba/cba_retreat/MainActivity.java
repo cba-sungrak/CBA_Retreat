@@ -10,15 +10,19 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
@@ -26,8 +30,10 @@ import kr.or.sungrak.cba.cba_retreat.fragment.LoginFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 
-public class MainActivity extends BaseActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    FirebaseRemoteConfig mFirebaseRemoteConfig;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -61,7 +67,7 @@ public class MainActivity extends BaseActivity
         FirebaseMessaging.getInstance().subscribeToTopic("2018-summer-retreat");
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        fetchRemoteConfig();
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -80,39 +86,60 @@ public class MainActivity extends BaseActivity
 
         updateSignInButton();
     }
-    
+
     public void updateSignInButton() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        RelativeLayout loginOffLayout = headerView.findViewById(R.id.loginOffLayout);
-        LinearLayout loginOnLayout = headerView.findViewById(R.id.loginOnLayout);
-        Button loginBtn = headerView.findViewById(R.id.loginBtn);
+        Button logInBtn = headerView.findViewById(R.id.loginBtn);
+        Button logOutBtn = headerView.findViewById(R.id.logOutBtn);
+        TextView logintext = headerView.findViewById(R.id.logintextView);
 
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
             //logOut
-            loginOnLayout.setVisibility(View.GONE);
-            loginOffLayout.setVisibility(View.VISIBLE);
-            loginBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    switch (v.getId()) {
-                        case R.id.loginBtn:
-                            if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                                replaceFragment(new LoginFragment());
-                            }
-                            DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                            drawer.closeDrawer(GravityCompat.START);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            });
+            logOutBtn.setVisibility(View.GONE);
+            logInBtn.setVisibility(View.VISIBLE);
+            logintext.setText("로그인 해주세요");
         } else {
             //logIn
-            loginOffLayout.setVisibility(View.GONE);
-            loginOnLayout.setVisibility(View.VISIBLE);
+            logInBtn.setVisibility(View.GONE);
+            logOutBtn.setVisibility(View.VISIBLE);
+            logintext.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail()+"님 로그인 되었습니다.");
         }
+        logInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.loginBtn:
+                        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                            replaceFragment(new LoginFragment());
+                        }
+                        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                        drawer.closeDrawer(GravityCompat.START);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        logInBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+                    replaceFragment(new LoginFragment());
+                }
+                DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        });
+        logOutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                    FirebaseAuth.getInstance().signOut();
+                    updateSignInButton();
+                }
+            }
+        });
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -167,17 +194,38 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.cleaning) {
             replaceFragment(new ImageViewFragment("cleaning.png"));
         } else if (id == R.id.room) {
-            replaceFragment(new SwipeImageFragment("room", new String[]{"1층","2층(형제)","3층(자매)"}));
+            replaceFragment(new SwipeImageFragment("room", new String[]{"1층", "2층(형제)", "3층(자매)"}));
         } else if (id == R.id.campus_place) {
             replaceFragment(new ImageViewFragment("campus_place1.png"));
         } else if (id == R.id.gbs_place) {
-            replaceFragment(new SwipeImageFragment("gbs_place",new String[]{"본당(C,E)","식당(F,J)","1층(EN,OJ)","2층(OJ)","3층(OJ)"}));
-        }else if (id == R.id.gbs_info) {
+            replaceFragment(new SwipeImageFragment("gbs_place", new String[]{"본당(C,E)", "식당(F,J)", "1층(EN,OJ)", "2층(OJ)", "3층(OJ)"}));
+        } else if (id == R.id.gbs_info) {
             replaceFragment(new LoginFragment());
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void fetchRemoteConfig() {
+        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
+        long cacheExpiration = 3600; // 1 hour in seconds.
+        mFirebaseRemoteConfig.fetch(cacheExpiration)
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.i("cba", "Firebase Remote config succes");
+                            //연결이 성공적으로 되었다면,
+                            //mFirebaseRemoteConfig 에 매개변수 값이 들어온다.
+                            mFirebaseRemoteConfig.activateFetched();
+
+                        } else {
+                            Log.i("cba", "Firebase Remote config succes");
+                        }
+                    }
+                });
     }
 }
 
