@@ -1,5 +1,6 @@
 package kr.or.sungrak.cba.cba_retreat;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,7 +28,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
-import kr.or.sungrak.cba.cba_retreat.fragment.LoginFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     FirebaseRemoteConfig mFirebaseRemoteConfig;
-
+    FirebaseAuth mAuth;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
         FirebaseMessaging.getInstance().subscribeToTopic("2018-summer-retreat");
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -92,9 +95,10 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         Button logInBtn = headerView.findViewById(R.id.loginBtn);
         Button logOutBtn = headerView.findViewById(R.id.logOutBtn);
+        ImageButton backBtn = headerView.findViewById(R.id.back);
         TextView logintext = headerView.findViewById(R.id.logintextView);
 
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (mAuth.getCurrentUser() == null) {
             //logOut
             logOutBtn.setVisibility(View.GONE);
             logInBtn.setVisibility(View.VISIBLE);
@@ -103,40 +107,32 @@ public class MainActivity extends AppCompatActivity
             //logIn
             logInBtn.setVisibility(View.GONE);
             logOutBtn.setVisibility(View.VISIBLE);
-            logintext.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail()+"님 로그인 되었습니다.");
+            logintext.setText(mAuth.getCurrentUser().getEmail() + "님 로그인 되었습니다.");
         }
         logInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.loginBtn:
-                        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                            replaceFragment(new LoginFragment());
-                        }
-                        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                        drawer.closeDrawer(GravityCompat.START);
-                        break;
-                    default:
-                        break;
+                if (mAuth.getCurrentUser() == null) {
+                    showAlertDialog(false);
                 }
-            }
-        });
-        logInBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-                    replaceFragment(new LoginFragment());
-                }
-                DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
             }
         });
         logOutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    FirebaseAuth.getInstance().signOut();
+                if (mAuth.getCurrentUser() != null) {
+                    mAuth.signOut();
                     updateSignInButton();
+                }
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                if (drawer.isDrawerOpen(GravityCompat.START)) {
+                    drawer.closeDrawer(GravityCompat.START);
                 }
             }
         });
@@ -200,7 +196,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.gbs_place) {
             replaceFragment(new SwipeImageFragment("gbs_place", new String[]{"본당(C,E)", "식당(F,J)", "1층(EN,OJ)", "2층(OJ)", "3층(OJ)"}));
         } else if (id == R.id.gbs_info) {
-            replaceFragment(new LoginFragment());
+            if (mAuth.getCurrentUser() == null) {
+                showAlertDialog(true);
+                return true;
+            } else {
+                replaceFragment(new ImageViewFragment("campus_place1.png"));
+            }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -226,6 +227,21 @@ public class MainActivity extends AppCompatActivity
                         }
                     }
                 });
+    }
+
+    private void showAlertDialog(boolean needToChangeFrament) {
+        final LoginDialog loginDialog = new LoginDialog(this, needToChangeFrament);
+        loginDialog.show();
+        loginDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                updateSignInButton();
+                if (loginDialog.changeFrament()) {
+                    replaceFragment(new ImageViewFragment("campus_place1.png"));
+                }
+            }
+        });
+
     }
 }
 
