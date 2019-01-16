@@ -28,7 +28,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
-import kr.or.sungrak.cba.cba_retreat.fragment.LoginDialog;
+import kr.or.sungrak.cba.cba_retreat.Dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 
@@ -37,24 +37,7 @@ public class MainActivity extends AppCompatActivity
 
     FirebaseRemoteConfig mFirebaseRemoteConfig;
     FirebaseAuth mAuth;
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.info:
-                    replaceFragment(new InfoFragment());
-                    return true;
-                case R.id.notification:
-                    replaceFragment(new PostListFragment());
-                    return true;
-                case R.id.time_table:
-                    replaceFragment(new ImageViewFragment("timetable.png"));
-                    return true;
-            }
-            return false;
-        }
-    };
+
 
     @Override
     protected void onResume() {
@@ -84,7 +67,7 @@ public class MainActivity extends AppCompatActivity
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, new PostListFragment()).commit();
+        fragmentTransaction.add(R.id.fragment_container, new InfoFragment()).commit();
         navigation.setSelectedItemId(R.id.notification);
 
         updateSignInButton();
@@ -113,7 +96,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (mAuth.getCurrentUser() == null) {
-                    showAlertDialog(false);
+                    showLoginDialog(false);
                 }
             }
         });
@@ -154,7 +137,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-//    @Override
+    //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
 //        getMenuInflater().inflate(R.menu.main, menu);
@@ -175,6 +158,24 @@ public class MainActivity extends AppCompatActivity
 //
 //        return super.onOptionsItemSelected(item);
 //    }
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.info:
+                    replaceFragment(new InfoFragment());
+                    return true;
+                case R.id.notification:
+                    replaceFragment(new PostListFragment());
+                    return true;
+                case R.id.time_table:
+                    replaceFragment(new ImageViewFragment("timetable.png"));
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -197,7 +198,7 @@ public class MainActivity extends AppCompatActivity
             replaceFragment(new SwipeImageFragment("gbs_place", new String[]{"본당(C,E)", "식당(F,J)", "1층(EN,OJ)", "2층(OJ)", "3층(OJ)"}));
         } else if (id == R.id.gbs_info) {
             if (mAuth.getCurrentUser() == null) {
-                showAlertDialog(true);
+                showLoginDialog(true);
                 return true;
             } else {
                 replaceFragment(new ImageViewFragment("campus_place1.png"));
@@ -229,7 +230,7 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
-    private void showAlertDialog(boolean needToChangeFrament) {
+    private void showLoginDialog(boolean needToChangeFrament) {
         final LoginDialog loginDialog = new LoginDialog(this, needToChangeFrament);
         loginDialog.show();
         loginDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

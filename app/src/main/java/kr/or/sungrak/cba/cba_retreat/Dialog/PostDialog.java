@@ -1,6 +1,8 @@
-package kr.or.sungrak.cba.cba_retreat;
+package kr.or.sungrak.cba.cba_retreat.Dialog;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,11 +19,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.HashMap;
 import java.util.Map;
 
+import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.models.Post;
 
-public class NewPostActivity  extends AppCompatActivity {
+public class PostDialog extends MyProgessDialog {
 
-    private static final String TAG = "NewPostActivity";
+    private static final String TAG = "NewPostDialog";
     private static final String REQUIRED = "Required";
 
     // [START declare_database_ref]
@@ -31,6 +34,13 @@ public class NewPostActivity  extends AppCompatActivity {
     private EditText mTitleField;
     private EditText mBodyField;
     private FloatingActionButton mSubmitButton;
+    Context mContext;
+
+
+    public PostDialog(@NonNull Context context) {
+        super(context);
+        mContext = context;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +78,7 @@ public class NewPostActivity  extends AppCompatActivity {
         }
         // Disable button so there are no multi-posts
         setEditingEnabled(false);
-        Toast.makeText(this, "Posting...", Toast.LENGTH_SHORT).show();
+        showProgressDialog();
 
         // [START single_value_read]
         mDatabase.child("2019messages").addListenerForSingleValueEvent(
@@ -78,19 +88,16 @@ public class NewPostActivity  extends AppCompatActivity {
                         // Get user value
                         writeNewPost("testuserID", "user name", title, body);
                         // Finish this Activity, back to the stream
-                        setEditingEnabled(true);
-                        finish();
-                        // [END_EXCLUDE]
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-                        // [START_EXCLUDE]
-                        setEditingEnabled(true);
-                        // [END_EXCLUDE]
                     }
                 });
+        setEditingEnabled(true);
+        hideProgressDialog();
+        dismiss();
         // [END single_value_read]
     }
 
@@ -114,8 +121,8 @@ public class NewPostActivity  extends AppCompatActivity {
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put("/2019messages/"+key, postValues);
-//        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
+        childUpdates.put("/2019messages/" + key, postValues);
+        //        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
 
         mDatabase.updateChildren(childUpdates);
     }

@@ -1,8 +1,6 @@
-package kr.or.sungrak.cba.cba_retreat.fragment;
+package kr.or.sungrak.cba.cba_retreat.Dialog;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +20,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import kr.or.sungrak.cba.cba_retreat.R;
 
 @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-public class LoginDialog extends Dialog implements View.OnClickListener {
+public class LoginDialog extends MyProgessDialog implements View.OnClickListener {
     private static final String TAG = "LoginDialog";
     private EditText mEmailField;
     private EditText mPasswordField;
@@ -106,25 +104,9 @@ public class LoginDialog extends Dialog implements View.OnClickListener {
         }
     }
 
-    public ProgressDialog mProgressDialog;
-
-    public void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(mContext);
-            mProgressDialog.setMessage(mContext.getString(R.string.loading));
-            mProgressDialog.setIndeterminate(true);
-        }
-
-        mProgressDialog.show();
-    }
-
-    public void hideProgressDialog() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-        }
-    }
-
     public boolean changeFrament() {
         return mLoginSuccess && mNeedToChangeFrament;
     }
+
+
 }

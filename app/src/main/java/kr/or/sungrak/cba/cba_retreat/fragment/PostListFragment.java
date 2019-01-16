@@ -1,6 +1,6 @@
 package kr.or.sungrak.cba.cba_retreat.fragment;
 
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +22,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 
-import kr.or.sungrak.cba.cba_retreat.NewPostActivity;
+import kr.or.sungrak.cba.cba_retreat.Dialog.PostDialog;
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.models.Post;
 import kr.or.sungrak.cba.cba_retreat.viewholder.PostViewHolder;
@@ -70,7 +70,7 @@ public class PostListFragment extends Fragment {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getActivity(), NewPostActivity.class));
+                showPostDialog();
             }
         });
 
@@ -161,5 +161,16 @@ public class PostListFragment extends Fragment {
         // [END recent_posts_query]
 
         return recentPostsQuery;
+    }
+
+    private void showPostDialog() {
+        final PostDialog postDialog = new PostDialog(getActivity());
+        postDialog.show();
+        postDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+            }
+        });
+
     }
 }

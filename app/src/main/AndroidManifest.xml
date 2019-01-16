@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NewPostActivity"
+            android:name=".Dialog.LoginDialog$NewPostDialog"
             android:windowSoftInputMode="stateVisible"></activity>
 
         <service android:name=".FCM.MyFirebaseMessagingService">
