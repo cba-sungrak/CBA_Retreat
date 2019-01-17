@@ -19,6 +19,7 @@
             android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/title_bottom_margin"
             android:layout_marginBottom="@dimen/title_bottom_margin"
             android:text="LOGIN"
             android:textSize="30sp"

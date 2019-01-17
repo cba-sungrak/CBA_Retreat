@@ -8,14 +8,15 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public class PostDialog extends MyProgessDialog {
     private DatabaseReference mDatabase;
     // [END declare_database_ref]
 
-    private EditText mTitleField;
+    private EditText mNameField;
     private EditText mBodyField;
     private FloatingActionButton mSubmitButton;
     Context mContext;
@@ -51,7 +52,7 @@ public class PostDialog extends MyProgessDialog {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         // [END initialize_database_ref]
 
-        mTitleField = findViewById(R.id.field_title);
+        mNameField = findViewById(R.id.field_name);
         mBodyField = findViewById(R.id.field_body);
         mSubmitButton = findViewById(R.id.fab_submit_post);
 
@@ -64,11 +65,11 @@ public class PostDialog extends MyProgessDialog {
     }
 
     private void submitPost() {
-        final String title = mTitleField.getText().toString();
+        final String name = mNameField.getText().toString();
         final String body = mBodyField.getText().toString();
         // Title is required
-        if (TextUtils.isEmpty(title)) {
-            mTitleField.setError(REQUIRED);
+        if (TextUtils.isEmpty(name)) {
+            mNameField.setError(REQUIRED);
             return;
         }
         // Body is required
@@ -86,7 +87,7 @@ public class PostDialog extends MyProgessDialog {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get user value
-                        writeNewPost("testuserID", "user name", title, body);
+                        writeNewPost(name, body);
                         // Finish this Activity, back to the stream
                     }
 
@@ -102,7 +103,7 @@ public class PostDialog extends MyProgessDialog {
     }
 
     private void setEditingEnabled(boolean enabled) {
-        mTitleField.setEnabled(enabled);
+        mNameField.setEnabled(enabled);
         mBodyField.setEnabled(enabled);
         if (enabled) {
             mSubmitButton.show();
@@ -112,12 +113,17 @@ public class PostDialog extends MyProgessDialog {
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String userId, String username, String title, String body) {
+    private void writeNewPost(String username, String body) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("2019messages").push().getKey();
-
-        Post post = new Post(userId, username, title, body, "time", "staff");
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        Post post;
+        if (auth.getCurrentUser() == null) {
+            post = new Post("NOTlogin", username, body, getCurrentTimeStr(), "J조");
+        } else {
+            post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "봉사자");
+        }
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
@@ -127,4 +133,9 @@ public class PostDialog extends MyProgessDialog {
         mDatabase.updateChildren(childUpdates);
     }
     // [END write_fan_out]
+    private static String getCurrentTimeStr() {
+        long currTime = System.currentTimeMillis();
+        java.text.DateFormat finalformat = new java.text.SimpleDateFormat("MM-dd HH:mm");
+        return finalformat.format(new Date(currTime));
+    }
 }

@@ -1,8 +1,10 @@
 package kr.or.sungrak.cba.cba_retreat.fragment;
 
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -103,6 +105,7 @@ public class PostListFragment extends Fragment {
                 return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false));
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
                 viewHolder.bindToPost(model, getContext());
