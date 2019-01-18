@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="40dp"
+        android:background="@drawable/callall"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/gbs_leader_name"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="조장 이름" />
+        <TextView
+            android:id="@+id/gbs_leader_age"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="조장 나이" />
+        <TextView
+            android:id="@+id/gbs_leader_campus"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="조장 캠퍼스" />
+
+
+        <TextView
+            android:id="@+id/gbs_member_name"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="멤버 이름" />
+        <TextView
+            android:id="@+id/gbs_member_age"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="멤버 나이" />
+        <TextView
+            android:id="@+id/gbs_member_campus"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="멤버 캠퍼스" />
+
+    </LinearLayout>
+</LinearLayout>
+
+

@@ -32,6 +32,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.gson.Gson;
 
 import kr.or.sungrak.cba.cba_retreat.Dialog.LoginDialog;
+import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
@@ -190,7 +191,7 @@ public class MainActivity extends AppCompatActivity
                 showLoginDialog(true);
                 return true;
             } else {
-                replaceFragment(new ImageViewFragment("campus_place1.png"));
+                replaceFragment(new GBSFragment());
             }
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
