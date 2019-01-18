@@ -2,6 +2,7 @@ package kr.or.sungrak.cba.cba_retreat.Dialog;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
@@ -75,7 +77,6 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
                             Toast.makeText(mContext, "Authentication failed.", Toast.LENGTH_SHORT).show();
                             mLoginSuccess = false;
                         }
-                        dismiss();
                         hideProgressDialog();
                     }
                 });
@@ -122,11 +123,9 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
         request.enqueue(new Callback<MyInfo>() {
             @Override
             public void onResponse(Call<MyInfo> call, Response<MyInfo> response) {
-                Log.i(TAG, "reponse" + response.toString());
-                if (response.isSuccessful()) {
-                    Toast.makeText(mContext, response.body().getName() + "로그인 하셨습니다.", Toast.LENGTH_SHORT).show();
-                    Log.i(TAG, response.body().getName());
-                }
+                Log.i(TAG, "reponse" + response.body().toString());
+                saveMyInfo(response);
+                dismiss();
             }
 
             @Override
@@ -134,6 +133,14 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
                 Log.i(TAG, "faild " + t.getMessage());
             }
         });
+    }
+    public void saveMyInfo(Response<MyInfo> response){
+        Gson gson = new Gson();
+        String myInfo = gson.toJson(response.body());
+        SharedPreferences pref = mContext.getSharedPreferences("MyInfo", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("MyInfo", myInfo);
+        editor.commit();
     }
 
 }

@@ -1,7 +1,9 @@
 package kr.or.sungrak.cba.cba_retreat;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -14,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,12 +29,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.gson.Gson;
 
 import kr.or.sungrak.cba.cba_retreat.Dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
+import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,7 +58,7 @@ public class MainActivity extends AppCompatActivity
         mContext = this;
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
-        FirebaseMessaging.getInstance().subscribeToTopic("2018-summer-retreat");
+        FirebaseMessaging.getInstance().subscribeToTopic("2019winter");
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         fetchRemoteConfig();
@@ -93,7 +98,9 @@ public class MainActivity extends AppCompatActivity
             //logIn
             logInBtn.setVisibility(View.GONE);
             logOutBtn.setVisibility(View.VISIBLE);
-            logintext.setText(mAuth.getCurrentUser().getEmail() + "님 로그인 되었습니다.");
+            if(loadMyInfo()!=null) {
+                logintext.setText(loadMyInfo().getName() + "님 로그인 되었습니다.");
+            }
         }
         logInBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,12 +226,22 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDismiss(DialogInterface dialog) {
                 updateSignInButton();
+
                 if (loginDialog.changeFrament()) {
                     replaceFragment(new ImageViewFragment("campus_place1.png"));
                 }
             }
         });
-
+    }
+    public MyInfo loadMyInfo(){
+        Gson gson = new Gson();
+        SharedPreferences pref = getSharedPreferences("MyInfo", Activity.MODE_PRIVATE);
+        String json = pref.getString("MyInfo", "");
+        if(TextUtils.isEmpty(json)){
+            return null;
+        }
+        Log.i("Login", "/// " + json);
+        return gson.fromJson(json, MyInfo.class);
     }
 }
 
