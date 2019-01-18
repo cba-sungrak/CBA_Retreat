@@ -18,6 +18,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import kr.or.sungrak.cba.cba_retreat.R;
+import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
+import kr.or.sungrak.cba.cba_retreat.network.ApiService;
+import kr.or.sungrak.cba.cba_retreat.network.ServiceGenerator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
 public class LoginDialog extends MyProgessDialog implements View.OnClickListener {
@@ -60,7 +66,7 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
+                            getMyInfo(FirebaseAuth.getInstance().getUid());
                             Log.d(TAG, "signInWithEmail:success");
                             mLoginSuccess = true;
                         } else {
@@ -108,5 +114,26 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
         return mLoginSuccess && mNeedToChangeFrament;
     }
 
+    public void getMyInfo(String uid) {
+        ApiService service = ServiceGenerator.createService(ApiService.class);
+
+        // API 요청.
+        Call<MyInfo> request = service.getMemberRepositories(uid);
+        request.enqueue(new Callback<MyInfo>() {
+            @Override
+            public void onResponse(Call<MyInfo> call, Response<MyInfo> response) {
+                Log.i(TAG, "reponse" + response.toString());
+                if (response.isSuccessful()) {
+                    Toast.makeText(mContext, response.body().getName() + "로그인 하셨습니다.", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, response.body().getName());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyInfo> call, Throwable t) {
+                Log.i(TAG, "faild " + t.getMessage());
+            }
+        });
+    }
 
 }

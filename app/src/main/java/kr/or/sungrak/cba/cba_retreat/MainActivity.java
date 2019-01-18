@@ -1,5 +1,6 @@
 package kr.or.sungrak.cba.cba_retreat;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,17 +27,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
+import kr.or.sungrak.cba.cba_retreat.Dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
-import kr.or.sungrak.cba.cba_retreat.Dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private static final String TAG = "MainActivity";
     FirebaseRemoteConfig mFirebaseRemoteConfig;
     FirebaseAuth mAuth;
+    Context mContext;
 
 
     @Override
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
         FirebaseMessaging.getInstance().subscribeToTopic("2018-summer-retreat");
@@ -137,27 +140,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    //    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
