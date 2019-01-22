@@ -1,55 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="gbs"
+            type="kr.or.sungrak.cba.cba_retreat.models.GBSInfo" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/callall"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/gbs_leader_name"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:text="조장 이름" />
-        <TextView
-            android:id="@+id/gbs_leader_age"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:text="조장 나이" />
-        <TextView
-            android:id="@+id/gbs_leader_campus"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:text="조장 캠퍼스" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="단계" />
 
 
-        <TextView
-            android:id="@+id/gbs_member_name"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/gbs_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{gbs.gbsLevel}" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:text="멤버 이름" />
-        <TextView
-            android:id="@+id/gbs_member_age"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="조장" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/gbs_leader_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/gbs_name + gbs.leader.name}" />
+
+                <TextView
+                    android:id="@+id/gbs_leader_age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/gbs_age + gbs.leader.age}" />
+
+                <TextView
+                    android:id="@+id/gbs_leader_campus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/gbs_campus + gbs.leader.campus}" />
+
+                <TextView
+                    android:id="@+id/gbs_leader_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{@string/gbs_mobile + gbs.leader.mobile}" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/gbs_member_list"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:text="멤버 나이" />
-        <TextView
-            android:id="@+id/gbs_member_campus"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:text="멤버 캠퍼스" />
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical" />
 
     </LinearLayout>
-</LinearLayout>
-
+</layout>
 

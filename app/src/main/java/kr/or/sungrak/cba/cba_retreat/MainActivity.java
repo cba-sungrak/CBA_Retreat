@@ -223,25 +223,26 @@ public class MainActivity extends AppCompatActivity
     private void showLoginDialog(boolean needToChangeFrament) {
         final LoginDialog loginDialog = new LoginDialog(this, needToChangeFrament);
         loginDialog.show();
+
         loginDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
+                Log.i(TAG, "onDismiss");
                 updateSignInButton();
-
                 if (loginDialog.changeFrament()) {
-                    replaceFragment(new ImageViewFragment("campus_place1.png"));
+                    replaceFragment(new GBSFragment());
                 }
             }
         });
     }
     public MyInfo loadMyInfo(){
         Gson gson = new Gson();
-        SharedPreferences pref = getSharedPreferences("MyInfo", Activity.MODE_PRIVATE);
+        SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
         String json = pref.getString("MyInfo", "");
         if(TextUtils.isEmpty(json)){
             return null;
         }
-        Log.i("Login", "/// " + json);
+        Log.i(TAG, "/// " + json);
         return gson.fromJson(json, MyInfo.class);
     }
 }

@@ -8,17 +8,17 @@ import com.google.gson.annotations.SerializedName;
 public class MyInfo {
     // GBSLevel STAFF = 99;
     @SerializedName("name")
-    public String name;
+    String name;
     @SerializedName("campus")
-    public String campus;
+    String campus;
     @SerializedName("gbsLevel")
-    public String gbsLevel;
+    String gbsLevel;
     @SerializedName("position")
-    public String position;
+    String position;
     @SerializedName("age")
-    public String age;
+    String age;
     @SerializedName("mobile")
-    public String mobile;
+    String mobile;
 
     public String getName() {
         return name;

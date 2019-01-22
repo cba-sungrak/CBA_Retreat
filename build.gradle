@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
+
     repositories {
         google()
         jcenter()
@@ -26,7 +26,4 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-ext {
-    retrofitVersion = '2.5.0'
-    okhttpVersion = '3.9.0'
-}
+

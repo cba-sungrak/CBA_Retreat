@@ -16,6 +16,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
+}
+ext {
+    retrofitVersion = '2.5.0'
+    okhttpVersion = '3.9.0'
 }
 dependencies {
     implementation "com.android.support:recyclerview-v7:28.0.0"
@@ -54,9 +61,9 @@ dependencies {
     implementation 'com.github.chrisbanes.photoview:library:1.2.4'
     implementation 'com.google.firebase:firebase-config:16.0.1'
 
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
-    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation "com.squareup.okhttp3:okhttp:$okhttpVersion"
 }
 
 apply plugin: 'com.google.gms.google-services'

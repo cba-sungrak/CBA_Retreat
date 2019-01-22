@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="member"
+            type="kr.or.sungrak.cba.cba_retreat.models.MyInfo" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="조원" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/gbs_member_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/gbs_name + member.name}" />
+
+            <TextView
+                android:id="@+id/gbs_member_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/gbs_age + member.age}" />
+
+            <TextView
+                android:id="@+id/gbs_member_campus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/gbs_campus + member.campus}" />
+
+            <TextView
+                android:id="@+id/gbs_member_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/gbs_mobile + member.mobile}" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

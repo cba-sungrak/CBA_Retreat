@@ -3,20 +3,18 @@ package kr.or.sungrak.cba.cba_retreat.models;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.gson.annotations.SerializedName;
 
-import org.json.JSONArray;
-
 import java.util.List;
 
 // [START blog_user_class]
 @IgnoreExtraProperties
 public class GBSInfo {
-      // GBSLevel STAFF = 99;
+    // GBSLevel STAFF = 99;
     @SerializedName("gbsLevel")
-    public String gbsLevel;
+    String gbsLevel;
     @SerializedName("leader")
-    public MyInfo leader;
+    MyInfo leader;
     @SerializedName("members")
-    public List<MyInfo> members;
+    List<MyInfo> members;
 
     public String getGbsLevel() {
         return gbsLevel;

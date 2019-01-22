@@ -1,24 +1,26 @@
 package kr.or.sungrak.cba.cba_retreat.fragment;
 
 
-import android.content.Intent;
-import android.net.Uri;
+import android.app.Activity;
+import android.content.SharedPreferences;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.gson.Gson;
 
 import kr.or.sungrak.cba.cba_retreat.R;
+import kr.or.sungrak.cba.cba_retreat.adapter.GBSMemeberAdapter;
+import kr.or.sungrak.cba.cba_retreat.databinding.GbsLayoutBinding;
 import kr.or.sungrak.cba.cba_retreat.models.GBSInfo;
-import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 import kr.or.sungrak.cba.cba_retreat.network.ApiService;
 import kr.or.sungrak.cba.cba_retreat.network.ServiceGenerator;
 import retrofit2.Call;
@@ -28,50 +30,78 @@ import retrofit2.Response;
 public class GBSFragment extends Fragment {
 
     private static final String TAG = "GBSFragment";
-    private TextView mlname;
-    private TextView mlage;
-    private TextView mlcampus;
-    private TextView mMname;
-    private TextView mMage;
-    private TextView mMcampus;
-
-
+    GbsLayoutBinding binding;
+    GBSMemeberAdapter gbsMemeberAdapter;
+    RecyclerView recyclerView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.gbs_layout, container, false);
-        mlname = rootView.findViewById(R.id.gbs_leader_name);
-        mlage = rootView.findViewById(R.id.gbs_leader_age);
-        mlcampus = rootView.findViewById(R.id.gbs_leader_campus);
-        mMname = rootView.findViewById(R.id.gbs_member_name);
-        mMage = rootView.findViewById(R.id.gbs_member_age);
-        mMcampus = rootView.findViewById(R.id.gbs_member_campus);
+        binding = DataBindingUtil.inflate(inflater, R.layout.gbs_layout, container, false);
+        View rootView = binding.getRoot();
+        recyclerView = binding.gbsMemberList;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        gbsMemeberAdapter = new GBSMemeberAdapter();
+        if (loadGBSInfo() == null) {
+            getGBSInfo();
+        } else {
+            updateGBSInfo();
+        }
+        recyclerView.setAdapter(gbsMemeberAdapter);
+        return rootView;
+    }
 
+    private void updateGBSInfo() {
+        GBSInfo gbsInfo = loadGBSInfo();
+        binding.setGbs(gbsInfo);
+        gbsMemeberAdapter.updateItems(gbsInfo.getMembers());
+    }
 
+    private void getGBSInfo() {
         ApiService service = ServiceGenerator.createService(ApiService.class);
-
-        String uid  = FirebaseAuth.getInstance().getUid();
-
+        String uid = FirebaseAuth.getInstance().getUid();
         // API 요청.
         Call<GBSInfo> request = service.getGBSRepositories(uid);
         request.enqueue(new Callback<GBSInfo>() {
             @Override
             public void onResponse(Call<GBSInfo> call, Response<GBSInfo> response) {
-                Log.i(TAG, "reponse" + response.body().toString());
-                mlname.setText(response.body().getLeader().getName());
-                mlage.setText(response.body().getLeader().getAge());
-                mlcampus.setText(response.body().getLeader().getCampus());
+                if (response.code() / 100 == 4) {
+                    //error 서버가 켜져 있으나 찾을 수가 없음
+                } else {
+                    if (response.body().getLeader() == null) {
+                        //조배치 되지 않음
+                    } else {
+                        saveGBSInfo(response);
+                        updateGBSInfo();
+                    }
+                }
             }
 
             @Override
             public void onFailure(Call<GBSInfo> call, Throwable t) {
 
             }
-
-
         });
+    }
 
-        return rootView;
+    private void saveGBSInfo(Response<GBSInfo> response) {
+        Gson gson = new Gson();
+        String myInfo = gson.toJson(response.body());
+        SharedPreferences pref = getActivity().getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("GBSInfo", myInfo);
+        editor.commit();
+    }
+
+    private GBSInfo loadGBSInfo() {
+        Gson gson = new Gson();
+        SharedPreferences pref = getActivity().getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        String json = pref.getString("GBSInfo", "");
+        if (TextUtils.isEmpty(json)) {
+            return null;
+        }
+        Log.i(TAG, "/// " + json);
+        return gson.fromJson(json, GBSInfo.class);
+
     }
 }

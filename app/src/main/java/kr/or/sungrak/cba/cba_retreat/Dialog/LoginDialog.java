@@ -69,15 +69,17 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             getMyInfo(FirebaseAuth.getInstance().getUid());
-                            Log.d(TAG, "signInWithEmail:success");
                             mLoginSuccess = true;
+                            Log.i(TAG, "FirebaseLogin success");
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(mContext, "Authentication failed.", Toast.LENGTH_SHORT).show();
                             mLoginSuccess = false;
+                            dismiss();
+                            hideProgressDialog();
                         }
-                        hideProgressDialog();
+
                     }
                 });
     }
@@ -123,21 +125,31 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
         request.enqueue(new Callback<MyInfo>() {
             @Override
             public void onResponse(Call<MyInfo> call, Response<MyInfo> response) {
-                Log.i(TAG, "reponse" + response.body().toString());
-                saveMyInfo(response);
+                Log.i(TAG, "get My info success");
+                if (response.code() / 100 == 4) {
+                    //error 서버가 켜져 있으나 찾을 수가 없음
+                    FirebaseAuth.getInstance().signOut();
+                } else {
+                    saveMyInfo(response);
+                }
                 dismiss();
+                hideProgressDialog();
             }
 
             @Override
             public void onFailure(Call<MyInfo> call, Throwable t) {
                 Log.i(TAG, "faild " + t.getMessage());
+                FirebaseAuth.getInstance().signOut();
+                dismiss();
+                hideProgressDialog();
             }
         });
     }
-    public void saveMyInfo(Response<MyInfo> response){
+
+    public void saveMyInfo(Response<MyInfo> response) {
         Gson gson = new Gson();
         String myInfo = gson.toJson(response.body());
-        SharedPreferences pref = mContext.getSharedPreferences("MyInfo", Activity.MODE_PRIVATE);
+        SharedPreferences pref = mContext.getSharedPreferences("setting", Activity.MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("MyInfo", myInfo);
         editor.commit();
