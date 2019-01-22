@@ -1,10 +1,10 @@
 package kr.or.sungrak.cba.cba_retreat;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity
     }
     public MyInfo loadMyInfo(){
         Gson gson = new Gson();
-        SharedPreferences pref = getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String json = pref.getString("MyInfo", "");
         if(TextUtils.isEmpty(json)){
             return null;

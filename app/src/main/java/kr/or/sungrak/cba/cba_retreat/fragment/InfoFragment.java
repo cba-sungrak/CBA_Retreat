@@ -4,20 +4,28 @@ package kr.or.sungrak.cba.cba_retreat.fragment;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import kr.or.sungrak.cba.cba_retreat.R;
+import kr.or.sungrak.cba.cba_retreat.models.Post;
 
 public class InfoFragment extends Fragment {
 
+    private static final String TAG = "CBA/InfoFragment";
     private ImageButton youtubeBtn;
     private ImageButton instaBtn;
     private ImageButton webBtn;
@@ -25,6 +33,7 @@ public class InfoFragment extends Fragment {
     private ImageButton callStaffBtn;
     private ImageButton callCarBtn;
     private ImageButton locationBtn;
+    private TextView noticeTxtView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,15 +47,40 @@ public class InfoFragment extends Fragment {
         callStaffBtn = rootView.findViewById(R.id.callStaffBtn);
         callCarBtn = rootView.findViewById(R.id.callCarBtn);
         locationBtn = rootView.findViewById(R.id.location);
+        noticeTxtView = rootView.findViewById(R.id.noti_textView);
 
-        String survey = FirebaseRemoteConfig.getInstance().getString("survey");
-        Log.i("cba", survey);
-        if (survey.equals("na")) {
-            locationBtn.setVisibility(View.GONE);
-        }else{
-            locationBtn.setVisibility(View.VISIBLE);
-        }
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("2019messages");
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Post post = dataSnapshot.getValue(Post.class);  // chatDat
+                if(post.isStaff.contentEquals("봉사자")){
+                    noticeTxtView.setText(post.message);
+                    noticeTxtView.setSelected(true);
+                }
+            }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         Button.OnClickListener onClickListener = new Button.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.text.TextUtils;
@@ -149,7 +150,7 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
     public void saveMyInfo(Response<MyInfo> response) {
         Gson gson = new Gson();
         String myInfo = gson.toJson(response.body());
-        SharedPreferences pref = mContext.getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("MyInfo", myInfo);
         editor.commit();
