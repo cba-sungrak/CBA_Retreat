@@ -23,24 +23,32 @@
                 android:id="@+id/gbs_member_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:typeface="serif"
+                android:textColor="@android:color/black"
                 android:text="@{@string/gbs_name + member.name}" />
 
             <TextView
                 android:id="@+id/gbs_member_age"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:typeface="serif"
+                android:textColor="@android:color/black"
                 android:text="@{@string/gbs_age + member.age}" />
 
             <TextView
                 android:id="@+id/gbs_member_campus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:typeface="serif"
+                android:textColor="@android:color/black"
                 android:text="@{@string/gbs_campus + member.campus}" />
 
             <TextView
                 android:id="@+id/gbs_member_mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:typeface="serif"
+                android:textColor="@android:color/black"
                 android:text="@{@string/gbs_mobile + member.mobile}" />
 
         </LinearLayout>

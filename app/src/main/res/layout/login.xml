@@ -1,11 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#00000000"
-    android:orientation="vertical"
-    android:weightSum="4">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +19,7 @@
             android:layout_marginTop="@dimen/title_bottom_margin"
             android:layout_marginBottom="@dimen/title_bottom_margin"
             android:text="LOGIN"
+            android:textColor="@android:color/black"
             android:textSize="30sp"
             android:theme="@style/ThemeOverlay.MyTitleText" />
 
@@ -34,7 +32,8 @@
 
         <TextView
             style="@style/ThemeOverlay.MyTextDetail"
-            android:text="LOGIN하시면 수련회 GBS 조장 조원을 확인 할 수 있습니다." />
+            android:text="LOGIN하시면 수련회 GBS 조장 조원을 확인 할 수 있습니다."
+            android:textSize="9sp" />
 
         <LinearLayout
             android:id="@+id/emailPasswordFields"
@@ -61,81 +60,42 @@
                 android:inputType="textPassword" />
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:background="#000000" />
     </LinearLayout>
 
-
-    <RelativeLayout
+    <View
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="#00000000"
-        android:gravity="center_vertical">
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#000000" />
 
 
-        <LinearLayout
-            android:id="@+id/emailPasswordButtons"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/emailPasswordButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <Button
+            android:id="@+id/emailSignInButton"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            android:layout_weight="1"
+            android:text="LOGIN"
+            android:theme="@style/ThemeOverlay.MyDarkButton" />
 
-            <Button
-                android:id="@+id/emailSignInButton"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/sign_in"
-                android:theme="@style/ThemeOverlay.MyDarkButton" />
-
-            <Button
-                android:id="@+id/cancel"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="취소"
-                android:theme="@style/ThemeOverlay.MyDarkButton" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/signedInButtons"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/cancel"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:visibility="gone"
-            android:weightSum="2.0">
+            android:layout_weight="1"
+            android:text="취소"
+            android:theme="@style/ThemeOverlay.MyWhiteButton" />
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/signOutButton"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:text="@string/sign_out"
-                android:theme="@style/ThemeOverlay.MyDarkButton" />
-
-            <!--<Button-->
-            <!--android:id="@+id/verifyEmailButton"-->
-            <!--style="@style/Widget.AppCompat.Button.Colored"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1.0"-->
-            <!--android:text="@string/verify_email"-->
-            <!--android:theme="@style/ThemeOverlay.MyDarkButton" />-->
-
-        </LinearLayout>
-
-    </RelativeLayout>
 
 </LinearLayout>

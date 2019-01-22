@@ -49,11 +49,11 @@
                     android:id="@+id/gbs_level"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{gbs.gbsLevel}" />
-
+                    android:text="@{gbs.gbsLevel}"
+                    android:textColor="@android:color/black"
+                    android:typeface="serif" />
             </LinearLayout>
         </LinearLayout>
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,8 +63,8 @@
 
             <TextView
                 style="@style/GBSPosition"
-                android:typeface="serif"
-                android:text="조장" />
+                android:text="조장"
+                android:typeface="serif" />
 
 
             <LinearLayout style="@style/GBSContent">
@@ -73,25 +73,33 @@
                     android:id="@+id/gbs_leader_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/gbs_name + gbs.leader.name}" />
+                    android:text="@{@string/gbs_name + gbs.leader.name}"
+                    android:textColor="@android:color/black"
+                    android:typeface="serif" />
 
                 <TextView
                     android:id="@+id/gbs_leader_age"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/gbs_age + gbs.leader.age}" />
+                    android:text="@{@string/gbs_age + gbs.leader.age}"
+                    android:textColor="@android:color/black"
+                    android:typeface="serif" />
 
                 <TextView
                     android:id="@+id/gbs_leader_campus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/gbs_campus + gbs.leader.campus}" />
+                    android:text="@{@string/gbs_campus + gbs.leader.campus}"
+                    android:textColor="@android:color/black"
+                    android:typeface="serif" />
 
                 <TextView
                     android:id="@+id/gbs_leader_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/gbs_mobile + gbs.leader.mobile}" />
+                    android:text="@{@string/gbs_mobile + gbs.leader.mobile}"
+                    android:textColor="@android:color/black"
+                    android:typeface="serif" />
             </LinearLayout>
         </LinearLayout>
 

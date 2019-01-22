@@ -50,6 +50,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        if (mAuth.getCurrentUser() == null) {
+            CBAUtil.removeAllPreferences(this);
+        }
         updateSignInButton();
     }
 
@@ -99,7 +102,7 @@ public class MainActivity extends AppCompatActivity
             //logIn
             logInBtn.setVisibility(View.GONE);
             logOutBtn.setVisibility(View.VISIBLE);
-            if(loadMyInfo()!=null) {
+            if (loadMyInfo() != null) {
                 logintext.setText(loadMyInfo().getName() + "님 로그인 되었습니다.");
             }
         }
@@ -115,8 +118,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (mAuth.getCurrentUser() != null) {
-                    mAuth.signOut();
+                    CBAUtil.signOut(getApplicationContext());
                     updateSignInButton();
+                    DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
+                    replaceFragment(new InfoFragment());
                 }
             }
         });
@@ -222,6 +228,7 @@ public class MainActivity extends AppCompatActivity
 
     private void showLoginDialog(boolean needToChangeFrament) {
         final LoginDialog loginDialog = new LoginDialog(this, needToChangeFrament);
+
         loginDialog.show();
 
         loginDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -230,16 +237,19 @@ public class MainActivity extends AppCompatActivity
                 Log.i(TAG, "onDismiss");
                 updateSignInButton();
                 if (loginDialog.changeFrament()) {
+                    DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                    drawer.closeDrawer(GravityCompat.START);
                     replaceFragment(new GBSFragment());
                 }
             }
         });
     }
-    public MyInfo loadMyInfo(){
+
+    public MyInfo loadMyInfo() {
         Gson gson = new Gson();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String json = pref.getString("MyInfo", "");
-        if(TextUtils.isEmpty(json)){
+        if (TextUtils.isEmpty(json)) {
             return null;
         }
         Log.i(TAG, "/// " + json);

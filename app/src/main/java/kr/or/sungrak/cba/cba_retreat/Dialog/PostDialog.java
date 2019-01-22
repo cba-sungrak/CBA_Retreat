@@ -3,10 +3,10 @@ package kr.or.sungrak.cba.cba_retreat.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import kr.or.sungrak.cba.cba_retreat.R;
+import kr.or.sungrak.cba.cba_retreat.CBAUtil;
+import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 import kr.or.sungrak.cba.cba_retreat.models.Post;
 
 public class PostDialog extends MyProgessDialog {
@@ -34,7 +36,7 @@ public class PostDialog extends MyProgessDialog {
 
     private EditText mNameField;
     private EditText mBodyField;
-    private FloatingActionButton mSubmitButton;
+    private Button mSubmitButton;
     Context mContext;
 
 
@@ -55,7 +57,10 @@ public class PostDialog extends MyProgessDialog {
         mNameField = findViewById(R.id.field_name);
         mBodyField = findViewById(R.id.field_body);
         mSubmitButton = findViewById(R.id.fab_submit_post);
-
+        MyInfo myInfo = CBAUtil.loadMyInfo(getContext());
+        if (myInfo != null) {
+            mNameField.setText(myInfo.getName());
+        }
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,9 +111,10 @@ public class PostDialog extends MyProgessDialog {
         mNameField.setEnabled(enabled);
         mBodyField.setEnabled(enabled);
         if (enabled) {
-            mSubmitButton.show();
+            mSubmitButton.setVisibility(View.VISIBLE);
         } else {
-            mSubmitButton.hide();
+            mSubmitButton.setVisibility(View.GONE);
+
         }
     }
 
@@ -120,9 +126,15 @@ public class PostDialog extends MyProgessDialog {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         Post post;
         if (auth.getCurrentUser() == null) {
-            post = new Post("NOTlogin", username, body, getCurrentTimeStr(), "J조");
+            post = new Post("NOTlogin", username, body, getCurrentTimeStr(), "NOTlogin");
         } else {
-            post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "봉사자");
+            MyInfo myInfo = CBAUtil.loadMyInfo(getContext());
+            if (myInfo != null) {
+                post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), myInfo.getGbsLevel());
+            } else {
+                post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "NA");
+            }
+
         }
         Map<String, Object> postValues = post.toMap();
 
@@ -132,6 +144,7 @@ public class PostDialog extends MyProgessDialog {
 
         mDatabase.updateChildren(childUpdates);
     }
+
     // [END write_fan_out]
     private static String getCurrentTimeStr() {
         long currTime = System.currentTimeMillis();

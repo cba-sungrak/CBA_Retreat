@@ -1,10 +1,10 @@
 package kr.or.sungrak.cba.cba_retreat.fragment;
 
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -87,7 +87,7 @@ public class GBSFragment extends Fragment {
     private void saveGBSInfo(Response<GBSInfo> response) {
         Gson gson = new Gson();
         String myInfo = gson.toJson(response.body());
-        SharedPreferences pref = getActivity().getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("GBSInfo", myInfo);
         editor.commit();
@@ -95,7 +95,7 @@ public class GBSFragment extends Fragment {
 
     private GBSInfo loadGBSInfo() {
         Gson gson = new Gson();
-        SharedPreferences pref = getActivity().getSharedPreferences("setting", Activity.MODE_PRIVATE);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String json = pref.getString("GBSInfo", "");
         if (TextUtils.isEmpty(json)) {
             return null;

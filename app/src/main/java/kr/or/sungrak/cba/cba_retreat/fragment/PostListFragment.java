@@ -168,6 +168,12 @@ public class PostListFragment extends Fragment {
 
     private void showPostDialog() {
         final PostDialog postDialog = new PostDialog(getActivity());
+//        WindowManager.LayoutParams params = new WindowManager.LayoutParams();
+//        Display display = ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+//        params.width = (int) (display.getWidth() * 0.7);
+//        params.height = (int) (display.getHeight() * 0.9);
+//        postDialog.getWindow().setAttributes(params);
+
         postDialog.show();
         postDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override

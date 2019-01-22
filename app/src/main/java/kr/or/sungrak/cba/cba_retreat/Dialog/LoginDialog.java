@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
+import kr.or.sungrak.cba.cba_retreat.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 import kr.or.sungrak.cba.cba_retreat.network.ApiService;
@@ -52,7 +53,6 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
         mPasswordField = findViewById(R.id.fieldPassword);
         // Buttons
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
-        findViewById(R.id.signOutButton).setOnClickListener(this);
         findViewById(R.id.cancel).setOnClickListener(this);
         mLoginSuccess = false;
     }
@@ -108,7 +108,6 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
         int i = v.getId();
         if (i == R.id.emailSignInButton) {
             signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        } else if (i == R.id.signOutButton) {
         } else if (i == R.id.cancel) {
             dismiss();
         }
@@ -129,7 +128,7 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
                 Log.i(TAG, "get My info success");
                 if (response.code() / 100 == 4) {
                     //error 서버가 켜져 있으나 찾을 수가 없음
-                    FirebaseAuth.getInstance().signOut();
+                    CBAUtil.signOut(mContext);
                 } else {
                     saveMyInfo(response);
                 }
@@ -140,7 +139,7 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
             @Override
             public void onFailure(Call<MyInfo> call, Throwable t) {
                 Log.i(TAG, "faild " + t.getMessage());
-                FirebaseAuth.getInstance().signOut();
+                CBAUtil.signOut(mContext);
                 dismiss();
                 hideProgressDialog();
             }
