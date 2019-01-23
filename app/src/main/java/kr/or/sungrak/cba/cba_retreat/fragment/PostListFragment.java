@@ -9,20 +9,15 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.Transaction;
 
 import kr.or.sungrak.cba.cba_retreat.Dialog.PostDialog;
 import kr.or.sungrak.cba.cba_retreat.R;
@@ -108,36 +103,16 @@ public class PostListFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
+                if (model.isStaff.equalsIgnoreCase("봉사자")) {
+                    viewHolder.authorImageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.app_icon, getActivity().getTheme()));
+                    int colorRed = getActivity().getResources().getColor(R.color.grey_200);
+                    viewHolder.cardView.setCardBackgroundColor(colorRed);
+                }
                 viewHolder.bindToPost(model, getContext());
             }
         };
         mRecycler.setAdapter(mAdapter);
     }
-
-    // [START post_stars_transaction]
-    private void onStarClicked(DatabaseReference postRef) {
-        postRef.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData mutableData) {
-                Post p = mutableData.getValue(Post.class);
-                if (p == null) {
-                    return Transaction.success(mutableData);
-                }
-
-                // Set value and report transaction success
-                mutableData.setValue(p);
-                return Transaction.success(mutableData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b,
-                                   DataSnapshot dataSnapshot) {
-                // Transaction completed
-                Log.d(TAG, "postTransaction:onComplete:" + databaseError);
-            }
-        });
-    }
-    // [END post_stars_transaction]
 
 
     @Override
@@ -168,11 +143,6 @@ public class PostListFragment extends Fragment {
 
     private void showPostDialog() {
         final PostDialog postDialog = new PostDialog(getActivity());
-//        WindowManager.LayoutParams params = new WindowManager.LayoutParams();
-//        Display display = ((WindowManager) getActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-//        params.width = (int) (display.getWidth() * 0.7);
-//        params.height = (int) (display.getHeight() * 0.9);
-//        postDialog.getWindow().setAttributes(params);
 
         postDialog.show();
         postDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {

@@ -55,7 +55,7 @@ public class InfoFragment extends Fragment {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Post post = dataSnapshot.getValue(Post.class);  // chatDat
-                if(post.isStaff.contentEquals("봉사자")){
+                if(post.isStaff.contentEquals("공지")){
                     noticeTxtView.setText(post.message);
                     noticeTxtView.setSelected(true);
                 }

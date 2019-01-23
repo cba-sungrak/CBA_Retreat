@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <import type="android.view.View"/>
         <variable
             name="member"
             type="kr.or.sungrak.cba.cba_retreat.models.MyInfo" />
@@ -23,33 +23,37 @@
                 android:id="@+id/gbs_member_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:typeface="serif"
+                android:text="@{@string/gbs_name + member.name}"
                 android:textColor="@android:color/black"
-                android:text="@{@string/gbs_name + member.name}" />
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/gbs_member_age"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:typeface="serif"
+                android:text="@{@string/gbs_age + member.age}"
                 android:textColor="@android:color/black"
-                android:text="@{@string/gbs_age + member.age}" />
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/gbs_member_campus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:typeface="serif"
+                android:text="@{@string/gbs_campus + member.campus}"
                 android:textColor="@android:color/black"
-                android:text="@{@string/gbs_campus + member.campus}" />
+                android:typeface="serif" />
 
             <TextView
                 android:id="@+id/gbs_member_mobile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:typeface="serif"
+                android:autoLink="phone"
+                android:text="@{@string/gbs_mobile + member.mobile}"
                 android:textColor="@android:color/black"
-                android:text="@{@string/gbs_mobile + member.mobile}" />
+                android:textColorLink="@android:color/black"
+                android:typeface="serif"
+                android:visibility="@{member.position.equals(@string/gbs_captain) ? View.VISIBLE : View.GONE}"
+                />
 
         </LinearLayout>
     </LinearLayout>

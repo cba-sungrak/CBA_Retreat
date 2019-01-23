@@ -97,8 +97,10 @@
                     android:id="@+id/gbs_leader_mobile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:autoLink="phone"
                     android:text="@{@string/gbs_mobile + gbs.leader.mobile}"
                     android:textColor="@android:color/black"
+                    android:textColorLink="@android:color/black"
                     android:typeface="serif" />
             </LinearLayout>
         </LinearLayout>

@@ -32,6 +32,7 @@
     <string name="gbs_age">►나이 :  </string>
     <string name="gbs_campus">►캠퍼스 :  </string>
     <string name="gbs_mobile">►연락처 :  </string>
+    <string name="gbs_captain">조장</string>
 
     //firebase auth
     <string name="desc_firebase_lockup">Firebase logo and name</string>

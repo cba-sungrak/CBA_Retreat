@@ -25,15 +25,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="1.5"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:textSize="13sp"
-            android:text="NOTICE" />
+            android:text="NOTICE"
+            android:textSize="13sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -47,14 +47,19 @@
                 android:id="@+id/noti_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="15dp"
-                android:paddingBottom="14dp"
+                android:autoLink="web"
                 android:ellipsize="marquee"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingLeft="10dp"
+                android:paddingTop="15dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="14dp"
                 android:singleLine="true"
                 android:text="공지사항\n공지사항들입니다."
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:textColorLink="@android:color/white" />
         </LinearLayout>
 
     </LinearLayout>

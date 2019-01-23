@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/post_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    card_view:cardCornerRadius="10dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,13 +20,13 @@
             android:layout_alignParentLeft="true" />
 
 
-        <include layout="@layout/include_post_text"
+        <include
+            layout="@layout/include_post_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@+id/post_author_layout"
-            android:layout_marginLeft="5dp"
-           />
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp" />
 
     </RelativeLayout>
 
