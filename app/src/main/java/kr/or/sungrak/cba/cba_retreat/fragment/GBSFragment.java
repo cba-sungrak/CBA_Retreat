@@ -33,6 +33,7 @@ public class GBSFragment extends Fragment {
     GbsLayoutBinding binding;
     GBSMemeberAdapter gbsMemeberAdapter;
     RecyclerView recyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class GBSFragment extends Fragment {
         recyclerView = binding.gbsMemberList;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         gbsMemeberAdapter = new GBSMemeberAdapter();
-        if (loadGBSInfo() == null) {
+        if (loadGBSInfo() == null || loadGBSInfo().getLeader() == null) {
             getGBSInfo();
         } else {
             updateGBSInfo();
@@ -53,8 +54,13 @@ public class GBSFragment extends Fragment {
 
     private void updateGBSInfo() {
         GBSInfo gbsInfo = loadGBSInfo();
-        binding.setGbs(gbsInfo);
-        gbsMemeberAdapter.updateItems(gbsInfo.getMembers());
+        if (gbsInfo.getLeader() == null) {
+
+        } else {
+            binding.setGbs(gbsInfo);
+            gbsMemeberAdapter.updateItems(gbsInfo.getMembers());
+        }
+
     }
 
     private void getGBSInfo() {

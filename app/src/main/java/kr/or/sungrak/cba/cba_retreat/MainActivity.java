@@ -187,11 +187,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.cleaning) {
             replaceFragment(new ImageViewFragment("cleaning.png"));
         } else if (id == R.id.room) {
-            replaceFragment(new SwipeImageFragment("room", new String[]{"1층", "2층(형제)", "3층(자매)"}));
+            replaceFragment(new SwipeImageFragment("room", new String[]{"2층", "별관(형제)", "3층(형제/자매)", "4층(자매)"}));
         } else if (id == R.id.campus_place) {
-            replaceFragment(new ImageViewFragment("campus_place1.png"));
+            replaceFragment(new SwipeImageFragment("campus_place", new String[]{"3층", "4층", "5층", "별관"}));
         } else if (id == R.id.gbs_place) {
-            replaceFragment(new SwipeImageFragment("gbs_place", new String[]{"본당(C,E)", "식당(F,J)", "1층(EN,OJ)", "2층(OJ)", "3층(OJ)"}));
+            replaceFragment(new SwipeImageFragment("gbs_place", new String[]{"2층(C/OJ)", "3층(CH)", "4층(CH/A,B)", "5층(E,F,J)"}));
         } else if (id == R.id.gbs_info) {
             if (mAuth.getCurrentUser() == null) {
                 showLoginDialog(true);

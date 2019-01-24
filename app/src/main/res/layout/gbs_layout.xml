@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="gbs"
             type="kr.or.sungrak.cba.cba_retreat.models.GBSInfo" />
@@ -32,86 +34,101 @@
             android:layout_height="2dp"
             android:layout_marginBottom="10dp"
             android:background="#000000" />
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="조배치가 되지 않았습니다.\n본부에서 확인해주세요"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="sans"
+            android:visibility="@{gbs.leader==null ? View.VISIBLE:View.GONE }" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:visibility="@{gbs.leader==null ? View.GONE : View.VISIBLE}">
 
-            <TextView
-                style="@style/GBSPosition"
-                android:text="단계" />
-
-
-            <LinearLayout style="@style/GBSContent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/gbs_level"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{gbs.gbsLevel}"
-                    android:textColor="@android:color/black"
-                    android:typeface="serif" />
+                    style="@style/GBSPosition"
+                    android:text="단계" />
+
+
+                <LinearLayout style="@style/GBSContent">
+
+                    <TextView
+                        android:id="@+id/gbs_level"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{gbs.gbsLevel}"
+                        android:textColor="@android:color/black"
+                        android:typeface="serif" />
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingBottom="20dp">
-
-            <TextView
-                style="@style/GBSPosition"
-                android:text="조장"
-                android:typeface="serif" />
-
-
-            <LinearLayout style="@style/GBSContent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="20dp">
 
                 <TextView
-                    android:id="@+id/gbs_leader_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/gbs_name + gbs.leader.name}"
-                    android:textColor="@android:color/black"
+                    style="@style/GBSPosition"
+                    android:text="조장"
                     android:typeface="serif" />
 
-                <TextView
-                    android:id="@+id/gbs_leader_age"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/gbs_age + gbs.leader.age}"
-                    android:textColor="@android:color/black"
-                    android:typeface="serif" />
 
-                <TextView
-                    android:id="@+id/gbs_leader_campus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{@string/gbs_campus + gbs.leader.campus}"
-                    android:textColor="@android:color/black"
-                    android:typeface="serif" />
+                <LinearLayout style="@style/GBSContent">
 
-                <TextView
-                    android:id="@+id/gbs_leader_mobile"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:autoLink="phone"
-                    android:text="@{@string/gbs_mobile + gbs.leader.mobile}"
-                    android:textColor="@android:color/black"
-                    android:textColorLink="@android:color/black"
-                    android:typeface="serif" />
+                    <TextView
+                        android:id="@+id/gbs_leader_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/gbs_name + gbs.leader.name}"
+                        android:textColor="@android:color/black"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:id="@+id/gbs_leader_age"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/gbs_age + gbs.leader.age}"
+                        android:textColor="@android:color/black"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:id="@+id/gbs_leader_campus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/gbs_campus + gbs.leader.campus}"
+                        android:textColor="@android:color/black"
+                        android:typeface="serif" />
+
+                    <TextView
+                        android:id="@+id/gbs_leader_mobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoLink="phone"
+                        android:text="@{@string/gbs_mobile + gbs.leader.mobile}"
+                        android:textColor="@android:color/black"
+                        android:textColorLink="@android:color/black"
+                        android:typeface="serif" />
+                </LinearLayout>
             </LinearLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/gbs_member_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical" />
+
         </LinearLayout>
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/gbs_member_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical" />
-
     </LinearLayout>
 </layout>
 
