@@ -6,8 +6,8 @@ android {
         applicationId "kr.or.sungrak.cba.cba_retreat"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 12
-        versionName "1.2"
+        versionCode 20
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
