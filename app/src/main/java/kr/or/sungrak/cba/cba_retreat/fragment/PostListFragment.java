@@ -103,7 +103,7 @@ public class PostListFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
-                if (model.isStaff.equalsIgnoreCase("봉사자")) {
+                if (model.isStaff.equalsIgnoreCase("봉사자") || (model.isStaff.equalsIgnoreCase("공지"))) {
                     viewHolder.authorImageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.app_icon, getActivity().getTheme()));
                     int colorRed = getActivity().getResources().getColor(R.color.grey_200);
                     viewHolder.cardView.setCardBackgroundColor(colorRed);

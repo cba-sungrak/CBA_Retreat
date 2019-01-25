@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,8 +21,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.CBAUtil;
+import kr.or.sungrak.cba.cba_retreat.FCM.SendFCM;
+import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 import kr.or.sungrak.cba.cba_retreat.models.Post;
 
@@ -37,6 +39,7 @@ public class PostDialog extends MyProgessDialog {
     private EditText mNameField;
     private EditText mBodyField;
     private Button mSubmitButton;
+    private CheckBox mIsNotiChk;
     Context mContext;
 
 
@@ -57,9 +60,13 @@ public class PostDialog extends MyProgessDialog {
         mNameField = findViewById(R.id.field_name);
         mBodyField = findViewById(R.id.field_body);
         mSubmitButton = findViewById(R.id.fab_submit_post);
+        mIsNotiChk = findViewById(R.id.is_noti_chk);
         MyInfo myInfo = CBAUtil.loadMyInfo(getContext());
         if (myInfo != null) {
             mNameField.setText(myInfo.getName());
+            if (myInfo.getGbsLevel().equals("봉사자")) {
+                mIsNotiChk.setVisibility(View.VISIBLE);
+            }
         }
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +79,7 @@ public class PostDialog extends MyProgessDialog {
     private void submitPost() {
         final String name = mNameField.getText().toString();
         final String body = mBodyField.getText().toString();
+        final boolean isNoti = mIsNotiChk.isChecked();
         // Title is required
         if (TextUtils.isEmpty(name)) {
             mNameField.setError(REQUIRED);
@@ -92,7 +100,7 @@ public class PostDialog extends MyProgessDialog {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get user value
-                        writeNewPost(name, body);
+                        writeNewPost(name, body, isNoti);
                         // Finish this Activity, back to the stream
                     }
 
@@ -119,7 +127,7 @@ public class PostDialog extends MyProgessDialog {
     }
 
     // [START write_fan_out]
-    private void writeNewPost(String username, String body) {
+    private void writeNewPost(String username, String body, boolean isNoti) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
         String key = mDatabase.child("2019messages").push().getKey();
@@ -129,7 +137,10 @@ public class PostDialog extends MyProgessDialog {
             post = new Post("NOTlogin", username, body, getCurrentTimeStr(), "NOTlogin");
         } else {
             MyInfo myInfo = CBAUtil.loadMyInfo(getContext());
-            if (myInfo != null) {
+            if (isNoti) {
+                post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "공지");
+                SendFCM.sendOKhttp(body);
+            } else if (myInfo != null) {
                 post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), myInfo.getGbsLevel());
             } else {
                 post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "NA");
@@ -140,9 +151,8 @@ public class PostDialog extends MyProgessDialog {
 
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put("/2019messages/" + key, postValues);
-        //        childUpdates.put("/user-posts/" + userId + "/" + key, postValues);
-
         mDatabase.updateChildren(childUpdates);
+
     }
 
     // [END write_fan_out]

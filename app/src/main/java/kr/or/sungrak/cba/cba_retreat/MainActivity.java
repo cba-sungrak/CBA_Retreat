@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity
             logInBtn.setVisibility(View.GONE);
             logOutBtn.setVisibility(View.VISIBLE);
             if (loadMyInfo() != null) {
-                logintext.setText(loadMyInfo().getName() + "님 로그인 되었습니다.");
+                logintext.setText(loadMyInfo().getName() + "/" + loadMyInfo().getGbsLevel());
             }
         }
         logInBtn.setOnClickListener(new View.OnClickListener() {

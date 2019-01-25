@@ -1,46 +1,51 @@
 package kr.or.sungrak.cba.cba_retreat.FCM;
 
+import android.os.AsyncTask;
+
 import org.json.JSONObject;
 
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class SendFCM {
-    private static final String FCM_MESSAGE_URL = "https://fcm.googleapis.com/fcm/send";
-    private static final String SERVER_KEY = "AAAAgGoRvj8:...";
+    private static final String BASE_URL = "https://fcm.googleapis.com/fcm/send";
+    public static final MediaType JSON
+            = MediaType.parse("application/json; charset=utf-8");
 
-    private void sendPostToFCM(final String message) {
-        new Thread(new Runnable() {
+    private static final String TITLE = "교회수호 진리수호";
+    public static final String TOPIC = "2019winter";
+    private static final String SERVER_KEY = "AAAA-PRsYvs:APA91bFiNlDHb8bBp5N4CJJuhtNSiV4Ej1KIh3tkIRsUbfrmHcCPvJvphxAWwg2oLohhgll1Ui0owWyRSP3nrkSDSrnr6M3ktjo75p2YFeqSl24naWo5ILf0yXVbWu08EvbqX0w8SoGSFFml6SmwIOh12ZmAgP1bMg";
+    private static String TAG = "CBA/SendFCM";
+
+    public static void sendOKhttp(final String message) {
+        new AsyncTask<Void, Void, Void>() {
             @Override
-            public void run() {
+            protected Void doInBackground(Void... params) {
                 try {
-                    // FMC 메시지 생성 start
-                    JSONObject root = new JSONObject();
-                    JSONObject notification = new JSONObject();
-                    notification.put("body", message);
-//                    notification.put("title", getString(R.string.app_name));
-//                    root.put("notification", notification);
-//                    root.put("to", userData.fcmToken);
-                    // FMC 메시지 생성 end
-
-                    URL Url = new URL(FCM_MESSAGE_URL);
-                    HttpURLConnection conn = (HttpURLConnection) Url.openConnection();
-                    conn.setRequestMethod("POST");
-                    conn.setDoOutput(true);
-                    conn.setDoInput(true);
-                    conn.addRequestProperty("Authorization", "key=" + SERVER_KEY);
-                    conn.setRequestProperty("Accept", "application/json");
-                    conn.setRequestProperty("Content-type", "application/json");
-                    OutputStream os = conn.getOutputStream();
-                    os.write(root.toString().getBytes("utf-8"));
-                    os.flush();
-                    conn.getResponseCode();
+                    OkHttpClient client = new OkHttpClient();
+                    JSONObject json = new JSONObject();
+                    JSONObject dataJson = new JSONObject();
+                    dataJson.put("body", message);
+                    dataJson.put("title", TITLE);
+                    json.put("notification", dataJson);
+                    json.put("to", "/topics/" + TOPIC);
+                    RequestBody body = RequestBody.create(JSON, json.toString());
+                    Request request = new Request.Builder()
+                            .header("Authorization", "key=" + SERVER_KEY)
+                            .url(BASE_URL)
+                            .post(body)
+                            .build();
+                    Response response = client.newCall(request).execute();
+                    String finalResponse = response.body().string();
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    //Log.d(TAG,e+"");
                 }
+                return null;
             }
-        }).start();
+        }.execute();
     }
 
 }

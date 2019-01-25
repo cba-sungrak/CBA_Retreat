@@ -48,9 +48,18 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:textColor="@android:color/white"
         android:background="@android:color/black"
-        android:text="보내기" />
+        android:text="보내기"
+        android:textColor="@android:color/white" />
+
+    <CheckBox
+        android:id="@+id/is_noti_chk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/field_body"
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"
+        android:text="공지로보네기" />
 
 
 </RelativeLayout>
