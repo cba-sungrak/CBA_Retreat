@@ -179,13 +179,13 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.lecture) {
-            replaceFragment(new ImageViewFragment("lecture.png"));
+            replaceFragment(new ImageViewFragment("lecture2.png"));
         } else if (id == R.id.menu) {
-            replaceFragment(new ImageViewFragment("menu.png"));
+            replaceFragment(new ImageViewFragment("menu2.png"));
         } else if (id == R.id.mealwork) {
-            replaceFragment(new ImageViewFragment("mealwork.png"));
+            replaceFragment(new ImageViewFragment("mealwork2.png"));
         } else if (id == R.id.cleaning) {
-            replaceFragment(new ImageViewFragment("cleaning.png"));
+            replaceFragment(new ImageViewFragment("cleaning2.png"));
         } else if (id == R.id.room) {
             replaceFragment(new SwipeImageFragment("room", new String[]{"2층", "별관(형제)", "3층(형제/자매)", "4층(자매)"}));
         } else if (id == R.id.campus_place) {

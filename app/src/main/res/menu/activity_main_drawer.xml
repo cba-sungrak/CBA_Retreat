@@ -6,6 +6,9 @@
     <item android:title="안내">
         <menu>
             <item
+                android:id="@+id/gbs_info"
+                android:title="GBS 정보" />
+            <item
                 android:id="@+id/lecture"
                 android:title="강의 안내" />
             <!--android:icon="@drawable/ic_menu_share"-->
@@ -31,10 +34,7 @@
                 android:title="캠퍼스 모임" />
             <item
                 android:id="@+id/gbs_place"
-                android:title="GBS 장소" />
-            <item
-                android:id="@+id/gbs_info"
-                android:title="GBS 정보" />
+                android:title="GBS 장소" ></item>
         </menu>
     </item>
 
