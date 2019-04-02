@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
@@ -34,7 +35,10 @@
                 android:title="캠퍼스 모임" />
             <item
                 android:id="@+id/gbs_place"
-                android:title="GBS 장소" ></item>
+                android:title="GBS 장소"></item>
+            <item
+                android:id="@+id/check_attendance"
+                android:title="출석체크"></item>
         </menu>
     </item>
 

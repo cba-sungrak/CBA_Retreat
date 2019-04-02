@@ -19,6 +19,8 @@ public class MyInfo {
     String age;
     @SerializedName("mobile")
     String mobile;
+    @SerializedName("isLeader")
+    boolean isLeader;
 
     public String getName() {
         return name;
@@ -42,6 +44,10 @@ public class MyInfo {
 
     public String getMobile() {
         return mobile;
+    }
+
+    public boolean isLeader() {
+        return isLeader;
     }
 }
 // [END blog_user_class]

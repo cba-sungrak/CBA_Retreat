@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +33,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.gson.Gson;
 
 import kr.or.sungrak.cba.cba_retreat.Dialog.LoginDialog;
+import kr.or.sungrak.cba.cba_retreat.fragment.AttendCampusFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
@@ -45,14 +47,22 @@ public class MainActivity extends AppCompatActivity
     FirebaseRemoteConfig mFirebaseRemoteConfig;
     FirebaseAuth mAuth;
     Context mContext;
-
+    MenuItem mCheckAttMenu;
 
     @Override
     protected void onResume() {
         super.onResume();
+        MyInfo myInfo = CBAUtil.loadMyInfo(this);
+        mCheckAttMenu.setVisible(true);
+        if (myInfo != null) {
+            if (myInfo.isLeader()) {
+                mCheckAttMenu.setVisible(true);
+            }
+        }
         if (mAuth.getCurrentUser() == null) {
             CBAUtil.removeAllPreferences(this);
         }
+
         updateSignInButton();
     }
 
@@ -72,8 +82,12 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Menu menu = navigationView.getMenu();
+        mCheckAttMenu = menu.findItem(R.id.check_attendance);
+        mCheckAttMenu.setVisible(false);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -138,7 +152,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
@@ -177,28 +191,40 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        if (id == R.id.lecture) {
-            replaceFragment(new ImageViewFragment("lecture2.png"));
-        } else if (id == R.id.menu) {
-            replaceFragment(new ImageViewFragment("menu2.png"));
-        } else if (id == R.id.mealwork) {
-            replaceFragment(new ImageViewFragment("mealwork2.png"));
-        } else if (id == R.id.cleaning) {
-            replaceFragment(new ImageViewFragment("cleaning2.png"));
-        } else if (id == R.id.room) {
-            replaceFragment(new SwipeImageFragment("room", new String[]{"2층", "별관(형제)", "3층(형제/자매)", "4층(자매)"}));
-        } else if (id == R.id.campus_place) {
-            replaceFragment(new SwipeImageFragment("campus_place", new String[]{"3층", "4층", "5층", "별관"}));
-        } else if (id == R.id.gbs_place) {
-            replaceFragment(new SwipeImageFragment("gbs_place", new String[]{"2층(C/OJ)", "3층(CH)", "4층(CH/A,B)", "5층(E,F,J)"}));
-        } else if (id == R.id.gbs_info) {
-            if (mAuth.getCurrentUser() == null) {
-                showLoginDialog(true);
-                return true;
-            } else {
-                replaceFragment(new GBSFragment());
-            }
+        switch (item.getItemId()) {
+            case R.id.lecture:
+                replaceFragment(new ImageViewFragment("lecture2.png"));
+                break;
+            case R.id.menu:
+                replaceFragment(new ImageViewFragment("menu2.png"));
+                break;
+            case R.id.mealwork:
+                replaceFragment(new ImageViewFragment("mealwork2.png"));
+                break;
+            case R.id.cleaning:
+                replaceFragment(new ImageViewFragment("cleaning2.png"));
+                break;
+            case R.id.room:
+                replaceFragment(new SwipeImageFragment("room", new String[]{"2층", "별관(형제)", "3층(형제/자매)", "4층(자매)"}));
+                break;
+            case R.id.campus_place:
+                replaceFragment(new SwipeImageFragment("campus_place", new String[]{"3층", "4층", "5층", "별관"}));
+                break;
+            case R.id.gbs_place:
+                replaceFragment(new SwipeImageFragment("gbs_place", new String[]{"2층(C/OJ)", "3층(CH)", "4층(CH/A,B)", "5층(E,F,J)"}));
+                break;
+            case R.id.gbs_info:
+                if (mAuth.getCurrentUser() == null) {
+                    showLoginDialog(true);
+                    return true;
+                } else {
+                    replaceFragment(new GBSFragment());
+                }
+                break;
+            case R.id.check_attendance:
+                replaceFragment(new AttendCampusFragment());
+            default:
+                break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
