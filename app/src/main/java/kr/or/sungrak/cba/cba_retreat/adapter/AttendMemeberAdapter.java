@@ -10,22 +10,22 @@ import java.util.List;
 
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.models.AttendInfo;
-import kr.or.sungrak.cba.cba_retreat.viewholder.MemberViewHolder;
+import kr.or.sungrak.cba.cba_retreat.viewholder.AttendViewHolder;
 
-public class AttendMemeberAdapter extends RecyclerView.Adapter<MemberViewHolder> {
+public class AttendMemeberAdapter extends RecyclerView.Adapter<AttendViewHolder> {
     private List<AttendInfo> mMemberList;
 
     @NonNull
     @Override
-    public MemberViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public AttendViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.attend_member_layout, viewGroup, false);
-        return new MemberViewHolder(view);
+        return new AttendViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MemberViewHolder memberViewHolder, int i) {
+    public void onBindViewHolder(@NonNull AttendViewHolder memberViewHolder, int i) {
         AttendInfo myInfo = mMemberList.get(i);
-//        memberViewHolder.binding.set(myInfo);
+        memberViewHolder.binding.setAttend(myInfo);
     }
 
 
