@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
 import kr.or.sungrak.cba.cba_retreat.R;
-import kr.or.sungrak.cba.cba_retreat.adapter.GBSMemeberAdapter;
+import kr.or.sungrak.cba.cba_retreat.adapter.GBSMemberAdapter;
 import kr.or.sungrak.cba.cba_retreat.databinding.GbsLayoutBinding;
 import kr.or.sungrak.cba.cba_retreat.models.GBSInfo;
 import kr.or.sungrak.cba.cba_retreat.network.ApiService;
@@ -31,7 +31,7 @@ public class GBSFragment extends Fragment {
 
     private static final String TAG = "GBSFragment";
     GbsLayoutBinding binding;
-    GBSMemeberAdapter gbsMemeberAdapter;
+    GBSMemberAdapter gbsMemeberAdapter;
     RecyclerView recyclerView;
 
     @Override
@@ -42,7 +42,7 @@ public class GBSFragment extends Fragment {
         View rootView = binding.getRoot();
         recyclerView = binding.gbsMemberList;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        gbsMemeberAdapter = new GBSMemeberAdapter();
+        gbsMemeberAdapter = new GBSMemberAdapter();
         if (loadGBSInfo() == null || loadGBSInfo().getLeader() == null) {
             getGBSInfo();
         } else {

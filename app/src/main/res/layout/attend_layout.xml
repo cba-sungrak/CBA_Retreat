@@ -3,12 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <import type="android.view.View" />
-
         <variable
-            name="data"
-            type="kr.or.sungrak.cba.cba_retreat.models.DataAttendList" />
+            name="attend"
+            type="kr.or.sungrak.cba.cba_retreat.models.AttendInfo" />
     </data>
 
     <LinearLayout

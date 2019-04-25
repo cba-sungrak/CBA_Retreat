@@ -1,4 +1,4 @@
-package kr.or.sungrak.cba.cba_retreat.Dialog;
+package kr.or.sungrak.cba.cba_retreat.dialog;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;

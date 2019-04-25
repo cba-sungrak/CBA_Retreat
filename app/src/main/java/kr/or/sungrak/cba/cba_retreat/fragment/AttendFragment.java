@@ -31,7 +31,7 @@ public class AttendFragment extends Fragment {
 
     private static final String TAG = "GBSFragment";
     AttendLayoutBinding binding;
-    AttendMemeberAdapter gbsMemeberAdapter;
+    AttendMemeberAdapter attendMemeberAdapter;
     RecyclerView recyclerView;
     String mRequestCampusName;
 
@@ -48,11 +48,11 @@ public class AttendFragment extends Fragment {
         View rootView = binding.getRoot();
         recyclerView = binding.attendMemberList;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        gbsMemeberAdapter = new AttendMemeberAdapter();
+        attendMemeberAdapter = new AttendMemeberAdapter();
 
         getAttendInfo();
 
-        recyclerView.setAdapter(gbsMemeberAdapter);
+        recyclerView.setAdapter(attendMemeberAdapter);
         return rootView;
     }
 
@@ -67,9 +67,9 @@ public class AttendFragment extends Fragment {
             @Override
             public void onResponse(Call<DataAttendList> call, Response<DataAttendList> response) {
                 if (response.code() / 100 == 4) {
+                } else {
                     DataAttendList as = response.body();
                     List<AttendInfo> a = as.AttendInfos();
-                } else {
                 }
             }
 

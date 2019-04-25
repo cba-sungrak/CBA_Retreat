@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import kr.or.sungrak.cba.cba_retreat.Dialog.PostDialog;
+import kr.or.sungrak.cba.cba_retreat.dialog.PostDialog;
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.models.Post;
 import kr.or.sungrak.cba.cba_retreat.viewholder.PostViewHolder;

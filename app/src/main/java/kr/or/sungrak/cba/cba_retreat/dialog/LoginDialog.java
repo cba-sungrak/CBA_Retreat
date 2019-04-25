@@ -1,4 +1,4 @@
-package kr.or.sungrak.cba.cba_retreat.Dialog;
+package kr.or.sungrak.cba.cba_retreat.dialog;
 
 import android.app.Activity;
 import android.content.Context;

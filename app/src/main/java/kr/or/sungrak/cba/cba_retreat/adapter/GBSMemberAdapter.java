@@ -11,22 +11,22 @@ import java.util.List;
 
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
-import kr.or.sungrak.cba.cba_retreat.viewholder.MemberViewHolder;
+import kr.or.sungrak.cba.cba_retreat.viewholder.GBSMemberViewHolder;
 
-public class GBSMemeberAdapter extends RecyclerView.Adapter<MemberViewHolder> {
+public class GBSMemberAdapter extends RecyclerView.Adapter<GBSMemberViewHolder> {
     private List<MyInfo> mMemberList;
 
     @NonNull
     @Override
-    public MemberViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public GBSMemberViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.gbs_member_layout, viewGroup, false);
-        return new MemberViewHolder(view);
+        return new GBSMemberViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MemberViewHolder memberViewHolder, int i) {
+    public void onBindViewHolder(@NonNull GBSMemberViewHolder GBSMemberViewHolder, int i) {
         MyInfo myInfo = mMemberList.get(i);
-        memberViewHolder.binding.setMember(myInfo);
+        GBSMemberViewHolder.binding.setMember(myInfo);
     }
 
 
