@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="attend"
             type="kr.or.sungrak.cba.cba_retreat.models.AttendInfo" />
@@ -14,18 +16,34 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-
         android:orientation="vertical">
 
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="조장 조원 확인"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:typeface="sans" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="< Prev" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2019-04-07"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next >" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -33,20 +51,38 @@
             android:layout_marginBottom="10dp"
             android:background="#000000" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="출석체크"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:typeface="sans" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="인천 출석 20 / 전체 40 / 50% "
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <Button
+                android:id="@+id/edit_attend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginBottom="10dp"
+            android:background="#000000" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/attend_member_list"
@@ -55,6 +91,12 @@
                 android:scrollbars="vertical" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/confirm_attend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="출석완료" />
     </LinearLayout>
 </layout>
 

@@ -2,7 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="attend"
             type="kr.or.sungrak.cba.cba_retreat.models.AttendInfo" />
@@ -13,10 +15,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:visibility="@{attend.active ? View.VISIBLE : View.GONE}">
-
-        <TextView
-            style="@style/GBSPosition"
-            android:text="조원" />
 
         <LinearLayout
             style="@style/GBSContentMember"
@@ -43,6 +41,12 @@
                 android:layout_height="wrap_content"
                 android:checked="@{attend.status==1 ? true : false}" />
 
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Name" />
 
         </LinearLayout>
     </LinearLayout>
