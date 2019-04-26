@@ -37,6 +37,7 @@ import kr.or.sungrak.cba.cba_retreat.fragment.AttendCampusFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.PeriodStatisticFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
@@ -223,6 +224,10 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.check_attendance:
                 replaceFragment(new AttendCampusFragment());
+                break;
+            case R.id.statistic_attendance:
+                replaceFragment(new PeriodStatisticFragment());
+                break;
             default:
                 break;
         }

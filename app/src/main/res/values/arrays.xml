@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="campus">
+        <item >강변</item>
+        <item >강북</item>
+        <item >강원</item>
+        <item >남서울</item>
+        <item >대학로</item>
+        <item >서바다</item>
+        <item >인천</item>
+        <item >성용</item>
+        <item >신촌</item>
+        <item >천안</item>
+        <item >필레오</item>
+    </string-array>
+</resources>
