@@ -40,6 +40,7 @@ public class PeriodStatisticFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         binding = DataBindingUtil.inflate(inflater, R.layout.period_statistic_layout, container, false);
+        binding.setFragment(this);
         View rootView = binding.getRoot();
         binding.spinner.setOnItemSelectedListener(onItemSelectedListener);
         setDate();
@@ -65,14 +66,15 @@ public class PeriodStatisticFragment extends Fragment {
         binding.endBtn.setOnClickListener(onClickListener);
         GregorianCalendar calendar = new GregorianCalendar();
         calendar.setTime(new Date());
+        mEndY = calendar.get(Calendar.YEAR);
+        mEndM = calendar.get(Calendar.MONTH);
+        mEndD = calendar.get(Calendar.DAY_OF_MONTH);
+
+        calendar.add(Calendar.MONTH, 1);
         mStartY = calendar.get(Calendar.YEAR);
         mStartM = calendar.get(Calendar.MONTH);
         mStartD = calendar.get(Calendar.DAY_OF_MONTH);
 
-        calendar.add(Calendar.MONTH, 3);
-        mEndY = calendar.get(Calendar.YEAR);
-        mEndM = calendar.get(Calendar.MONTH);
-        mEndD = calendar.get(Calendar.DAY_OF_MONTH);
         if (TextUtils.isEmpty(mStartDate)) {
             String startTime = String.format("%d/%d/%d", mStartY, mStartM + 1, mStartD);
             mStartDate = startTime;
@@ -114,19 +116,7 @@ public class PeriodStatisticFragment extends Fragment {
                             String startTime = String.format("%d/%d/%d", year, monthOfYear + 1,
                                     dayOfMonth);
                             mStartDate = startTime;
-
                             binding.startBtn.setText(startTime.replace("/", "."));
-
-//                            // endBtn text를 설정한 startDate+3달로 변경
-//                            GregorianCalendar gCalendar = getCalendar(startTime);
-//                            gCalendar.add(Calendar.MONTH, 3);
-//                            mEndY = gCalendar.get(Calendar.YEAR);
-//                            mEndM = gCalendar.get(Calendar.MONTH);
-//                            mEndD = gCalendar.get(Calendar.DAY_OF_MONTH);
-//                            String endTime = String.format("%d/%d/%d", mEndY, mEndM + 1, mEndD);
-//                            mPlanItem.endTime = endTime;
-
-//                            binding.endBtn.setText(endTime.replace("/", "."));
 
                         }
                     }, mStartY, mStartM, mStartD).show();
@@ -156,6 +146,42 @@ public class PeriodStatisticFragment extends Fragment {
             }
         }
     };
+
+    public void onButtonClick(View v) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        mEndY = calendar.get(Calendar.YEAR);
+        mEndM = calendar.get(Calendar.MONTH);
+        mEndD = calendar.get(Calendar.DAY_OF_MONTH);
+        String endTime = String.format("%d/%d/%d", mEndY, mEndM + 1, mEndD);
+
+        switch (v.getId()) {
+            case R.id.month_btn:
+                calendar.add(Calendar.MONTH, -1);
+                break;
+            case R.id.month3_btn:
+                calendar.add(Calendar.MONTH, -3);
+                break;
+            case R.id.month6_btn:
+                calendar.add(Calendar.MONTH, -6);
+                break;
+            case R.id.year_btn:
+                calendar.add(Calendar.YEAR, -1);
+                break;
+        }
+
+        mStartY = calendar.get(Calendar.YEAR);
+        mStartM = calendar.get(Calendar.MONTH);
+        mStartD = calendar.get(Calendar.DAY_OF_MONTH);
+        String startTime = String.format("%d/%d/%d", mStartY, mStartM + 1, mStartD);
+        binding.startBtn.setText(startTime.replace("/", "."));
+        binding.endBtn.setText(endTime.replace("/", "."));
+
+    }
+
+    public void onConfirmClick(View v){
+        Toast.makeText(getContext(), "TODO!!! 위에 정보들 api 날려서 UI 업데이트 해야함", Toast.LENGTH_SHORT).show();
+    }
 
     public GregorianCalendar getCalendar(String startTime) {
         GregorianCalendar calendar = new GregorianCalendar();

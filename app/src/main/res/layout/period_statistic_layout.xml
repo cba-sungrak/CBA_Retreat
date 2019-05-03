@@ -2,7 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <data>
+        <variable
+            name="fragment"
+            type="kr.or.sungrak.cba.cba_retreat.fragment.PeriodStatisticFragment"/>
+    </data>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -43,25 +47,35 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/button3"
+                android:id="@+id/month_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="@{fragment::onButtonClick}"
                 android:text="한달" />
 
             <Button
-                android:id="@+id/button4"
+                android:id="@+id/month3_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="@{fragment::onButtonClick}"
                 android:text="3개월" />
 
             <Button
-                android:id="@+id/button5"
+                android:id="@+id/month6_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:onClick="@{fragment::onButtonClick}"
                 android:text="6개월" />
+            <Button
+                android:id="@+id/year_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{fragment::onButtonClick}"
+                android:text="1년" />
         </LinearLayout>
 
         <LinearLayout
@@ -102,6 +116,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/campus" />
+
+        <Button
+            android:id="@+id/confirm_period_statistic_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{fragment::onConfirmClick}"
+            android:text="확인" />
 
     </LinearLayout>
 </layout>
