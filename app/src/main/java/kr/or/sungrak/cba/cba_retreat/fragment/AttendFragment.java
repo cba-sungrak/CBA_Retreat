@@ -13,13 +13,13 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.List;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.adapter.AttendMemeberAdapter;
 import kr.or.sungrak.cba.cba_retreat.databinding.AttendLayoutBinding;
-import kr.or.sungrak.cba.cba_retreat.models.AttendInfo;
-import kr.or.sungrak.cba.cba_retreat.models.DataAttendList;
+import kr.or.sungrak.cba.cba_retreat.models.AttendList;
 import kr.or.sungrak.cba.cba_retreat.network.ApiService;
 import kr.or.sungrak.cba.cba_retreat.network.ServiceGenerator;
 import retrofit2.Call;
@@ -62,19 +62,30 @@ public class AttendFragment extends Fragment {
         String uid = FirebaseAuth.getInstance().getUid();
         // API 요청.
         String date = "2019-04-07";
-        Call<DataAttendList> request = service.getAttendList(uid,mRequestCampusName,date);
-        request.enqueue(new Callback<DataAttendList>() {
+        String campus = "천안";
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("date",date);
+            obj.put("campus",campus);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        Call<AttendList> request = service.getAttendList(obj);
+
+        request.enqueue(new Callback<AttendList>() {
             @Override
-            public void onResponse(Call<DataAttendList> call, Response<DataAttendList> response) {
+            public void onResponse(Call<AttendList> call, Response<AttendList> response) {
                 if (response.code() / 100 == 4) {
+                    //실패처리
                 } else {
-                    DataAttendList as = response.body();
-                    List<AttendInfo> a = as.AttendInfos();
+                    AttendList as = response.body();
+                    as.getAttendInfos();
                 }
             }
 
             @Override
-            public void onFailure(Call<DataAttendList> call, Throwable t) {
+            public void onFailure(Call<AttendList> call, Throwable t) {
 
             }
         });
