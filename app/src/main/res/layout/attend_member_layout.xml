@@ -7,14 +7,13 @@
 
         <variable
             name="attend"
-            type="kr.or.sungrak.cba.cba_retreat.models.AttendInfo" />
+            type="kr.or.sungrak.cba.cba_retreat.models.AttendList.AttendInfo" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="@{attend.active ? View.VISIBLE : View.GONE}">
+        android:orientation="horizontal">
 
         <LinearLayout
             style="@style/GBSContentMember"
@@ -24,7 +23,7 @@
                 android:id="@+id/gbs_member_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/gbs_name + attend.name}"
+                android:text="@{attend.name+` / `}"
                 android:textColor="@android:color/black"
                 android:typeface="serif" />
 
@@ -32,21 +31,21 @@
                 android:id="@+id/gbs_member_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{@string/gbs_age + attend.mobile}"
+                android:text="@{attend.mobile+` / `}"
                 android:textColor="@android:color/black"
                 android:typeface="serif" />
 
             <CheckBox
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="@{attend.status==1 ? true : false}" />
+                android:checked="@{attend.status.equals(`ATTENDED`) ? true : false}" />
 
             <EditText
                 android:id="@+id/editText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="Name" />
+                android:text="@{attend.note}" />
 
         </LinearLayout>
     </LinearLayout>

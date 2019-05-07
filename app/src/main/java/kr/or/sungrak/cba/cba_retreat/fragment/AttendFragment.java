@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,8 +33,8 @@ public class AttendFragment extends Fragment {
 
     private static final String TAG = "GBSFragment";
     AttendLayoutBinding binding;
-    AttendMemeberAdapter attendMemeberAdapter;
-    RecyclerView recyclerView;
+    AttendMemeberAdapter mAttendMemeberAdapter;
+    RecyclerView mRecyclerView;
     String mRequestCampusName;
 
     @SuppressLint("ValidFragment")
@@ -46,13 +48,15 @@ public class AttendFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         binding = DataBindingUtil.inflate(inflater, R.layout.attend_layout, container, false);
         View rootView = binding.getRoot();
-        recyclerView = binding.attendMemberList;
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        attendMemeberAdapter = new AttendMemeberAdapter();
+        mRecyclerView = binding.attendMemberList;
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mAttendMemeberAdapter = new AttendMemeberAdapter();
 
         getAttendInfo();
 
-        recyclerView.setAdapter(attendMemeberAdapter);
+        mRecyclerView.setAdapter(mAttendMemeberAdapter);
+
+        mAttendMemeberAdapter.updateItems(TestDummy().getAttendInfos());
         return rootView;
     }
 
@@ -65,8 +69,8 @@ public class AttendFragment extends Fragment {
         String campus = "천안";
         JSONObject obj = new JSONObject();
         try {
-            obj.put("date",date);
-            obj.put("campus",campus);
+            obj.put("date", date);
+            obj.put("campus", campus);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -80,7 +84,7 @@ public class AttendFragment extends Fragment {
                     //실패처리
                 } else {
                     AttendList as = response.body();
-                    as.getAttendInfos();
+                    mAttendMemeberAdapter.updateItems(as.getAttendInfos());
                 }
             }
 
@@ -89,6 +93,34 @@ public class AttendFragment extends Fragment {
 
             }
         });
+    }
+
+    private AttendList TestDummy() {
+        Gson gson = new Gson();
+        String json = "\n" +
+                "{\n" +
+                "\"data\": [\n" +
+                "            {\n" +
+                "            \"id\": 1,\n" +
+                "            \"date\": \"2019-05-05\",\n" +
+                "            \"name\": \"학생1\",\n" +
+                "            \"mobile\": \"01012341234\",\n" +
+                "            \"status\": \"ATTENDED\",\n" +
+                "            \"note\": null\n" +
+                "            },\n" +
+                "            {\n" +
+                "            \"id\": 2,\n" +
+                "            \"date\": \"2019-05-05\",\n" +
+                "            \"name\": \"학생2\",\n" +
+                "            \"mobile\": \"01012341234\",\n" +
+                "            \"status\": \"ABSENT\",\n" +
+                "            \"note\": \"테스트 노트\"\n" +
+                "            }\n" +
+                "]\n" +
+                "}";
+        AttendList attendList = gson.fromJson(json, AttendList.class);
+        Log.e(TAG, "attendList"+attendList);
+        return attendList;
     }
 
 }

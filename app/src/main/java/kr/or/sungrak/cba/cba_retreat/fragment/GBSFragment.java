@@ -108,6 +108,5 @@ public class GBSFragment extends Fragment {
         }
         Log.i(TAG, "/// " + json);
         return gson.fromJson(json, GBSInfo.class);
-
     }
 }

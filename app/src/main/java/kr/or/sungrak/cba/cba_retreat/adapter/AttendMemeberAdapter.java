@@ -6,14 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kr.or.sungrak.cba.cba_retreat.R;
-import kr.or.sungrak.cba.cba_retreat.models.AttendInfo;
+import kr.or.sungrak.cba.cba_retreat.models.AttendList;
 import kr.or.sungrak.cba.cba_retreat.viewholder.AttendViewHolder;
 
 public class AttendMemeberAdapter extends RecyclerView.Adapter<AttendViewHolder> {
-    private List<AttendInfo> mMemberList;
+    private List<AttendList.AttendInfo> attendInfoList;
 
     @NonNull
     @Override
@@ -24,26 +25,26 @@ public class AttendMemeberAdapter extends RecyclerView.Adapter<AttendViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull AttendViewHolder memberViewHolder, int i) {
-        AttendInfo myInfo = mMemberList.get(i);
-        memberViewHolder.binding.setAttend(myInfo);
+        AttendList.AttendInfo attendInfo = attendInfoList.get(i);
+        memberViewHolder.binding.setAttend(attendInfo);
     }
 
 
     @Override
     public int getItemCount() {
-        if (mMemberList == null) {
+        if (attendInfoList == null) {
             return 0;
         }
-        return mMemberList.size();
+        return attendInfoList.size();
     }
 
-//    public void updateItems(List<MyInfo> items) {
-//        if (this.mMemberList == null) {
-//            mMemberList = new ArrayList<>();
-//        }
-//        this.mMemberList.clear();
-//        this.mMemberList.addAll(items);
-//
-//        notifyDataSetChanged();
-//    }
+    public void updateItems(List<AttendList.AttendInfo> items) {
+        if (this.attendInfoList == null) {
+            attendInfoList = new ArrayList<>();
+        }
+        this.attendInfoList.clear();
+        this.attendInfoList.addAll(items);
+
+        notifyDataSetChanged();
+    }
 }
