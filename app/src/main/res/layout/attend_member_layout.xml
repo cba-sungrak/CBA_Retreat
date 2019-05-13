@@ -20,7 +20,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/gbs_member_name"
+                android:id="@+id/attend_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{attend.name+` / `}"
@@ -28,7 +28,7 @@
                 android:typeface="serif" />
 
             <TextView
-                android:id="@+id/gbs_member_age"
+                android:id="@+id/attend_mobile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{attend.mobile+` / `}"
@@ -36,12 +36,13 @@
                 android:typeface="serif" />
 
             <CheckBox
+                android:id="@+id/attend_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="@{attend.status.equals(`ATTENDED`) ? true : false}" />
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/attend_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"

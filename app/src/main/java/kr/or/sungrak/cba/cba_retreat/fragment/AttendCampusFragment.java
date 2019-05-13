@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -49,10 +48,6 @@ public class AttendCampusFragment extends Fragment {
                         FragmentManager fragmentManager = getFragmentManager();
                         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                         fragmentTransaction.replace(R.id.fragment_container, new AttendFragment(campusName)).commit();
-
-                        Toast.makeText(getContext(),
-                                "Button clicked index = " + campusName, Toast.LENGTH_SHORT)
-                                .show();
                     }
                 });
             }

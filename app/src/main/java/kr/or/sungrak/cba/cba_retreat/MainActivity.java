@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, new InfoFragment()).commit();
         navigation.setSelectedItemId(R.id.info);
+        replaceFragment(new AttendCampusFragment());
 
         updateSignInButton();
     }
@@ -224,6 +225,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.check_attendance:
                 replaceFragment(new AttendCampusFragment());
+
                 break;
             case R.id.statistic_attendance:
                 replaceFragment(new PeriodStatisticFragment());

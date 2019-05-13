@@ -14,7 +14,7 @@ import kr.or.sungrak.cba.cba_retreat.models.AttendList;
 import kr.or.sungrak.cba.cba_retreat.viewholder.AttendViewHolder;
 
 public class AttendMemeberAdapter extends RecyclerView.Adapter<AttendViewHolder> {
-    private List<AttendList.AttendInfo> attendInfoList;
+    private List<AttendList.AttendInfo> mAttendInfoList;
 
     @NonNull
     @Override
@@ -25,26 +25,30 @@ public class AttendMemeberAdapter extends RecyclerView.Adapter<AttendViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull AttendViewHolder memberViewHolder, int i) {
-        AttendList.AttendInfo attendInfo = attendInfoList.get(i);
+        AttendList.AttendInfo attendInfo = mAttendInfoList.get(i);
         memberViewHolder.binding.setAttend(attendInfo);
     }
 
 
     @Override
     public int getItemCount() {
-        if (attendInfoList == null) {
+        if (mAttendInfoList == null) {
             return 0;
         }
-        return attendInfoList.size();
+        return mAttendInfoList.size();
     }
 
     public void updateItems(List<AttendList.AttendInfo> items) {
-        if (this.attendInfoList == null) {
-            attendInfoList = new ArrayList<>();
+        if (this.mAttendInfoList == null) {
+            mAttendInfoList = new ArrayList<>();
         }
-        this.attendInfoList.clear();
-        this.attendInfoList.addAll(items);
+        this.mAttendInfoList.clear();
+        this.mAttendInfoList.addAll(items);
 
         notifyDataSetChanged();
+    }
+
+    public List<AttendList.AttendInfo> getAttendInfoList() {
+        return mAttendInfoList;
     }
 }

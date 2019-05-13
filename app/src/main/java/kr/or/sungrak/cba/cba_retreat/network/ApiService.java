@@ -7,6 +7,7 @@ import java.util.List;
 import kr.or.sungrak.cba.cba_retreat.models.AttendList;
 import kr.or.sungrak.cba.cba_retreat.models.GBSInfo;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -25,4 +26,10 @@ public interface ApiService {
 
     @POST("attendance/list")
     Call<AttendList> getAttendList(@Body JSONObject object);
+
+    @POST("attendance/list/new")
+    Call<AttendList> createAttend(@Body JSONObject object);
+
+    @POST("attendance/list/report")
+    Call<ResponseBody> postAttend(@Body JSONObject object);
 }
