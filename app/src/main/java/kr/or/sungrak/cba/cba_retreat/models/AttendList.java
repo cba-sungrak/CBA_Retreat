@@ -1,5 +1,7 @@
 package kr.or.sungrak.cba.cba_retreat.models;
 
+import android.util.Log;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -35,6 +37,21 @@ public class AttendList {
         }
         public String getNote() {
             return note;
+        }
+
+        public void test(CharSequence s) {
+            Log.e("CBA",s.toString());
+            this.note = s.toString();
+        }
+
+        public void test2(boolean isChecked) {
+            if (isChecked) {
+                this.status = "ATTENDED";
+            } else {
+                this.status = "ABSENT";
+            }
+            Log.e("CBA",this.status);
+            return;
         }
 
     }

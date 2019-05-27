@@ -1,12 +1,11 @@
 package kr.or.sungrak.cba.cba_retreat.network;
 
-import org.json.JSONObject;
-
 import java.util.List;
 
 import kr.or.sungrak.cba.cba_retreat.models.AttendList;
 import kr.or.sungrak.cba.cba_retreat.models.GBSInfo;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -25,11 +24,11 @@ public interface ApiService {
     Call<List<String>> getCampusList(@Path("uid") String uid);
 
     @POST("attendance/list")
-    Call<AttendList> getAttendList(@Body JSONObject object);
+    Call<AttendList> getAttendList(@Body RequestBody body);
 
     @POST("attendance/list/new")
-    Call<AttendList> createAttend(@Body JSONObject object);
+    Call<AttendList> createAttend(@Body RequestBody body);
 
     @POST("attendance/list/report")
-    Call<ResponseBody> postAttend(@Body JSONObject object);
+    Call<ResponseBody> postAttend(@Body RequestBody body);
 }

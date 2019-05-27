@@ -5,7 +5,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ServiceGenerator {
-    private static final String URL = "http://cba.sungrak.or.kr:8888";
+    private static final String URL = "http://cba.sungrak.or.kr:9000";
 //    private static final String URL = "http://192.168.0.37:8080";
 
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();

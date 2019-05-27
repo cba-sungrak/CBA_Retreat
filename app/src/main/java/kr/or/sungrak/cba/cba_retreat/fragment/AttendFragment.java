@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -31,6 +33,8 @@ import kr.or.sungrak.cba.cba_retreat.databinding.AttendLayoutBinding;
 import kr.or.sungrak.cba.cba_retreat.models.AttendList;
 import kr.or.sungrak.cba.cba_retreat.network.ApiService;
 import kr.or.sungrak.cba.cba_retreat.network.ServiceGenerator;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,8 +90,9 @@ public class AttendFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        RequestBody body =  RequestBody.create(MediaType.parse("application/json"),obj.toString());
 
-        Call<AttendList> request = service.getAttendList(obj);
+        Call<AttendList> request = service.getAttendList(body);
 
         request.enqueue(new Callback<AttendList>() {
             @Override
@@ -124,20 +129,23 @@ public class AttendFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        Call<AttendList> request = service.createAttend(obj);
+        RequestBody body =  RequestBody.create(MediaType.parse("application/json"),obj.toString());
+        Call<AttendList> request = service.createAttend(body);
 
         request.enqueue(new Callback<AttendList>() {
             @Override
             public void onResponse(Call<AttendList> call, Response<AttendList> response) {
                 if (response.code() / 100 == 4) {
+                    Toast.makeText(getContext(),
+                            "failed make attend ", Toast.LENGTH_SHORT)
+                            .show();
                 } else {
                     binding.createAttend.setVisibility(getView().GONE);
                     binding.attendMemberList.setVisibility(getView().VISIBLE);
                     AttendList as = response.body();
                     mAttendMemberAdapter.updateItems(as.getAttendInfos());
                     Toast.makeText(getContext(),
-                            "load attedn win", Toast.LENGTH_SHORT)
+                            "load make attend win", Toast.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -153,14 +161,49 @@ public class AttendFragment extends Fragment {
         ApiService service = ServiceGenerator.createService(ApiService.class);
 
         List<AttendList.AttendInfo> attendInfoList = mAttendMemberAdapter.getAttendInfoList();
-        for (AttendList.AttendInfo attendInfo : attendInfoList) {
-            Log.e(TAG, "id " + attendInfo.getId());
-            Log.e(TAG, "status " + attendInfo.getStatus());
-            Log.e(TAG, "note " + attendInfo.getNote());
-        }
+        JSONArray jsonArray = new JSONArray();
         JSONObject obj = new JSONObject();
-        Call<ResponseBody> request = service.postAttend(obj);
+        try {
+            for (AttendList.AttendInfo attendInfo : attendInfoList) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id", attendInfo.getId());
+                jsonObject.put("status", attendInfo.getStatus());
+                jsonObject.put("note", attendInfo.getNote());
+                jsonArray.put(jsonObject);
+            }
 
+
+            obj.put("checkList", jsonArray);
+            obj.put("leaderUid", "9999");
+
+            Log.d(TAG, obj.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        RequestBody body =  RequestBody.create(MediaType.parse("application/json"),obj.toString());
+        Call<ResponseBody> request = service.postAttend(body);
+
+        request.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() / 100 == 4) {
+                    Toast.makeText(getContext(),
+                            "post attend failed ", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Toast.makeText(getContext(),
+                            "post attend succes", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
     public void onButtonClick(View v) {
@@ -191,7 +234,10 @@ public class AttendFragment extends Fragment {
         mMonth = calendar.get(Calendar.MONTH);
         mDay = calendar.get(Calendar.DAY_OF_MONTH);
 
-        return String.format("%d-%d-%d", mYear, mMonth + 1, mDay);
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        fmt.setCalendar(calendar);
+        return fmt.format(calendar.getTime());
+//        return String.format("%d-%d-%d", mYear, mMonth + 1, mDay);
     }
 
     private AttendList TestDummy() {
