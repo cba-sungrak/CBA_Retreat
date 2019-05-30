@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -49,6 +50,7 @@ public class AttendFragment extends Fragment {
     RecyclerView mRecyclerView;
     String mRequestCampusName;
     int mYear, mMonth, mDay;
+    String mSelectedDate;
 
     @SuppressLint("ValidFragment")
     public AttendFragment(CharSequence campusName) {
@@ -62,27 +64,22 @@ public class AttendFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.attend_layout, container, false);
         binding.setFragment(this);
         View rootView = binding.getRoot();
-
-//        binding.createAttend.setVisibility(getView().GONE);
-        binding.attendDate.setText(getCurrentDate());
-//        binding.attendDate.setOnClickListener(onClickListener);
+        mSelectedDate = getCurrentDate();
+        binding.attendDate.setText(mSelectedDate);
 
         mRecyclerView = binding.attendMemberList;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mAttendMemberAdapter = new AttendMemeberAdapter();
 
-        getAttendInfo(getCurrentDate(), mRequestCampusName);
+        getAttendInfo(mSelectedDate, mRequestCampusName);
 
         mRecyclerView.setAdapter(mAttendMemberAdapter);
-
-        mAttendMemberAdapter.updateItems(TestDummy().getAttendInfos());
         return rootView;
     }
 
 
     private void getAttendInfo(String date, String campus) {
         ApiService service = ServiceGenerator.createService(ApiService.class);
-
         JSONObject obj = new JSONObject();
         try {
             obj.put("date", date);
@@ -100,17 +97,14 @@ public class AttendFragment extends Fragment {
                 if (response.code() / 100 == 4) {
                     binding.createAttend.setVisibility(getView().VISIBLE);
                     binding.attendMemberList.setVisibility(getView().GONE);
-                    Toast.makeText(getContext(),
-                            "load attend fail", Toast.LENGTH_SHORT)
-                            .show();
+                    binding.confirmAttend.setVisibility(getView().GONE);
                 } else {
                     binding.createAttend.setVisibility(getView().GONE);
                     binding.attendMemberList.setVisibility(getView().VISIBLE);
+                    binding.confirmAttend.setVisibility(getView().VISIBLE);
+
                     AttendList as = response.body();
                     mAttendMemberAdapter.updateItems(as.getAttendInfos());
-                    Toast.makeText(getContext(),
-                            "load attedn win", Toast.LENGTH_SHORT)
-                            .show();
                 }
             }
 
@@ -142,6 +136,7 @@ public class AttendFragment extends Fragment {
                 } else {
                     binding.createAttend.setVisibility(getView().GONE);
                     binding.attendMemberList.setVisibility(getView().VISIBLE);
+                    binding.confirmAttend.setVisibility(getView().VISIBLE);
                     AttendList as = response.body();
                     mAttendMemberAdapter.updateItems(as.getAttendInfos());
                     Toast.makeText(getContext(),
@@ -208,23 +203,59 @@ public class AttendFragment extends Fragment {
 
     public void onButtonClick(View v) {
         switch (v.getId()) {
+            case R.id.attend_prev_btn:
+                getAttendDate(mSelectedDate, mRequestCampusName);
+                break;
             case R.id.attend_date:
                 new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        String startTime = String.format("%d-%d-%d", year, monthOfYear + 1,
-                                dayOfMonth);
-                        binding.attendDate.setText(startTime);
-
+                        try {
+                            String selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1,
+                                    dayOfMonth);
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                            String date = sdf.format(sdf.parse(selectedTime));
+                            mSelectedDate = date;
+                            binding.attendDate.setText(date);
+                            getAttendInfo(date, mRequestCampusName);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, mYear, mMonth, mDay).show();
                 break;
             case R.id.create_attend:
-                createAttendList(getCurrentDate(), mRequestCampusName);
+                createAttendList(mSelectedDate, mRequestCampusName);
             case R.id.confirm_attend:
                 postAttendList();
                 break;
         }
+    }
+
+    private void getAttendDate(String date, String campus){
+        ApiService service = ServiceGenerator.createService(ApiService.class);
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("date", date);
+            obj.put("campus", campus);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body =  RequestBody.create(MediaType.parse("application/json"),obj.toString());
+        Call<ResponseBody> request = service.getAttendDate(body);
+
+        request.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                ResponseBody body = response.body();
+                Log.d(TAG, body.toString());
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
     }
 
     private String getCurrentDate() {

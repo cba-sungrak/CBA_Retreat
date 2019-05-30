@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, new InfoFragment()).commit();
         navigation.setSelectedItemId(R.id.info);
+//        replaceFragment(new PostListFragment());
         replaceFragment(new AttendCampusFragment());
 
         updateSignInButton();
