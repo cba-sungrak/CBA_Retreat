@@ -3,11 +3,14 @@ package kr.or.sungrak.cba.cba_retreat.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +55,9 @@ public class AttendFragment extends Fragment {
     String mRequestCampusName;
     int mYear, mMonth, mDay;
     String mSelectedDate;
+    List<String> mDates;
+    int mDateIndex = -1;
+
 
     @SuppressLint("ValidFragment")
     public AttendFragment(CharSequence campusName) {
@@ -73,6 +79,8 @@ public class AttendFragment extends Fragment {
         mAttendMemberAdapter = new AttendMemeberAdapter();
 
         getAttendInfo(mSelectedDate, mRequestCampusName);
+
+        getAttendDate(mSelectedDate, mRequestCampusName);
 
         mRecyclerView.setAdapter(mAttendMemberAdapter);
         return rootView;
@@ -106,6 +114,7 @@ public class AttendFragment extends Fragment {
 
                     AttendList as = response.body();
                     mAttendMemberAdapter.updateItems(as.getAttendInfos());
+                    binding.attendDate.setText(mSelectedDate);
                 }
             }
 
@@ -140,6 +149,7 @@ public class AttendFragment extends Fragment {
                     binding.confirmAttend.setVisibility(getView().VISIBLE);
                     AttendList as = response.body();
                     mAttendMemberAdapter.updateItems(as.getAttendInfos());
+                    getAttendDate(mSelectedDate, mRequestCampusName);
                     Toast.makeText(getContext(),
                             "load make attend win", Toast.LENGTH_SHORT)
                             .show();
@@ -204,8 +214,71 @@ public class AttendFragment extends Fragment {
 
     public void onButtonClick(View v) {
         switch (v.getId()) {
-            case R.id.attend_prev_btn:
-                getAttendDate(mSelectedDate, mRequestCampusName);
+            case R.id.attend_prev_date:
+                if (mDates == null) {
+                    mDates = loadGBSInfo().getDates();
+                }
+                int current = mDates.indexOf(mSelectedDate);
+                if (current == 0) {
+//                    if(mDates.size()==1){
+//                        Toast.makeText(getActivity(), "더이상 출석부가 없습니다.", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
+//                    getAttendDate(mSelectedDate, mRequestCampusName);
+//                    mDates = null;
+//                    Toast.makeText(getActivity(), "출석부 날짜를 다시 가져 옵니다. 잠시 후 다시 눌러주세요", Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getActivity(), "더이상 출석부가 없습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (current == -1) {
+                    for (String s : mDates) {
+                        if (s.compareTo(mSelectedDate) < 0) {
+                            current = mDates.indexOf(s);
+                        }
+                    }
+                    if(current==-1){
+                        Toast.makeText(getActivity(), "더이상 출석부가 없습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    current++;
+                }
+
+                mSelectedDate = mDates.get(current - 1);
+                getAttendInfo(mSelectedDate, mRequestCampusName);
+                break;
+            case R.id.attend_next_date:
+                if (mDates == null) {
+                    Toast.makeText(getActivity(), "출석부가 없습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                int next = mDates.indexOf(mSelectedDate);
+                if (next >= mDates.size()-1) {
+                    Toast.makeText(getActivity(), "출석부가 없습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (next == -1) {
+                    String temp="";
+                    for (String s : mDates) {
+                        if (s.compareTo(mSelectedDate) > 0) {
+                            temp = s;
+                            break;
+                        }
+                    }
+                    if (TextUtils.isEmpty(temp)) {
+                        Toast.makeText(getActivity(), "더이상 출석부가 없습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    mSelectedDate = temp;
+                    getAttendInfo(mSelectedDate, mRequestCampusName);
+                }else{
+                    mSelectedDate = mDates.get(next + 1);
+                    getAttendInfo(mSelectedDate, mRequestCampusName);
+                }
+
+
                 break;
             case R.id.attend_date:
                 new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
@@ -249,9 +322,8 @@ public class AttendFragment extends Fragment {
             @Override
             public void onResponse(Call<AttendDates> call, Response<AttendDates> response) {
                 AttendDates attendDates = response.body();
-                List<String> list = attendDates.getDates();
-
-                Log.d(TAG, list.toString());
+                saveDateList(attendDates);
+                mDates = loadGBSInfo().getDates();
             }
 
             @Override
@@ -259,6 +331,25 @@ public class AttendFragment extends Fragment {
                 Log.e(TAG, t.toString());
             }
         });
+    }
+
+    private void saveDateList(AttendDates attendDates) {
+        Gson gson = new Gson();
+        String myInfo = gson.toJson(attendDates);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("AttendDates", myInfo);
+        editor.commit();
+    }
+    private AttendDates loadGBSInfo() {
+        Gson gson = new Gson();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String json = pref.getString("AttendDates", "");
+        if (TextUtils.isEmpty(json)) {
+            return null;
+        }
+        Log.i(TAG, "/// " + json);
+        return gson.fromJson(json, AttendDates.class);
     }
 
     private String getCurrentDate() {

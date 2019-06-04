@@ -1,5 +1,6 @@
 package kr.or.sungrak.cba.cba_retreat.network;
 
+import kr.or.sungrak.cba.cba_retreat.models.AttendDates;
 import kr.or.sungrak.cba.cba_retreat.models.AttendList;
 import kr.or.sungrak.cba.cba_retreat.models.Campus;
 import kr.or.sungrak.cba.cba_retreat.models.GBSInfo;
@@ -33,5 +34,5 @@ public interface ApiService {
     Call<ResponseBody> postAttend(@Body RequestBody body);
 
     @POST("/attendance/dates")
-    Call<ResponseBody> getAttendDate(@Body RequestBody body);
+    Call<AttendDates> getAttendDate(@Body RequestBody body);
 }
