@@ -31,6 +31,7 @@ import java.util.List;
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.adapter.AttendMemeberAdapter;
 import kr.or.sungrak.cba.cba_retreat.databinding.AttendLayoutBinding;
+import kr.or.sungrak.cba.cba_retreat.models.AttendDates;
 import kr.or.sungrak.cba.cba_retreat.models.AttendList;
 import kr.or.sungrak.cba.cba_retreat.network.ApiService;
 import kr.or.sungrak.cba.cba_retreat.network.ServiceGenerator;
@@ -242,17 +243,19 @@ public class AttendFragment extends Fragment {
             e.printStackTrace();
         }
         RequestBody body =  RequestBody.create(MediaType.parse("application/json"),obj.toString());
-        Call<ResponseBody> request = service.getAttendDate(body);
+        final Call<AttendDates> request = service.getAttendDate(body);
 
-        request.enqueue(new Callback<ResponseBody>() {
+        request.enqueue(new Callback<AttendDates>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                ResponseBody body = response.body();
-                Log.d(TAG, body.toString());
+            public void onResponse(Call<AttendDates> call, Response<AttendDates> response) {
+                AttendDates attendDates = response.body();
+                List<String> list = attendDates.getDates();
+
+                Log.d(TAG, list.toString());
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<AttendDates> call, Throwable t) {
                 Log.e(TAG, t.toString());
             }
         });
