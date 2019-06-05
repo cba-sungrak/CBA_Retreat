@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="fragment"
+            type="kr.or.sungrak.cba.cba_retreat.fragment.AttendEditFragment"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/attend_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="캠퍼스 출석 / 전체 / 50% "
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:typeface="sans" />
+
+            <Button
+                android:id="@+id/edit_attend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{fragment::onButtonClick}"
+                android:text="Edit" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginBottom="10dp"
+            android:background="#000000" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/attend_member_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/confirm_edit_attend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{fragment::onButtonClick}"
+            android:text="편집 완료" />
+    </LinearLayout>
+</layout>
+
