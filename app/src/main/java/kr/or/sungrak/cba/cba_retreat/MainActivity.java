@@ -34,10 +34,10 @@ import com.google.gson.Gson;
 
 import kr.or.sungrak.cba.cba_retreat.dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.AttendCampusFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.DateStatisticFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
-import kr.or.sungrak.cba.cba_retreat.fragment.PeriodStatisticFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity
 
                 break;
             case R.id.statistic_attendance:
-                replaceFragment(new PeriodStatisticFragment());
+                replaceFragment(new DateStatisticFragment());
                 break;
             default:
                 break;

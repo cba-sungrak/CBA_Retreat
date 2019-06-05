@@ -9,6 +9,10 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 
 public class CBAUtil {
@@ -34,6 +38,16 @@ public class CBAUtil {
     public static void signOut(Context context) {
         removeAllPreferences(context);
         FirebaseAuth.getInstance().signOut();
+    }
+
+    public static String getCurrentDate() {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+        fmt.setCalendar(calendar);
+        return fmt.format(calendar.getTime());
+//        return String.format("%d-%d-%d", mYear, mMonth + 1, mDay);
     }
 
 

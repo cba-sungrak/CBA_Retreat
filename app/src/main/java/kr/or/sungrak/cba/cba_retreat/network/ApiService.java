@@ -3,6 +3,7 @@ package kr.or.sungrak.cba.cba_retreat.network;
 import kr.or.sungrak.cba.cba_retreat.models.AttendDates;
 import kr.or.sungrak.cba.cba_retreat.models.AttendList;
 import kr.or.sungrak.cba.cba_retreat.models.Campus;
+import kr.or.sungrak.cba.cba_retreat.models.CampusStatisticList;
 import kr.or.sungrak.cba.cba_retreat.models.GBSInfo;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 import okhttp3.RequestBody;
@@ -13,6 +14,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     @GET("getMyInfo/{uid}")
@@ -35,4 +37,8 @@ public interface ApiService {
 
     @POST("/attendance/dates")
     Call<AttendDates> getAttendDate(@Body RequestBody body);
+
+    @GET("/statistics/total")
+    Call<CampusStatisticList> getStatisticCampusList(@Query("date") String date, @Header("Authorization") String authorization);
+
 }

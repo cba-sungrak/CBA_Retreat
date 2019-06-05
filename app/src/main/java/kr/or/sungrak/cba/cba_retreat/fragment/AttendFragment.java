@@ -27,11 +27,9 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
+import kr.or.sungrak.cba.cba_retreat.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.adapter.AttendMemeberAdapter;
 import kr.or.sungrak.cba.cba_retreat.databinding.AttendLayoutBinding;
@@ -54,10 +52,8 @@ public class AttendFragment extends Fragment {
     AttendMemeberAdapter mAttendMemberAdapter;
     RecyclerView mRecyclerView;
     String mRequestCampusName;
-    int mYear, mMonth, mDay;
     String mSelectedDate;
     List<String> mDates;
-    int mDateIndex = -1;
 
 
     @SuppressLint("ValidFragment")
@@ -72,7 +68,7 @@ public class AttendFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.attend_layout, container, false);
         binding.setFragment(this);
         View rootView = binding.getRoot();
-        mSelectedDate = getCurrentDate();
+        mSelectedDate = CBAUtil.getCurrentDate();
         binding.attendDate.setText(mSelectedDate);
 
         mRecyclerView = binding.attendMemberList;
@@ -132,12 +128,12 @@ public class AttendFragment extends Fragment {
         List<AttendList.AttendInfo> list = as.getAttendInfos();
         int total = list.size();
         int attendCount = 0;
-        for(AttendList.AttendInfo a : list){
-            if(a.getStatus().equalsIgnoreCase("ATTENDED")){
+        for (AttendList.AttendInfo a : list) {
+            if (a.getStatus().equalsIgnoreCase("ATTENDED")) {
                 attendCount++;
             }
         }
-        int percent = (int)((double)attendCount/(double)total*100.0);
+        int percent = (int) ((double) attendCount / (double) total * 100.0);
         return mRequestCampusName + " 출석 " + attendCount + " / 전체 " + total + " / " + percent + "%";
     }
 
@@ -313,7 +309,7 @@ public class AttendFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                }, mYear, mMonth, mDay).show();
+                }, Integer.parseInt(mSelectedDate.split("-")[0]), Integer.parseInt(mSelectedDate.split("-")[1])-1, Integer.parseInt(mSelectedDate.split("-")[2])).show();
                 break;
             case R.id.edit_attend:
 
@@ -374,18 +370,6 @@ public class AttendFragment extends Fragment {
         return gson.fromJson(json, AttendDates.class);
     }
 
-    private String getCurrentDate() {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(new Date());
-        mYear = calendar.get(Calendar.YEAR);
-        mMonth = calendar.get(Calendar.MONTH);
-        mDay = calendar.get(Calendar.DAY_OF_MONTH);
-
-        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        fmt.setCalendar(calendar);
-        return fmt.format(calendar.getTime());
-//        return String.format("%d-%d-%d", mYear, mMonth + 1, mDay);
-    }
 
     private AttendList TestDummy() {
         Gson gson = new Gson();

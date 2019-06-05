@@ -25,5 +25,10 @@ public class AttendEditFragment extends Fragment {
 
         return rootView;
     }
+    public void onButtonClick(View v) {
+        switch (v.getId()) {
+            case R.id.attend_prev_date:
+        }
+    }
 
 }
