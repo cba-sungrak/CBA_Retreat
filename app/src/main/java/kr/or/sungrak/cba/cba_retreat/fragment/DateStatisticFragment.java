@@ -1,5 +1,6 @@
 package kr.or.sungrak.cba.cba_retreat.fragment;
 
+import android.app.DatePickerDialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import kr.or.sungrak.cba.cba_retreat.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.R;
@@ -35,7 +40,7 @@ public class DateStatisticFragment extends Fragment {
         binding.setFragment(this);
         View rootView = binding.getRoot();
         mSelectedDate = CBAUtil.getCurrentDate();
-        binding.attendDate.setText(mSelectedDate);
+        binding.statisticDate.setText(mSelectedDate);
 
         mRecyclerView = binding.campusStatisticItem;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
@@ -51,7 +56,7 @@ public class DateStatisticFragment extends Fragment {
     private void getStatisticCampus(String date) {
         ApiService service = ServiceGenerator.createService(ApiService.class);
 
-        Call<CampusStatisticList> request = service.getStatisticCampusList(date,"Basic YWRtaW46ZGh3bHJybGVoISEh");
+        Call<CampusStatisticList> request = service.getStatisticCampusList(date);
 
         request.enqueue(new Callback<CampusStatisticList>() {
             @Override
@@ -61,7 +66,7 @@ public class DateStatisticFragment extends Fragment {
                 } else {
                     CampusStatisticList as = response.body();
                     mStatisticCampusAdapter.updateItems(as.getData());
-                    binding.attendDate.setText(mSelectedDate);
+                    binding.statisticDate.setText(mSelectedDate);
                 }
             }
 
@@ -74,7 +79,24 @@ public class DateStatisticFragment extends Fragment {
 
     public void onButtonClick(View v) {
         switch (v.getId()) {
-            case R.id.attend_prev_date:
+            case R.id.statistic_date:
+                new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        try {
+                            String selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1,
+                                    dayOfMonth);
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                            String date = sdf.format(sdf.parse(selectedTime));
+                            mSelectedDate = date;
+                            binding.statisticDate.setText(date);
+                            getStatisticCampus(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, Integer.parseInt(mSelectedDate.split("-")[0]), Integer.parseInt(mSelectedDate.split("-")[1])-1, Integer.parseInt(mSelectedDate.split("-")[2])).show();
+                break;
         }
     }
 }

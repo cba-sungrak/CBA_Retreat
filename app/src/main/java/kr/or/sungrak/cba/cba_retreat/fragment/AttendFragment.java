@@ -3,23 +3,18 @@ package kr.or.sungrak.cba.cba_retreat.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.Toast;
-
-import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,7 +28,6 @@ import kr.or.sungrak.cba.cba_retreat.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.adapter.AttendMemeberAdapter;
 import kr.or.sungrak.cba.cba_retreat.databinding.AttendLayoutBinding;
-import kr.or.sungrak.cba.cba_retreat.models.AttendDates;
 import kr.or.sungrak.cba.cba_retreat.models.AttendList;
 import kr.or.sungrak.cba.cba_retreat.network.ApiService;
 import kr.or.sungrak.cba.cba_retreat.network.ServiceGenerator;
@@ -48,6 +42,9 @@ import retrofit2.Response;
 public class AttendFragment extends Fragment {
 
     private static final String TAG = "GBSFragment";
+    private static final String NAVI_PREV = "PREV";
+    private static final String NAVI_NEXT = "NEXT";
+    private static final String NAVI_CURRENT = "CURRENT";
     AttendLayoutBinding binding;
     AttendMemeberAdapter mAttendMemberAdapter;
     RecyclerView mRecyclerView;
@@ -75,27 +72,17 @@ public class AttendFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mAttendMemberAdapter = new AttendMemeberAdapter();
 
-        getAttendInfo(mSelectedDate, mRequestCampusName);
-
-        getAttendDate(mSelectedDate, mRequestCampusName);
+        getAttendInfo(mSelectedDate, mRequestCampusName, NAVI_CURRENT);
 
         mRecyclerView.setAdapter(mAttendMemberAdapter);
         return rootView;
     }
 
 
-    private void getAttendInfo(String date, String campus) {
+    private void getAttendInfo(String date, String campus, String navi) {
         ApiService service = ServiceGenerator.createService(ApiService.class);
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("date", date);
-            obj.put("campus", campus);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        RequestBody body = RequestBody.create(MediaType.parse("application/json"), obj.toString());
 
-        Call<AttendList> request = service.getAttendList(body);
+        Call<AttendList> request = service.getAttendList(date, campus, navi);
 
         request.enqueue(new Callback<AttendList>() {
             @Override
@@ -112,6 +99,7 @@ public class AttendFragment extends Fragment {
                     AttendList as = response.body();
                     binding.attendTotal.setText(getString(as));
                     mAttendMemberAdapter.updateItems(as.getAttendInfos());
+                    mSelectedDate = as.getAttendInfos().get(0).getDate();
                     binding.attendDate.setText(mSelectedDate);
                 }
             }
@@ -162,7 +150,6 @@ public class AttendFragment extends Fragment {
                     binding.confirmAttend.setVisibility(getView().VISIBLE);
                     AttendList as = response.body();
                     mAttendMemberAdapter.updateItems(as.getAttendInfos());
-                    getAttendDate(mSelectedDate, mRequestCampusName);
                     Toast.makeText(getContext(),
                             "load make attend win", Toast.LENGTH_SHORT)
                             .show();
@@ -228,70 +215,10 @@ public class AttendFragment extends Fragment {
     public void onButtonClick(View v) {
         switch (v.getId()) {
             case R.id.attend_prev_date:
-                if (mDates == null) {
-                    mDates = loadGBSInfo().getDates();
-                }
-                int current = mDates.indexOf(mSelectedDate);
-                if (current == 0) {
-//                    if(mDates.size()==1){
-//                        Toast.makeText(getActivity(), "더이상 출석부가 없습니다.", Toast.LENGTH_SHORT).show();
-//                        return;
-//                    }
-//                    getAttendDate(mSelectedDate, mRequestCampusName);
-//                    mDates = null;
-//                    Toast.makeText(getActivity(), "출석부 날짜를 다시 가져 옵니다. 잠시 후 다시 눌러주세요", Toast.LENGTH_SHORT).show();
-
-                    Toast.makeText(getActivity(), "더이상 출석부가 없습니다.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (current == -1) {
-                    for (String s : mDates) {
-                        if (s.compareTo(mSelectedDate) < 0) {
-                            current = mDates.indexOf(s);
-                        }
-                    }
-                    if (current == -1) {
-                        Toast.makeText(getActivity(), "더이상 출석부가 없습니다.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    current++;
-                }
-
-                mSelectedDate = mDates.get(current - 1);
-                getAttendInfo(mSelectedDate, mRequestCampusName);
+                getAttendInfo(mSelectedDate, mRequestCampusName, NAVI_PREV);
                 break;
             case R.id.attend_next_date:
-                if (mDates == null) {
-                    Toast.makeText(getActivity(), "출석부가 없습니다.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                int next = mDates.indexOf(mSelectedDate);
-                if (next >= mDates.size() - 1) {
-                    Toast.makeText(getActivity(), "출석부가 없습니다.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                if (next == -1) {
-                    String temp = "";
-                    for (String s : mDates) {
-                        if (s.compareTo(mSelectedDate) > 0) {
-                            temp = s;
-                            break;
-                        }
-                    }
-                    if (TextUtils.isEmpty(temp)) {
-                        Toast.makeText(getActivity(), "더이상 출석부가 없습니다.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    mSelectedDate = temp;
-                    getAttendInfo(mSelectedDate, mRequestCampusName);
-                } else {
-                    mSelectedDate = mDates.get(next + 1);
-                    getAttendInfo(mSelectedDate, mRequestCampusName);
-                }
-
-
+                getAttendInfo(mSelectedDate, mRequestCampusName, NAVI_NEXT);
                 break;
             case R.id.attend_date:
                 new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
@@ -304,12 +231,12 @@ public class AttendFragment extends Fragment {
                             String date = sdf.format(sdf.parse(selectedTime));
                             mSelectedDate = date;
                             binding.attendDate.setText(date);
-                            getAttendInfo(date, mRequestCampusName);
+                            getAttendInfo(date, mRequestCampusName, NAVI_CURRENT);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
                     }
-                }, Integer.parseInt(mSelectedDate.split("-")[0]), Integer.parseInt(mSelectedDate.split("-")[1])-1, Integer.parseInt(mSelectedDate.split("-")[2])).show();
+                }, Integer.parseInt(mSelectedDate.split("-")[0]), Integer.parseInt(mSelectedDate.split("-")[1]) - 1, Integer.parseInt(mSelectedDate.split("-")[2])).show();
                 break;
             case R.id.edit_attend:
 
@@ -321,82 +248,6 @@ public class AttendFragment extends Fragment {
                 postAttendList();
                 break;
         }
-    }
-
-    private void getAttendDate(String date, String campus) {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
-        JSONObject obj = new JSONObject();
-        try {
-            obj.put("date", date);
-            obj.put("campus", campus);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        RequestBody body = RequestBody.create(MediaType.parse("application/json"), obj.toString());
-        final Call<AttendDates> request = service.getAttendDate(body);
-
-        request.enqueue(new Callback<AttendDates>() {
-            @Override
-            public void onResponse(Call<AttendDates> call, Response<AttendDates> response) {
-                AttendDates attendDates = response.body();
-                saveDateList(attendDates);
-                mDates = loadGBSInfo().getDates();
-            }
-
-            @Override
-            public void onFailure(Call<AttendDates> call, Throwable t) {
-                Log.e(TAG, t.toString());
-            }
-        });
-    }
-
-    private void saveDateList(AttendDates attendDates) {
-        Gson gson = new Gson();
-        String myInfo = gson.toJson(attendDates);
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("AttendDates", myInfo);
-        editor.commit();
-    }
-
-    private AttendDates loadGBSInfo() {
-        Gson gson = new Gson();
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String json = pref.getString("AttendDates", "");
-        if (TextUtils.isEmpty(json)) {
-            return null;
-        }
-        Log.i(TAG, "/// " + json);
-        return gson.fromJson(json, AttendDates.class);
-    }
-
-
-    private AttendList TestDummy() {
-        Gson gson = new Gson();
-        String json = "\n" +
-                "{\n" +
-                "\"data\": [\n" +
-                "            {\n" +
-                "            \"id\": 1,\n" +
-                "            \"date\": \"2019-05-05\",\n" +
-                "            \"name\": \"학생1\",\n" +
-                "            \"mobile\": \"01012341234\",\n" +
-                "            \"status\": \"ATTENDED\",\n" +
-                "            \"note\": null\n" +
-                "            },\n" +
-                "            {\n" +
-                "            \"id\": 2,\n" +
-                "            \"date\": \"2019-05-05\",\n" +
-                "            \"name\": \"학생2\",\n" +
-                "            \"mobile\": \"01012341234\",\n" +
-                "            \"status\": \"ABSENT\",\n" +
-                "            \"note\": \"테스트 노트\"\n" +
-                "            }\n" +
-                "]\n" +
-                "}";
-        AttendList attendList = gson.fromJson(json, AttendList.class);
-        Log.e(TAG, "attendList" + attendList);
-        return attendList;
     }
 
 }

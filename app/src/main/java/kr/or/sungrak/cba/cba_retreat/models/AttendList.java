@@ -9,7 +9,10 @@ import java.util.List;
 public class AttendList {
     @SerializedName("data")
     List<AttendInfo> attendInfos;
-    public List<AttendInfo> getAttendInfos() {return attendInfos;}
+
+    public List<AttendInfo> getAttendInfos() {
+        return attendInfos;
+    }
 
     public class AttendInfo {
         @SerializedName("id")
@@ -22,25 +25,35 @@ public class AttendList {
         String status;
         @SerializedName("note")
         String note;
+        @SerializedName("date")
+        String date;
 
-        public int getId(){
+        public int getId() {
             return id;
         }
+
         public String getName() {
             return name;
         }
+
         public String getMobile() {
             return mobile;
         }
+
         public String getStatus() {
             return status;
         }
+
         public String getNote() {
             return note;
         }
 
+        public String getDate() {
+            return date;
+        }
+
         public void test(CharSequence s) {
-            Log.e("CBA",s.toString());
+            Log.e("CBA", s.toString());
             this.note = s.toString();
         }
 
@@ -50,7 +63,7 @@ public class AttendList {
             } else {
                 this.status = "ABSENT";
             }
-            Log.e("CBA",this.status);
+            Log.e("CBA", this.status);
             return;
         }
 
