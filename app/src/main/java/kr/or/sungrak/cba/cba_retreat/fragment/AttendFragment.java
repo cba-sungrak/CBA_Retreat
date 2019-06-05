@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -96,7 +97,7 @@ public class AttendFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        RequestBody body =  RequestBody.create(MediaType.parse("application/json"),obj.toString());
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), obj.toString());
 
         Call<AttendList> request = service.getAttendList(body);
 
@@ -113,6 +114,7 @@ public class AttendFragment extends Fragment {
                     binding.confirmAttend.setVisibility(getView().VISIBLE);
 
                     AttendList as = response.body();
+                    binding.attendTotal.setText(getString(as));
                     mAttendMemberAdapter.updateItems(as.getAttendInfos());
                     binding.attendDate.setText(mSelectedDate);
                 }
@@ -124,7 +126,22 @@ public class AttendFragment extends Fragment {
             }
         });
     }
-    private void createAttendList(String date, String campus){
+
+    @NonNull
+    private String getString(AttendList as) {
+        List<AttendList.AttendInfo> list = as.getAttendInfos();
+        int total = list.size();
+        int attendCount = 0;
+        for(AttendList.AttendInfo a : list){
+            if(a.getStatus().equalsIgnoreCase("ATTENDED")){
+                attendCount++;
+            }
+        }
+        int percent = (int)((double)attendCount/(double)total*100.0);
+        return mRequestCampusName + " 출석 " + attendCount + " / 전체 " + total + " / " + percent + "%";
+    }
+
+    private void createAttendList(String date, String campus) {
         ApiService service = ServiceGenerator.createService(ApiService.class);
         JSONObject obj = new JSONObject();
         try {
@@ -133,7 +150,7 @@ public class AttendFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        RequestBody body =  RequestBody.create(MediaType.parse("application/json"),obj.toString());
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), obj.toString());
         Call<AttendList> request = service.createAttend(body);
 
         request.enqueue(new Callback<AttendList>() {
@@ -163,7 +180,7 @@ public class AttendFragment extends Fragment {
         });
     }
 
-    private void postAttendList(){
+    private void postAttendList() {
         ApiService service = ServiceGenerator.createService(ApiService.class);
 
         List<AttendList.AttendInfo> attendInfoList = mAttendMemberAdapter.getAttendInfoList();
@@ -188,7 +205,7 @@ public class AttendFragment extends Fragment {
             e.printStackTrace();
         }
 
-        RequestBody body =  RequestBody.create(MediaType.parse("application/json"),obj.toString());
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), obj.toString());
         Call<ResponseBody> request = service.postAttend(body);
 
         request.enqueue(new Callback<ResponseBody>() {
@@ -238,7 +255,7 @@ public class AttendFragment extends Fragment {
                             current = mDates.indexOf(s);
                         }
                     }
-                    if(current==-1){
+                    if (current == -1) {
                         Toast.makeText(getActivity(), "더이상 출석부가 없습니다.", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -254,13 +271,13 @@ public class AttendFragment extends Fragment {
                     return;
                 }
                 int next = mDates.indexOf(mSelectedDate);
-                if (next >= mDates.size()-1) {
+                if (next >= mDates.size() - 1) {
                     Toast.makeText(getActivity(), "출석부가 없습니다.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (next == -1) {
-                    String temp="";
+                    String temp = "";
                     for (String s : mDates) {
                         if (s.compareTo(mSelectedDate) > 0) {
                             temp = s;
@@ -273,7 +290,7 @@ public class AttendFragment extends Fragment {
                     }
                     mSelectedDate = temp;
                     getAttendInfo(mSelectedDate, mRequestCampusName);
-                }else{
+                } else {
                     mSelectedDate = mDates.get(next + 1);
                     getAttendInfo(mSelectedDate, mRequestCampusName);
                 }
@@ -298,15 +315,19 @@ public class AttendFragment extends Fragment {
                     }
                 }, mYear, mMonth, mDay).show();
                 break;
+            case R.id.edit_attend:
+
+                break;
             case R.id.create_attend:
                 createAttendList(mSelectedDate, mRequestCampusName);
+                break;
             case R.id.confirm_attend:
                 postAttendList();
                 break;
         }
     }
 
-    private void getAttendDate(String date, String campus){
+    private void getAttendDate(String date, String campus) {
         ApiService service = ServiceGenerator.createService(ApiService.class);
         JSONObject obj = new JSONObject();
         try {
@@ -315,7 +336,7 @@ public class AttendFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        RequestBody body =  RequestBody.create(MediaType.parse("application/json"),obj.toString());
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), obj.toString());
         final Call<AttendDates> request = service.getAttendDate(body);
 
         request.enqueue(new Callback<AttendDates>() {
@@ -341,6 +362,7 @@ public class AttendFragment extends Fragment {
         editor.putString("AttendDates", myInfo);
         editor.commit();
     }
+
     private AttendDates loadGBSInfo() {
         Gson gson = new Gson();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
