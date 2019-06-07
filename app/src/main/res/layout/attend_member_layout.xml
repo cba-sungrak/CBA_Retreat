@@ -39,7 +39,7 @@
                 android:id="@+id/attend_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onCheckedChanged="@{(button,isChecked)->attend.test2(isChecked)}"
+                android:onCheckedChanged="@{(button,isChecked)->attend.setChecked(isChecked)}"
                 android:checked="@{attend.status.equals(`ATTENDED`) ? true : false}" />
 
             <EditText
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:afterTextChanged="@{(s)->attend.test(s)}"
+                android:afterTextChanged="@{(s)->attend.setNote(s)}"
                 android:text="@{attend.note}" />
 
         </LinearLayout>

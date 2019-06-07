@@ -31,6 +31,9 @@ public class DateStatisticFragment extends Fragment {
     String mSelectedDate;
     RecyclerView mRecyclerView;
     StatisticCampusAdapter mStatisticCampusAdapter;
+    private static final String NAVI_PREV = "PREV";
+    private static final String NAVI_NEXT = "NEXT";
+    private static final String NAVI_CURRENT = "CURRENT";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -46,17 +49,17 @@ public class DateStatisticFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mStatisticCampusAdapter = new StatisticCampusAdapter();
 
-        getStatisticCampus(mSelectedDate);
+        getStatisticCampus(mSelectedDate, NAVI_CURRENT);
         mRecyclerView.setAdapter(mStatisticCampusAdapter);
 
 
         return rootView;
     }
 
-    private void getStatisticCampus(String date) {
+    private void getStatisticCampus(String date, String navi) {
         ApiService service = ServiceGenerator.createService(ApiService.class);
 
-        Call<CampusStatisticList> request = service.getStatisticCampusList(date);
+        Call<CampusStatisticList> request = service.getStatisticCampusList(date, navi);
 
         request.enqueue(new Callback<CampusStatisticList>() {
             @Override
@@ -66,6 +69,7 @@ public class DateStatisticFragment extends Fragment {
                 } else {
                     CampusStatisticList as = response.body();
                     mStatisticCampusAdapter.updateItems(as.getData());
+                    mSelectedDate = as.getData().get(0).getDate();
                     binding.statisticDate.setText(mSelectedDate);
                 }
             }
@@ -79,6 +83,12 @@ public class DateStatisticFragment extends Fragment {
 
     public void onButtonClick(View v) {
         switch (v.getId()) {
+            case R.id.attend_prev_date:
+                getStatisticCampus(mSelectedDate, NAVI_PREV);
+                break;
+            case R.id.attend_next_date:
+                getStatisticCampus(mSelectedDate, NAVI_NEXT);
+                break;
             case R.id.statistic_date:
                 new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -90,7 +100,7 @@ public class DateStatisticFragment extends Fragment {
                             String date = sdf.format(sdf.parse(selectedTime));
                             mSelectedDate = date;
                             binding.statisticDate.setText(date);
-                            getStatisticCampus(date);
+                            getStatisticCampus(date, NAVI_CURRENT);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }

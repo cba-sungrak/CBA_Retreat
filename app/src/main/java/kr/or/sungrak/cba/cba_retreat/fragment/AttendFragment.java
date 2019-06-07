@@ -50,8 +50,6 @@ public class AttendFragment extends Fragment {
     RecyclerView mRecyclerView;
     String mRequestCampusName;
     String mSelectedDate;
-    List<String> mDates;
-
 
     @SuppressLint("ValidFragment")
     public AttendFragment(CharSequence campusName) {
@@ -113,16 +111,8 @@ public class AttendFragment extends Fragment {
 
     @NonNull
     private String getString(AttendList as) {
-        List<AttendList.AttendInfo> list = as.getAttendInfos();
-        int total = list.size();
-        int attendCount = 0;
-        for (AttendList.AttendInfo a : list) {
-            if (a.getStatus().equalsIgnoreCase("ATTENDED")) {
-                attendCount++;
-            }
-        }
-        int percent = (int) ((double) attendCount / (double) total * 100.0);
-        return mRequestCampusName + " 출석 " + attendCount + " / 전체 " + total + " / " + percent + "%";
+        int percent = (int) ((double) as.getAttended() / (double) as.getRegistered() * 100.0);
+        return mRequestCampusName + " 출석 " + as.getAttended() + " / 전체 " + as.getRegistered() + " / " + percent + "%";
     }
 
     private void createAttendList(String date, String campus) {

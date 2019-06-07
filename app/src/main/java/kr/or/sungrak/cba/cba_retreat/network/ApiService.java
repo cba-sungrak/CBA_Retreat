@@ -40,6 +40,6 @@ public interface ApiService {
     Call<ResponseBody> postAttend(@Body RequestBody body);
 
     @GET("/statistics/total")
-    Call<CampusStatisticList> getStatisticCampusList(@Query("date") String date);
+    Call<CampusStatisticList> getStatisticCampusList(@Query("date") String date, @Query("nav") String nav);
 
 }
