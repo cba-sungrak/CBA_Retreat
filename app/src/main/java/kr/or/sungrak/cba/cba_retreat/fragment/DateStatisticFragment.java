@@ -83,10 +83,10 @@ public class DateStatisticFragment extends Fragment {
 
     public void onButtonClick(View v) {
         switch (v.getId()) {
-            case R.id.attend_prev_date:
+            case R.id.statistic_prev_date:
                 getStatisticCampus(mSelectedDate, NAVI_PREV);
                 break;
-            case R.id.attend_next_date:
+            case R.id.statistic_next_date:
                 getStatisticCampus(mSelectedDate, NAVI_NEXT);
                 break;
             case R.id.statistic_date:

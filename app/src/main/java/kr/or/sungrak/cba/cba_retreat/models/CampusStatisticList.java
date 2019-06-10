@@ -64,10 +64,14 @@ public class CampusStatisticList {
             this.attended = attended;
         }
 
-        public String getPercent(){
+        public Integer getPercent(){
             int percent = (int)((double)attended/(double)registered*100.0);
-            return Integer.toString(percent)+"%";
+            return percent;
         }
+        public void setProgress(){
+
+        }
+
     }
 
 

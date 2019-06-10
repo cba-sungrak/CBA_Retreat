@@ -31,13 +31,14 @@
                 android:id="@+id/statistic_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{statistic.registered+` / `+statistic.attended+`  `}"
+                android:text="@{statistic.attended+` / `+statistic.registered+`  `}"
                 android:textColor="@android:color/black"
                 android:typeface="serif" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"
+                android:progress="@{statistic.percent}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1" />
@@ -46,7 +47,7 @@
                 android:id="@+id/statistic_percent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{`  `+statistic.percent}"
+                android:text="@{`  `+statistic.percent+`%`}"
                 android:textColor="@android:color/black"
                 android:typeface="serif" />
 
