@@ -5,6 +5,7 @@ import kr.or.sungrak.cba.cba_retreat.models.Campus;
 import kr.or.sungrak.cba.cba_retreat.models.CampusStatisticList;
 import kr.or.sungrak.cba.cba_retreat.models.GBSInfo;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
+import kr.or.sungrak.cba.cba_retreat.models.PeriodStatistic;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -39,7 +40,17 @@ public interface ApiService {
     @POST("attendance/list/report")
     Call<ResponseBody> postAttend(@Body RequestBody body);
 
+    //-------- 통 계 --------------------------------------------------------------------------------------------------------------//
+
+    //1. 기간 통계
+    //GET /statistics?from=2019-05-05&to=2019-05-12&campus=천안
+    @GET("/statistics")
+    Call<PeriodStatistic> getPeriodSatistic(@Query("from") String from, @Query("to") String to, @Query("campus") String campus);
+
+    //2. 전체 통계(캠퍼스별 + 합계)
+    //GET /statistics/total?date=2019-05-05&nav=PREV / NEXT / CURRENT(또는 빈값. 이외의 값은 에러)
     @GET("/statistics/total")
     Call<CampusStatisticList> getStatisticCampusList(@Query("date") String date, @Query("nav") String nav);
+
 
 }

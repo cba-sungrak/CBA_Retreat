@@ -5,12 +5,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -27,11 +27,18 @@ import java.util.List;
 
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.databinding.PeriodStatisticLayoutBinding;
+import kr.or.sungrak.cba.cba_retreat.models.PeriodStatistic;
+import kr.or.sungrak.cba.cba_retreat.network.ApiService;
+import kr.or.sungrak.cba.cba_retreat.network.ServiceGenerator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PeriodStatisticFragment extends Fragment {
     PeriodStatisticLayoutBinding binding;
     String mStartDate;
     String mEndDate;
+    String mSelectedCampus;
     int mStartY, mStartM, mStartD;
     int mEndY, mEndM, mEndD;
 
@@ -70,31 +77,36 @@ public class PeriodStatisticFragment extends Fragment {
         mEndM = calendar.get(Calendar.MONTH);
         mEndD = calendar.get(Calendar.DAY_OF_MONTH);
 
-        calendar.add(Calendar.MONTH, 1);
+        calendar.add(Calendar.MONTH, -1);
         mStartY = calendar.get(Calendar.YEAR);
         mStartM = calendar.get(Calendar.MONTH);
         mStartD = calendar.get(Calendar.DAY_OF_MONTH);
-
-        if (TextUtils.isEmpty(mStartDate)) {
-            String startTime = String.format("%d/%d/%d", mStartY, mStartM + 1, mStartD);
-            mStartDate = startTime;
-            binding.startBtn.setText(startTime.replace("/", "."));
-        } else {
-            binding.startBtn.setText(mStartDate.replace("/", "."));
-        }
-        if (TextUtils.isEmpty(mEndDate)) {
-            String endTime = String.format("%d/%d/%d", mEndY, mEndM + 1, mEndD);
-            mEndDate = endTime;
-            binding.endBtn.setText(endTime.replace("/", "."));
-        } else {
-            binding.endBtn.setText(mEndDate.replace("/", "."));
+        try {
+            if (TextUtils.isEmpty(mStartDate)) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                mStartDate = sdf.format(sdf.parse(String.format("%d-%d-%d", mStartY, mStartM + 1,
+                        mStartD)));
+                binding.startBtn.setText(mStartDate);
+            } else {
+                binding.startBtn.setText(mStartDate);
+            }
+            if (TextUtils.isEmpty(mEndDate)) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                mEndDate = sdf.format(sdf.parse(String.format("%d-%d-%d", mEndY, mEndM + 1,
+                        mEndD)));
+                binding.endBtn.setText(mEndDate);
+            } else {
+                binding.endBtn.setText(mEndDate);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
     }
 
     private AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            Toast.makeText(getContext(), "position [" + parent.getItemAtPosition(position).toString() + "]/id[" + id + "]", Toast.LENGTH_SHORT).show();
+            mSelectedCampus = parent.getItemAtPosition(position).toString();
         }
 
         @Override
@@ -113,11 +125,16 @@ public class PeriodStatisticFragment extends Fragment {
                     new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            String startTime = String.format("%d/%d/%d", year, monthOfYear + 1,
-                                    dayOfMonth);
-                            mStartDate = startTime;
-                            binding.startBtn.setText(startTime.replace("/", "."));
-
+                            try {
+                                String selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1,
+                                        dayOfMonth);
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                                String date = sdf.format(sdf.parse(selectedTime));
+                                mStartDate = date;
+                                binding.startBtn.setText(mStartDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }, mStartY, mStartM, mStartD).show();
                     break;
@@ -128,16 +145,20 @@ public class PeriodStatisticFragment extends Fragment {
                         // 나중에 DB에서 가져올때 /로 파싱해서 가져올예정
                         @Override
                         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                            String endTime = String.format("%d/%d/%d", year, monthOfYear + 1,
-                                    dayOfMonth);
-                            GregorianCalendar startCalendar = getCalendar(mStartDate);
-                            GregorianCalendar endCalendar = getCalendar(endTime);
-                            if (endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis() < 0) {
-                                Toast.makeText(getContext(), "시작 이후의 날짜를 선택해주세요.", Toast.LENGTH_SHORT).show();
-                                return;
+                            try {
+                                String endTime = String.format("%d-%d-%d", year, monthOfYear + 1,
+                                        dayOfMonth);
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                                String date = sdf.format(sdf.parse(endTime));
+//                                if (endCalendar.getTimeInMillis() - startCalendar.getTimeInMillis() < 0) {
+//                                    Toast.makeText(getContext(), "시작 이후의 날짜를 선택해주세요.", Toast.LENGTH_SHORT).show();
+//                                    return;
+//                                }
+                                mEndDate = date;
+                                binding.endBtn.setText(mEndDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
-                            mEndDate = endTime;
-                            binding.endBtn.setText(endTime.replace("/", "."));
                         }
                     }, mEndY, mEndM, mEndD).show();
                     break;
@@ -148,39 +169,47 @@ public class PeriodStatisticFragment extends Fragment {
     };
 
     public void onButtonClick(View v) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(new Date());
-        mEndY = calendar.get(Calendar.YEAR);
-        mEndM = calendar.get(Calendar.MONTH);
-        mEndD = calendar.get(Calendar.DAY_OF_MONTH);
-        String endTime = String.format("%d/%d/%d", mEndY, mEndM + 1, mEndD);
+        try {
+            GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTime(new Date());
+            mEndY = calendar.get(Calendar.YEAR);
+            mEndM = calendar.get(Calendar.MONTH);
+            mEndD = calendar.get(Calendar.DAY_OF_MONTH);
 
-        switch (v.getId()) {
-            case R.id.month_btn:
-                calendar.add(Calendar.MONTH, -1);
-                break;
-            case R.id.month3_btn:
-                calendar.add(Calendar.MONTH, -3);
-                break;
-            case R.id.month6_btn:
-                calendar.add(Calendar.MONTH, -6);
-                break;
-            case R.id.year_btn:
-                calendar.add(Calendar.YEAR, -1);
-                break;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+            mEndDate = sdf.format(sdf.parse(String.format("%d-%d-%d", mEndY, mEndM + 1, mEndD)));
+
+            switch (v.getId()) {
+                case R.id.month_btn:
+                    calendar.add(Calendar.MONTH, -1);
+                    break;
+                case R.id.month3_btn:
+                    calendar.add(Calendar.MONTH, -3);
+                    break;
+                case R.id.month6_btn:
+                    calendar.add(Calendar.MONTH, -6);
+                    break;
+                case R.id.year_btn:
+                    calendar.add(Calendar.YEAR, -1);
+                    break;
+            }
+
+            mStartY = calendar.get(Calendar.YEAR);
+            mStartM = calendar.get(Calendar.MONTH);
+            mStartD = calendar.get(Calendar.DAY_OF_MONTH);
+
+            mStartDate = sdf.format(sdf.parse(String.format("%d-%d-%d", mStartY, mStartM + 1, mStartD)));
+
+            binding.startBtn.setText(mStartDate);
+            binding.endBtn.setText(mEndDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-
-        mStartY = calendar.get(Calendar.YEAR);
-        mStartM = calendar.get(Calendar.MONTH);
-        mStartD = calendar.get(Calendar.DAY_OF_MONTH);
-        String startTime = String.format("%d/%d/%d", mStartY, mStartM + 1, mStartD);
-        binding.startBtn.setText(startTime.replace("/", "."));
-        binding.endBtn.setText(endTime.replace("/", "."));
 
     }
 
-    public void onConfirmClick(View v){
-        Toast.makeText(getContext(), "TODO!!! 위에 정보들 api 날려서 UI 업데이트 해야함", Toast.LENGTH_SHORT).show();
+    public void onConfirmClick(View v) {
+        getPeriodSatistic(mStartDate, mEndDate, mSelectedCampus);
     }
 
     public GregorianCalendar getCalendar(String startTime) {
@@ -195,4 +224,28 @@ public class PeriodStatisticFragment extends Fragment {
         calendar.setTime(endDate);
         return calendar;
     }
+
+    private void getPeriodSatistic(String from, String to, String campus) {
+        ApiService service = ServiceGenerator.createService(ApiService.class);
+
+        Call<PeriodStatistic> request = service.getPeriodSatistic(from, to, campus);
+
+        request.enqueue(new Callback<PeriodStatistic>() {
+            @Override
+            public void onResponse(Call<PeriodStatistic> call, Response<PeriodStatistic> response) {
+                if (response.code() / 100 == 4) {
+                    Log.e("CBA", "fail");
+                } else {
+                    PeriodStatistic as = response.body();
+                    List<PeriodStatistic.item> PeriodStatistics = as.getData();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PeriodStatistic> call, Throwable t) {
+
+            }
+        });
+    }
+
 }
