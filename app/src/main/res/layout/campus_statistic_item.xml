@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{statistic.campus+`  `}"
+                android:minWidth="50dp"
                 android:textColor="@android:color/black"
                 android:typeface="serif" />
 
@@ -33,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{statistic.attended+` / `+statistic.registered+`  `}"
                 android:textColor="@android:color/black"
+                android:minWidth="40dp"
                 android:typeface="serif" />
 
             <ProgressBar
@@ -49,6 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{`  `+statistic.percent+`%`}"
                 android:textColor="@android:color/black"
+                android:minWidth="50dp"
                 android:typeface="serif" />
 
         </LinearLayout>

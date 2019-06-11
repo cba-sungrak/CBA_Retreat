@@ -4,6 +4,8 @@ import android.app.DatePickerDialog;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -106,6 +108,11 @@ public class DateStatisticFragment extends Fragment {
                         }
                     }
                 }, Integer.parseInt(mSelectedDate.split("-")[0]), Integer.parseInt(mSelectedDate.split("-")[1])-1, Integer.parseInt(mSelectedDate.split("-")[2])).show();
+                break;
+            case R.id.period_statistic:
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new PeriodStatisticFragment()).commit();
                 break;
         }
     }
