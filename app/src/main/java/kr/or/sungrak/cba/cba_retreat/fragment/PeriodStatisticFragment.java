@@ -16,6 +16,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,20 +53,28 @@ public class PeriodStatisticFragment extends Fragment {
         binding.spinner.setOnItemSelectedListener(onItemSelectedListener);
         setDate();
 
-        LineChart chart = binding.chart;
-        List<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(1, 1));
-        entries.add(new Entry(2, 2));
-        entries.add(new Entry(3, 0));
-        entries.add(new Entry(4, 4));
-        entries.add(new Entry(5, 3));
-
-        LineDataSet dataSet = new LineDataSet(entries, "Label");
-        LineData lineData = new LineData(dataSet);
-        chart.setData(lineData);
-        chart.invalidate();
+//        setChart();
 
         return rootView;
+    }
+
+    private void setChart(List<PeriodStatistic.item> items) {
+        LineChart chart = binding.chart;
+        List<Entry> entries = new ArrayList<>();
+        int i = 0;
+        for (PeriodStatistic.item item : items) {
+            double percent = (double)item.getAttended()/(double)item.getRegistered()*100.0;
+            entries.add(new Entry(i++, (float) percent));
+        }
+        LineDataSet dataSet = new LineDataSet(entries, mSelectedCampus);
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(dataSet);
+
+//        LineData lineData = new LineData( labels, dataSet);
+        LineData lineData = new LineData( dataSet);
+        chart.setData(lineData);
+        chart.invalidate();
     }
 
     private void setDate() {
@@ -237,7 +246,7 @@ public class PeriodStatisticFragment extends Fragment {
                     Log.e("CBA", "fail");
                 } else {
                     PeriodStatistic as = response.body();
-                    List<PeriodStatistic.item> PeriodStatistics = as.getData();
+                    setChart(as.getData());
                 }
             }
 
