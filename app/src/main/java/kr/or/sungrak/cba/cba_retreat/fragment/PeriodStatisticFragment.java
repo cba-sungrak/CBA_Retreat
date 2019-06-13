@@ -13,9 +13,12 @@ import android.widget.AdapterView;
 import android.widget.DatePicker;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.text.ParseException;
@@ -52,27 +55,45 @@ public class PeriodStatisticFragment extends Fragment {
         View rootView = binding.getRoot();
         binding.spinner.setOnItemSelectedListener(onItemSelectedListener);
         setDate();
-
-//        setChart();
-
+        getPeriodSatistic(mStartDate, mEndDate, "천안");
         return rootView;
     }
 
-    private void setChart(List<PeriodStatistic.item> items) {
+    private void setChart(final List<PeriodStatistic.item> items) {
         LineChart chart = binding.chart;
         List<Entry> entries = new ArrayList<>();
-        int i = 0;
+        final ArrayList<String> labels = new ArrayList<>();
+        float i = 0;
         for (PeriodStatistic.item item : items) {
-            double percent = (double)item.getAttended()/(double)item.getRegistered()*100.0;
+            double percent = (double) item.getAttended() / (double) item.getRegistered() * 100.0;
             entries.add(new Entry(i++, (float) percent));
+            labels.add(item.getDate().substring(5));
         }
         LineDataSet dataSet = new LineDataSet(entries, mSelectedCampus);
-
+        dataSet.setLineWidth(2);
+        dataSet.setCircleRadius(2);
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(dataSet);
 
-//        LineData lineData = new LineData( labels, dataSet);
-        LineData lineData = new LineData( dataSet);
+        LineData lineData = new LineData(dataSet);
+
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+
+        YAxis yRAxis = chart.getAxisRight();
+        yRAxis.setDrawLabels(false);
+        yRAxis.setDrawAxisLine(false);
+        yRAxis.setDrawGridLines(false);
+
+
+        chart.setPinchZoom(false);
+        chart.setHighlightPerTapEnabled(false);
+        chart.setDoubleTapToZoomEnabled(false);
+        chart.setDescription(null);
+
         chart.setData(lineData);
         chart.invalidate();
     }

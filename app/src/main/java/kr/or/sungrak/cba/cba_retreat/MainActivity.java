@@ -38,6 +38,7 @@ import kr.or.sungrak.cba.cba_retreat.fragment.DateStatisticFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.PeriodStatisticFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.add(R.id.fragment_container, new InfoFragment()).commit();
         navigation.setSelectedItemId(R.id.info);
 //        replaceFragment(new PostListFragment());
-        replaceFragment(new AttendCampusFragment());
+        replaceFragment(new PeriodStatisticFragment());
 
         updateSignInButton();
     }

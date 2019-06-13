@@ -51,6 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:onClick="@{fragment::onButtonClick}"
                 android:text="한달" />
 
@@ -59,6 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:onClick="@{fragment::onButtonClick}"
                 android:text="3개월" />
 
@@ -67,6 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:onClick="@{fragment::onButtonClick}"
                 android:text="6개월" />
             <Button
@@ -74,6 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:onClick="@{fragment::onButtonClick}"
                 android:text="1년" />
         </LinearLayout>
@@ -118,6 +122,7 @@
             android:entries="@array/campus" />
 
         <Button
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:id="@+id/confirm_period_statistic_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
