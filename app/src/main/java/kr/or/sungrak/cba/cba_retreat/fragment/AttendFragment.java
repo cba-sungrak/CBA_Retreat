@@ -104,6 +104,7 @@ public class AttendFragment extends Fragment {
 
             @Override
             public void onFailure(Call<AttendList> call, Throwable t) {
+                Log.e("OKHttp_ERR", t.getMessage());
 
             }
         });
@@ -148,7 +149,7 @@ public class AttendFragment extends Fragment {
 
             @Override
             public void onFailure(Call<AttendList> call, Throwable t) {
-
+                Log.e("OKHttp_ERR", t.getMessage());
             }
         });
     }
@@ -197,7 +198,7 @@ public class AttendFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Log.e("OKHttp_ERR", t.getMessage());
             }
         });
     }

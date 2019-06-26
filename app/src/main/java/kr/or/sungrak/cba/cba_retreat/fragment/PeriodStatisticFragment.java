@@ -273,7 +273,7 @@ public class PeriodStatisticFragment extends Fragment {
 
             @Override
             public void onFailure(Call<PeriodStatistic> call, Throwable t) {
-
+                Log.e("OKHttp_ERR", t.getMessage());
             }
         });
     }

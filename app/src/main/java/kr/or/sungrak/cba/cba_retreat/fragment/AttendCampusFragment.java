@@ -75,6 +75,7 @@ public class AttendCampusFragment extends Fragment {
                 TextView text = new TextView(getContext());
                 text.setText("출석체크 할수 있는 캠퍼스가 없습니다. ");
                 mBinding.checkAttendance.addView(text);
+                Log.e("OKHttp_ERR", t.getMessage());
             }
         });
     }

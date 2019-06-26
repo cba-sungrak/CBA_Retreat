@@ -78,7 +78,7 @@ public class DateStatisticFragment extends Fragment {
 
             @Override
             public void onFailure(Call<CampusStatisticList> call, Throwable t) {
-
+                Log.e("OKHttp_ERR", t.getMessage());
             }
         });
     }
@@ -110,6 +110,8 @@ public class DateStatisticFragment extends Fragment {
                 }, Integer.parseInt(mSelectedDate.split("-")[0]), Integer.parseInt(mSelectedDate.split("-")[1])-1, Integer.parseInt(mSelectedDate.split("-")[2])).show();
                 break;
             case R.id.period_statistic:
+
+
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, new PeriodStatisticFragment()).commit();
