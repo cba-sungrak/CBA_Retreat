@@ -3,7 +3,7 @@ package kr.or.sungrak.cba.cba_retreat.dialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import kr.or.sungrak.cba.cba_retreat.R;
 

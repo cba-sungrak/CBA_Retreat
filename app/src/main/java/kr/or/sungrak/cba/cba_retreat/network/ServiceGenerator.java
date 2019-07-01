@@ -1,6 +1,6 @@
 package kr.or.sungrak.cba.cba_retreat.network;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.io.IOException;
 
