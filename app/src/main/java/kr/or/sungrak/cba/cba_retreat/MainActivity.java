@@ -1,17 +1,17 @@
 package kr.or.sungrak.cba.cba_retreat;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,15 +21,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
+import kr.or.sungrak.cba.cba_retreat.common.Tag;
 import kr.or.sungrak.cba.cba_retreat.dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.dialog.SelectDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.AttendCampusFragment;
@@ -37,7 +35,6 @@ import kr.or.sungrak.cba.cba_retreat.fragment.DateStatisticFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
-import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 
@@ -54,7 +51,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.activity_main);
-        showSelectDialog();
+        if (TextUtils.isEmpty(CBAUtil.getRetreatTitle(this))) {
+            showSelectDialog();
+        } else {
+            initialActivity();
+        }
     }
 
     @Override
@@ -71,16 +72,17 @@ public class MainActivity extends AppCompatActivity
             if (mAuth.getCurrentUser() == null) {
                 CBAUtil.removeAllPreferences(this);
             }
-            updateSignInButton();
+            updateNavHeader();
         }
     }
 
-    public void initialActivity(){
+    public void initialActivity() {
         mAuth = FirebaseAuth.getInstance();
         FirebaseMessaging.getInstance().subscribeToTopic("2019winter");
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        fetchRemoteConfig();
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -90,108 +92,105 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        Menu menu = navigationView.getMenu();
-        mCheckAttMenu = menu.findItem(R.id.check_attendance);
-        mCheckAttMenu.setVisible(false);
+        navigationView.getMenu().clear();
 
-        BottomNavigationView navigation = findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        switch (CBAUtil.getRetreatTitle(this)) {
+            case Tag.RETERAT_CBA:
+                navigationView.inflateMenu(R.menu.activity_main_drawer);
+                Menu menu = navigationView.getMenu();
+                mCheckAttMenu = menu.findItem(R.id.check_attendance);
+                mCheckAttMenu.setVisible(false);
+                break;
+            case Tag.RETREAT_SUNGRAK:
+                navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
+                break;
+        }
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, new InfoFragment()).commit();
-        navigation.setSelectedItemId(R.id.info);
 
-        updateSignInButton();
+        updateNavHeader();
 
     }
 
-    public void updateSignInButton() {
+    public void updateNavHeader() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         Button logInBtn = headerView.findViewById(R.id.loginBtn);
         Button logOutBtn = headerView.findViewById(R.id.logOutBtn);
         ImageButton backBtn = headerView.findViewById(R.id.back);
-        TextView logintext = headerView.findViewById(R.id.logintextView);
+        ImageButton homeBtn = headerView.findViewById(R.id.home);
+        TextView loginText = headerView.findViewById(R.id.logintextView);
+        TextView selectedTitle = headerView.findViewById(R.id.selectedTitle);
+        LinearLayout selectedTitleLayOut = headerView.findViewById(R.id.selectedTitleLayOut);
 
         if (mAuth.getCurrentUser() == null) {
             //logOut
             logOutBtn.setVisibility(View.GONE);
             logInBtn.setVisibility(View.VISIBLE);
-            logintext.setText("로그인 해주세요");
+            loginText.setText("로그인 해주세요");
         } else {
             //logIn
             logInBtn.setVisibility(View.GONE);
             logOutBtn.setVisibility(View.VISIBLE);
             if (CBAUtil.loadMyInfo(this) != null) {
-                logintext.setText(CBAUtil.loadMyInfo(this).getName() + "/" + CBAUtil.loadMyInfo(this).getGbsLevel());
+                loginText.setText(CBAUtil.loadMyInfo(this).getName() + "/" + CBAUtil.loadMyInfo(this).getGbsLevel());
             }
         }
-        logInBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mAuth.getCurrentUser() == null) {
-                    showLoginDialog(false);
-                }
+        logInBtn.setOnClickListener(v -> {
+            if (mAuth.getCurrentUser() == null) {
+                showLoginDialog(false);
             }
         });
-        logOutBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mAuth.getCurrentUser() != null) {
-                    CBAUtil.signOut(getApplicationContext());
-                    updateSignInButton();
-                    DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                    drawer.closeDrawer(GravityCompat.START);
-                    replaceFragment(new InfoFragment());
-                }
+        logOutBtn.setOnClickListener(v -> {
+            if (mAuth.getCurrentUser() != null) {
+                CBAUtil.signOut(getApplicationContext());
+                updateNavHeader();
+                closeDrawer();
+                replaceFragment(new InfoFragment());
             }
         });
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                if (drawer.isDrawerOpen(GravityCompat.START)) {
-                    drawer.closeDrawer(GravityCompat.START);
-                }
-            }
-        });
+        backBtn.setOnClickListener((v) -> closeDrawer());
+
+        homeBtn.setOnClickListener((v) -> replaceFragment(new InfoFragment()));
+
+        switch (CBAUtil.getRetreatTitle(this)) {
+            case Tag.RETERAT_CBA:
+                selectedTitle.setText("예수로 사는 교회");
+                break;
+            case Tag.RETREAT_SUNGRAK:
+                selectedTitle.setText("내영혼아 교회를 수호 하자");
+                break;
+            default:
+                selectedTitle.setText("수련회를 선택해주세요");
+                break;
+        }
+
+        selectedTitleLayOut.setOnClickListener((v) -> showSelectDialog());
     }
 
     public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
+        closeDrawer();
+    }
+
+    private void closeDrawer() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
     }
-
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
-            = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.info:
-                    replaceFragment(new InfoFragment());
-                    return true;
-                case R.id.notification:
-                    replaceFragment(new PostListFragment());
-                    return true;
-                case R.id.time_table:
-                    replaceFragment(new ImageViewFragment("timetable.png"));
-                    return true;
-            }
-            return false;
-        }
-    };
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -229,7 +228,6 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.check_attendance:
                 replaceFragment(new AttendCampusFragment());
-
                 break;
             case R.id.statistic_attendance:
                 replaceFragment(new DateStatisticFragment());
@@ -237,8 +235,6 @@ public class MainActivity extends AppCompatActivity
             default:
                 break;
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
@@ -247,18 +243,15 @@ public class MainActivity extends AppCompatActivity
         mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
         long cacheExpiration = 3600; // 1 hour in seconds.
         mFirebaseRemoteConfig.fetch(cacheExpiration)
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.i("cba", "Firebase Remote config succes");
-                            //연결이 성공적으로 되었다면,
-                            //mFirebaseRemoteConfig 에 매개변수 값이 들어온다.
-                            mFirebaseRemoteConfig.activateFetched();
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Log.i("cba", "Firebase Remote config succes");
+                        //연결이 성공적으로 되었다면,
+                        //mFirebaseRemoteConfig 에 매개변수 값이 들어온다.
+                        mFirebaseRemoteConfig.activateFetched();
 
-                        } else {
-                            Log.i("cba", "Firebase Remote config succes");
-                        }
+                    } else {
+                        Log.i("cba", "Firebase Remote config succes");
                     }
                 });
     }
@@ -268,16 +261,12 @@ public class MainActivity extends AppCompatActivity
 
         loginDialog.show();
 
-        loginDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                Log.i(TAG, "onDismiss");
-                updateSignInButton();
-                if (loginDialog.changeFrament()) {
-                    DrawerLayout drawer = findViewById(R.id.drawer_layout);
-                    drawer.closeDrawer(GravityCompat.START);
-                    replaceFragment(new GBSFragment());
-                }
+        loginDialog.setOnDismissListener(dialog -> {
+            Log.i(TAG, "onDismiss");
+            updateNavHeader();
+            if (loginDialog.changeFrament()) {
+                closeDrawer();
+                replaceFragment(new GBSFragment());
             }
         });
     }
@@ -287,11 +276,9 @@ public class MainActivity extends AppCompatActivity
 
         selectDialog.setCancelable(false);
         selectDialog.show();
-        selectDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                initialActivity();
-            }
+        selectDialog.setOnDismissListener(dialog -> {
+            initialActivity();
+            closeDrawer();
         });
 
     }
