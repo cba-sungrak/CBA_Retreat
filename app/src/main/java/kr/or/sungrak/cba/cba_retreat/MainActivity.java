@@ -4,15 +4,19 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -45,6 +49,16 @@ public class MainActivity extends AppCompatActivity
     FirebaseAuth mAuth;
     Context mContext;
     MenuItem mCheckAttMenu;
+    private static int sHiddenCode[] = {
+            KeyEvent.KEYCODE_VOLUME_UP,
+            KeyEvent.KEYCODE_VOLUME_UP,
+            KeyEvent.KEYCODE_VOLUME_UP,
+            KeyEvent.KEYCODE_VOLUME_DOWN,
+            KeyEvent.KEYCODE_VOLUME_DOWN,
+            KeyEvent.KEYCODE_VOLUME_UP,
+            KeyEvent.KEYCODE_VOLUME_UP,
+            KeyEvent.KEYCODE_VOLUME_UP};
+    private int hiddenCodeIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +116,19 @@ public class MainActivity extends AppCompatActivity
                 mCheckAttMenu.setVisible(false);
                 break;
             case Tag.RETREAT_SUNGRAK:
+            case Tag.RETREAT_SUNGRAK_ADMIN:
                 navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
+                if (CBAUtil.getRetreatTitle(this).equals(Tag.RETREAT_SUNGRAK_ADMIN)) {
+                    Menu menu2 = navigationView.getMenu();
+                    mCheckAttMenu = menu2.findItem(R.id.gbs_info);
+                    mCheckAttMenu.setTitle("관리자모드입니다.");
+                }
                 break;
         }
 
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.fragment_container, new InfoFragment()).commit();
+//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        replaceFragment(new InfoFragment());
+//        fragmentTransaction.add(R.id.fragment_container, new InfoFragment()).commit();
 
         updateNavHeader();
 
@@ -280,7 +301,42 @@ public class MainActivity extends AppCompatActivity
             initialActivity();
             closeDrawer();
         });
+    }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (checkKeyDown(keyCode, event)) {
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private boolean checkKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == sHiddenCode[hiddenCodeIndex]) {
+            if (hiddenCodeIndex == sHiddenCode.length - 1) {
+                hiddenCodeIndex = 0;
+
+                EditText et = new EditText(MainActivity.this);
+
+                new AlertDialog.Builder(this)
+                        .setTitle("코드를 입력해주세요")
+                        .setView(et)
+                        .setPositiveButton("ok",
+                                (dialog, which) -> {
+                                    if ("1111".equals(et.getText().toString())) {
+                                        CBAUtil.setRetreatTitle(getApplication(), Tag.RETREAT_SUNGRAK_ADMIN);
+                                        Toast.makeText(getApplication(), "일치", Toast.LENGTH_SHORT).show();
+                                        initialActivity();
+                                    }
+                                })
+                        .show();
+            } else {
+                hiddenCodeIndex++;
+            }
+        } else {
+            hiddenCodeIndex = 0;
+        }
+        return false;
     }
 }
 
