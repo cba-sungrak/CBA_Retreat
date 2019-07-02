@@ -1,4 +1,4 @@
-package kr.or.sungrak.cba.cba_retreat;
+package kr.or.sungrak.cba.cba_retreat.common;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -18,6 +18,7 @@ import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 public class CBAUtil {
     private static final String TAG = "CBA/CBAUtil";
 
+
     public static MyInfo loadMyInfo(Context context) {
         Gson gson = new Gson();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -28,6 +29,7 @@ public class CBAUtil {
         Log.i(TAG, "MyInfo " + json);
         return gson.fromJson(json, MyInfo.class);
     }
+
 
     public static void removeAllPreferences(Context context) {
         SharedPreferences pref =  PreferenceManager.getDefaultSharedPreferences(context);
@@ -50,5 +52,15 @@ public class CBAUtil {
 //        return String.format("%d-%d-%d", mYear, mMonth + 1, mDay);
     }
 
+    public static void setRetreatTitle(Context context, String s){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Tag.RETREAT_TITLE, s);
+        editor.commit();
+    }
+
+    public static String getRetreatTitle(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(Tag.RETREAT_TITLE, "");
+    }
 
 }

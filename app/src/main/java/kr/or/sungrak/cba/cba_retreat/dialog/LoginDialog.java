@@ -20,7 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
-import kr.or.sungrak.cba.cba_retreat.CBAUtil;
+import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 import kr.or.sungrak.cba.cba_retreat.network.ApiService;

@@ -17,7 +17,7 @@ import android.widget.DatePicker;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import kr.or.sungrak.cba.cba_retreat.CBAUtil;
+import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.adapter.StatisticCampusAdapter;
 import kr.or.sungrak.cba.cba_retreat.databinding.DateStatisticLayoutBinding;

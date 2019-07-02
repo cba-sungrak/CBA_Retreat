@@ -2,10 +2,7 @@ package kr.or.sungrak.cba.cba_retreat;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,15 +28,15 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.gson.Gson;
 
+import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.dialog.LoginDialog;
+import kr.or.sungrak.cba.cba_retreat.dialog.SelectDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.AttendCampusFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.DateStatisticFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
-import kr.or.sungrak.cba.cba_retreat.fragment.PeriodStatisticFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.PostListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
@@ -53,27 +50,32 @@ public class MainActivity extends AppCompatActivity
     MenuItem mCheckAttMenu;
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        MyInfo myInfo = CBAUtil.loadMyInfo(this);
-        mCheckAttMenu.setVisible(true);
-        if (myInfo != null) {
-            if (myInfo.isLeader()) {
-                mCheckAttMenu.setVisible(true);
-            }
-        }
-        if (mAuth.getCurrentUser() == null) {
-            CBAUtil.removeAllPreferences(this);
-        }
-
-        updateSignInButton();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.activity_main);
+        showSelectDialog();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyInfo myInfo = CBAUtil.loadMyInfo(this);
+        if (mCheckAttMenu != null) {
+            mCheckAttMenu.setVisible(true);
+            if (myInfo != null) {
+                if (myInfo.isLeader()) {
+                    mCheckAttMenu.setVisible(true);
+                }
+            }
+            if (mAuth.getCurrentUser() == null) {
+                CBAUtil.removeAllPreferences(this);
+            }
+            updateSignInButton();
+        }
+    }
+
+    public void initialActivity(){
         mAuth = FirebaseAuth.getInstance();
         FirebaseMessaging.getInstance().subscribeToTopic("2019winter");
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -98,10 +100,9 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.fragment_container, new InfoFragment()).commit();
         navigation.setSelectedItemId(R.id.info);
-//        replaceFragment(new PostListFragment());
-        replaceFragment(new PeriodStatisticFragment());
 
         updateSignInButton();
+
     }
 
     public void updateSignInButton() {
@@ -121,8 +122,8 @@ public class MainActivity extends AppCompatActivity
             //logIn
             logInBtn.setVisibility(View.GONE);
             logOutBtn.setVisibility(View.VISIBLE);
-            if (loadMyInfo() != null) {
-                logintext.setText(loadMyInfo().getName() + "/" + loadMyInfo().getGbsLevel());
+            if (CBAUtil.loadMyInfo(this) != null) {
+                logintext.setText(CBAUtil.loadMyInfo(this).getName() + "/" + CBAUtil.loadMyInfo(this).getGbsLevel());
             }
         }
         logInBtn.setOnClickListener(new View.OnClickListener() {
@@ -281,15 +282,18 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public MyInfo loadMyInfo() {
-        Gson gson = new Gson();
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        String json = pref.getString("MyInfo", "");
-        if (TextUtils.isEmpty(json)) {
-            return null;
-        }
-        Log.i(TAG, "/// " + json);
-        return gson.fromJson(json, MyInfo.class);
+    private void showSelectDialog() {
+        final SelectDialog selectDialog = new SelectDialog(this);
+
+        selectDialog.setCancelable(false);
+        selectDialog.show();
+        selectDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                initialActivity();
+            }
+        });
+
     }
 }
 

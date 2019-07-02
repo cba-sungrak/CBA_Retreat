@@ -24,7 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import kr.or.sungrak.cba.cba_retreat.CBAUtil;
+import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.adapter.AttendMemeberAdapter;
 import kr.or.sungrak.cba.cba_retreat.databinding.AttendLayoutBinding;
