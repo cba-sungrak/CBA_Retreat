@@ -2,13 +2,14 @@ package kr.or.sungrak.cba.cba_retreat.dialog;
 
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,9 +22,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.FCM.SendFCM;
 import kr.or.sungrak.cba.cba_retreat.R;
+import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 import kr.or.sungrak.cba.cba_retreat.models.Post;
 
@@ -68,12 +69,7 @@ public class PostDialog extends MyProgessDialog {
                 mIsNotiChk.setVisibility(View.VISIBLE);
             }
         }
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submitPost();
-            }
-        });
+        mSubmitButton.setOnClickListener(v -> submitPost());
     }
 
     private void submitPost() {

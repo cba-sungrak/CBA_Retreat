@@ -4,16 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.signature.ObjectKey;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 
 import kr.or.sungrak.cba.cba_retreat.FCM.GlideApp;
@@ -47,22 +46,18 @@ public class ImageViewFragment extends Fragment {
         // ImageView in your Activity
         imageView = rootView.findViewById(R.id.imageView2);
 
-
-        pathReference.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
-            @Override
-            public void onSuccess(StorageMetadata storageMetadata) {
-                String previousUpdateTime = sharedPref.getString(mImage, "");
-                String updatetime = String.valueOf(storageMetadata.getCreationTimeMillis());
-                if (!previousUpdateTime.equalsIgnoreCase(updatetime)) {
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(mImage, updatetime);
-                    editor.commit();
-                    Log.d("CBA_ImageViewFragment", "image/" + mImage + " UpdateTime/" + updatetime);
-                    GlideApp.with(getActivity())
-                            .load(pathReference)
-                            .signature(new ObjectKey(updatetime))
-                            .into(imageView);
-                }
+        pathReference.getMetadata().addOnSuccessListener(storageMetadata -> {
+            String previousUpdateTime = sharedPref.getString(mImage, "");
+            String updatetime = String.valueOf(storageMetadata.getCreationTimeMillis());
+            if (!previousUpdateTime.equalsIgnoreCase(updatetime)) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(mImage, updatetime);
+                editor.commit();
+                Log.d("CBA_ImageViewFragment", "image/" + mImage + " UpdateTime/" + updatetime);
+                GlideApp.with(getActivity())
+                        .load(pathReference)
+                        .signature(new ObjectKey(updatetime))
+                        .into(imageView);
             }
         });
 // Load the image using Glide

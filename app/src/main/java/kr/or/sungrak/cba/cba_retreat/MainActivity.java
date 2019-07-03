@@ -27,6 +27,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";
     FirebaseRemoteConfig mFirebaseRemoteConfig;
+    private DatabaseReference mDatabase;
     FirebaseAuth mAuth;
     Context mContext;
     MenuItem mCheckAttMenu;
@@ -92,7 +95,10 @@ public class MainActivity extends AppCompatActivity
 
     public void initialActivity() {
         mAuth = FirebaseAuth.getInstance();
+
         FirebaseMessaging.getInstance().subscribeToTopic("2019winter");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -114,10 +120,14 @@ public class MainActivity extends AppCompatActivity
                 Menu menu = navigationView.getMenu();
                 mCheckAttMenu = menu.findItem(R.id.check_attendance);
                 mCheckAttMenu.setVisible(false);
+                CBAUtil.setSelectedTitle(this, "예수로 사는 ");
                 break;
             case Tag.RETREAT_SUNGRAK:
             case Tag.RETREAT_SUNGRAK_ADMIN:
                 navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
+                CBAUtil.setSelectedTitle(this, "내영혼아");
+
+                //관리자 모드 설정
                 if (CBAUtil.getRetreatTitle(this).equals(Tag.RETREAT_SUNGRAK_ADMIN)) {
                     Menu menu2 = navigationView.getMenu();
                     mCheckAttMenu = menu2.findItem(R.id.gbs_info);
@@ -126,9 +136,7 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-//        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         replaceFragment(new InfoFragment());
-//        fragmentTransaction.add(R.id.fragment_container, new InfoFragment()).commit();
 
         updateNavHeader();
 
@@ -176,17 +184,7 @@ public class MainActivity extends AppCompatActivity
 
         homeBtn.setOnClickListener((v) -> replaceFragment(new InfoFragment()));
 
-        switch (CBAUtil.getRetreatTitle(this)) {
-            case Tag.RETERAT_CBA:
-                selectedTitle.setText("예수로 사는 교회");
-                break;
-            case Tag.RETREAT_SUNGRAK:
-                selectedTitle.setText("내영혼아 교회를 수호 하자");
-                break;
-            default:
-                selectedTitle.setText("수련회를 선택해주세요");
-                break;
-        }
+        selectedTitle.setText(CBAUtil.getSelectedTitle(this));
 
         selectedTitleLayOut.setOnClickListener((v) -> showSelectDialog());
     }

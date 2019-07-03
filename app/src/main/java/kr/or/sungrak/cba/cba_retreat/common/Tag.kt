@@ -6,6 +6,7 @@ class Tag {
         const val RETREAT_SUNGRAK = "Retreat_SUNGRAK"
         const val RETREAT_SUNGRAK_ADMIN = "Retreat_SUNGRAK_ADMIN"
         const val RETERAT_CBA = "Retreat_CBA"
+        const val SELECTED_TITLE = "Selected_Title"
     }
 
 

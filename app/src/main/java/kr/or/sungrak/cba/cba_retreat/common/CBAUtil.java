@@ -63,4 +63,14 @@ public class CBAUtil {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(Tag.RETREAT_TITLE, "");
     }
 
+    public static void setSelectedTitle(Context context, String s){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(Tag.SELECTED_TITLE, s);
+        editor.commit();
+    }
+
+    public static String getSelectedTitle(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(Tag.SELECTED_TITLE, "");
+    }
 }
