@@ -10,7 +10,7 @@
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/infobackground">
+        android:background="@color/white">
 
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
@@ -23,22 +23,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="49dp">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/imageView4"
-                        android:layout_width="171dp"
+                        android:layout_alignParentRight="true"
+                        android:paddingTop="8dp"
+                        android:layout_width="120dp"
                         android:layout_height="25dp"
                         app:srcCompat="@drawable/logo" />
-                </LinearLayout>
+                </RelativeLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 

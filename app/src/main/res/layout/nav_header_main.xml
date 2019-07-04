@@ -17,27 +17,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageButton
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:background="#00000000"
-                android:src="@android:drawable/ic_menu_revert" />
-
-            <ImageButton
-                android:id="@+id/home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:background="#00000000"
-                android:src="@android:drawable/ic_menu_info_details" />
-        </RelativeLayout>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

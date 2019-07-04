@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -147,8 +146,6 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         Button logInBtn = headerView.findViewById(R.id.loginBtn);
         Button logOutBtn = headerView.findViewById(R.id.logOutBtn);
-        ImageButton backBtn = headerView.findViewById(R.id.back);
-        ImageButton homeBtn = headerView.findViewById(R.id.home);
         TextView loginText = headerView.findViewById(R.id.logintextView);
         TextView selectedTitle = headerView.findViewById(R.id.selectedTitle);
         LinearLayout selectedTitleLayOut = headerView.findViewById(R.id.selectedTitleLayOut);
@@ -180,10 +177,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        backBtn.setOnClickListener((v) -> closeDrawer());
-
-        homeBtn.setOnClickListener((v) -> replaceFragment(new InfoFragment()));
-
         selectedTitle.setText(CBAUtil.getSelectedTitle(this));
 
         selectedTitleLayOut.setOnClickListener((v) -> showSelectDialog());
@@ -206,9 +199,16 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+            return;
         }
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (fragment instanceof InfoFragment) {
+            super.onBackPressed();
+            return;
+
+        }
+        replaceFragment(new InfoFragment());
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
