@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import kr.or.sungrak.cba.cba_retreat.R;
+import kr.or.sungrak.cba.cba_retreat.common.Tag;
 import kr.or.sungrak.cba.cba_retreat.dialog.PostDialog;
 import kr.or.sungrak.cba.cba_retreat.models.Post;
 import kr.or.sungrak.cba.cba_retreat.viewholder.PostViewHolder;
@@ -131,7 +132,7 @@ public class PostListFragment extends Fragment {
         // [START recent_posts_query]
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
-        Query recentPostsQuery = databaseReference.child("2019messages").limitToFirst(100);
+        Query recentPostsQuery = databaseReference.child(Tag.CBA_DB).child(Tag.MESSAGE).limitToFirst(100);
         // [END recent_posts_query]
 
         return recentPostsQuery;

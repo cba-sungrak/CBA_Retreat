@@ -14,15 +14,6 @@
             android:layout_weight="6.5"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/bongodic"
-                android:gravity="center"
-                android:text="CBA"
-                android:textColor="@android:color/black"
-                android:textSize="25sp" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -37,7 +28,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.5"
+            android:layout_weight="2"
             android:background="@drawable/infopan"
             android:orientation="vertical">
 
@@ -49,7 +40,7 @@
                 android:ellipsize="marquee"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
-                android:fontFamily="@font/gyungodic"
+                android:fontFamily="@font/bongodic"
                 android:gravity="center"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:paddingLeft="15dp"
@@ -64,7 +55,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="1.1"
             android:background="@drawable/infoall"
             android:orientation="horizontal">
 

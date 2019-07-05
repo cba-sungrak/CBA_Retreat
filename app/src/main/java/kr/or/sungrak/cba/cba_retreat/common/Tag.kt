@@ -7,6 +7,10 @@ class Tag {
         const val RETREAT_SUNGRAK_ADMIN = "Retreat_SUNGRAK_ADMIN"
         const val RETERAT_CBA = "Retreat_CBA"
         const val SELECTED_TITLE = "Selected_Title"
+        const val CBA_DB = "2019_CBA_SUMMER"
+        const val IMAGES = "images"
+        const val MESSAGE = "message"
+
     }
 
 

@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.info_layout2.*
 import kr.or.sungrak.cba.cba_retreat.MainActivity
 import kr.or.sungrak.cba.cba_retreat.R
+import kr.or.sungrak.cba.cba_retreat.common.Tag
 import kr.or.sungrak.cba.cba_retreat.models.Post
 
 class InfoFragment : Fragment() {
@@ -34,8 +35,9 @@ class InfoFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("2019messages")
+        val database = FirebaseDatabase.getInstance().reference
+        val myRef = database.child(Tag.CBA_DB).child(Tag.MESSAGE)
+
         myRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 val post = dataSnapshot.getValue(Post::class.java)  // chatDat
@@ -70,7 +72,7 @@ class InfoFragment : Fragment() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:01050254375")))
         }
         timeBtn.setOnClickListener {
-            (activity as MainActivity).replaceFragment(ImageViewFragment("timetable.png"))
+            (activity as MainActivity).replaceFragment(ImageViewFragment("timetable"))
         }
         youtubeBtn.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UCW6bF9L0ZK__Tlwl19B0FYQ")))

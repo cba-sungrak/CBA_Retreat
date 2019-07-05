@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,8 +27,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
@@ -67,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.activity_main);
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         if (TextUtils.isEmpty(CBAUtil.getRetreatTitle(this))) {
             showSelectDialog();
         } else {
@@ -95,10 +100,6 @@ public class MainActivity extends AppCompatActivity
     public void initialActivity() {
         mAuth = FirebaseAuth.getInstance();
 
-        FirebaseMessaging.getInstance().subscribeToTopic("2019winter");
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -120,12 +121,17 @@ public class MainActivity extends AppCompatActivity
                 mCheckAttMenu = menu.findItem(R.id.check_attendance);
                 mCheckAttMenu.setVisible(false);
                 CBAUtil.setSelectedTitle(this, "예수로 사는 ");
+                FirebaseMessaging.getInstance().subscribeToTopic("2019cbasummer");
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("2019srsummer");
+                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.CBA_DB);
                 break;
             case Tag.RETREAT_SUNGRAK:
             case Tag.RETREAT_SUNGRAK_ADMIN:
                 navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
                 CBAUtil.setSelectedTitle(this, "내영혼아");
-
+                FirebaseMessaging.getInstance().subscribeToTopic("2019srsummer");
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("2019cbasummer");
+                mDatabase = FirebaseDatabase.getInstance().getReference("2019_SR_SUMMER");
                 //관리자 모드 설정
                 if (CBAUtil.getRetreatTitle(this).equals(Tag.RETREAT_SUNGRAK_ADMIN)) {
                     Menu menu2 = navigationView.getMenu();
@@ -217,16 +223,16 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.lecture:
-                replaceFragment(new ImageViewFragment("lecture2.png"));
+                replaceFragment(new ImageViewFragment("lecture"));
                 break;
             case R.id.menu:
-                replaceFragment(new ImageViewFragment("menu2.png"));
+                replaceFragment(new ImageViewFragment("menu"));
                 break;
             case R.id.mealwork:
-                replaceFragment(new ImageViewFragment("mealwork2.png"));
+                replaceFragment(new ImageViewFragment("mealwork"));
                 break;
             case R.id.cleaning:
-                replaceFragment(new ImageViewFragment("cleaning2.png"));
+                replaceFragment(new ImageViewFragment("cleaning"));
                 break;
             case R.id.room:
                 replaceFragment(new SwipeImageFragment("room", new String[]{"2층", "별관(형제)", "3층(형제/자매)", "4층(자매)"}));
@@ -303,31 +309,42 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (checkKeyDown(keyCode, event)) {
+        if (checkKeyDown(keyCode)) {
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    private boolean checkKeyDown(int keyCode, KeyEvent event) {
+    private boolean checkKeyDown(int keyCode) {
         if (keyCode == sHiddenCode[hiddenCodeIndex]) {
             if (hiddenCodeIndex == sHiddenCode.length - 1) {
                 hiddenCodeIndex = 0;
-
                 EditText et = new EditText(MainActivity.this);
+                mDatabase.child("setting").child("adminpw").addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                new AlertDialog.Builder(MainActivity.this)
+                                        .setTitle("코드를 입력해주세요")
+                                        .setView(et)
+                                        .setPositiveButton("ok",
+                                                (dialog, which) -> {
+                                                    if (et.getText().toString().equals(dataSnapshot.getValue())) {
+                                                        CBAUtil.setRetreatTitle(getApplication(), Tag.RETREAT_SUNGRAK_ADMIN);
+                                                        Toast.makeText(getApplication(), "일치", Toast.LENGTH_SHORT).show();
+                                                        initialActivity();
+                                                    }
+                                                })
+                                        .show();
+                            }
 
-                new AlertDialog.Builder(this)
-                        .setTitle("코드를 입력해주세요")
-                        .setView(et)
-                        .setPositiveButton("ok",
-                                (dialog, which) -> {
-                                    if ("1111".equals(et.getText().toString())) {
-                                        CBAUtil.setRetreatTitle(getApplication(), Tag.RETREAT_SUNGRAK_ADMIN);
-                                        Toast.makeText(getApplication(), "일치", Toast.LENGTH_SHORT).show();
-                                        initialActivity();
-                                    }
-                                })
-                        .show();
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+
+                        });
+
             } else {
                 hiddenCodeIndex++;
             }
