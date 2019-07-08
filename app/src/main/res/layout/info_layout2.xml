@@ -16,7 +16,7 @@
 
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/backGroundImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -53,6 +53,7 @@
 
 
         <LinearLayout
+            android:id="@+id/cbaInfoLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.1"
@@ -90,6 +91,53 @@
 
             <ImageButton
                 android:id="@+id/gbsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/srInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.1"
+            android:background="@drawable/sr_infoall"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/srQABtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000" />
+
+            <ImageButton
+                android:id="@+id/srCallBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000" />
+
+            <ImageButton
+                android:id="@+id/srTimeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000" />
+
+            <ImageButton
+                android:id="@+id/srYoutubeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#00000000" />
+
+
+            <ImageButton
+                android:id="@+id/srGbsBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

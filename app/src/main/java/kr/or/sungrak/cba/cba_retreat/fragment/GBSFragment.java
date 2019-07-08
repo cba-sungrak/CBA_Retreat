@@ -1,6 +1,7 @@
 package kr.or.sungrak.cba.cba_retreat.fragment;
 
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
+import kr.or.sungrak.cba.cba_retreat.MainActivity;
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.adapter.GBSMemberAdapter;
 import kr.or.sungrak.cba.cba_retreat.databinding.GbsLayoutBinding;
@@ -35,29 +37,33 @@ public class GBSFragment extends Fragment {
     GBSMemberAdapter gbsMemeberAdapter;
     RecyclerView recyclerView;
 
+    @SuppressLint("WrongConstant")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         binding = DataBindingUtil.inflate(inflater, R.layout.gbs_layout, container, false);
         View rootView = binding.getRoot();
-        recyclerView = binding.gbsMemberList;
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        gbsMemeberAdapter = new GBSMemberAdapter();
-        if (loadGBSInfo() == null || loadGBSInfo().getLeader() == null) {
-            getGBSInfo();
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            ((MainActivity) getActivity()).showLoginDialog(true);
         } else {
-            updateGBSInfo();
+            recyclerView = binding.gbsMemberList;
+            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+            recyclerView.setAdapter(gbsMemeberAdapter);
+            gbsMemeberAdapter = new GBSMemberAdapter();
+            if (loadGBSInfo() == null || loadGBSInfo().getLeader() == null) {
+                getGBSInfo();
+            } else {
+                updateGBSInfo();
+            }
         }
-        recyclerView.setAdapter(gbsMemeberAdapter);
+
         return rootView;
     }
 
     private void updateGBSInfo() {
         GBSInfo gbsInfo = loadGBSInfo();
-        if (gbsInfo.getLeader() == null) {
-
-        } else {
+        if (gbsInfo.getLeader() != null) {
             binding.setGbs(gbsInfo);
             gbsMemeberAdapter.updateItems(gbsInfo.getMembers());
         }

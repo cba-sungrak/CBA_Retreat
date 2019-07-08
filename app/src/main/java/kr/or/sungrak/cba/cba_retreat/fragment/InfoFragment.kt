@@ -7,13 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.firebase.database.ChildEventListener
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.info_layout2.*
 import kr.or.sungrak.cba.cba_retreat.MainActivity
 import kr.or.sungrak.cba.cba_retreat.R
+import kr.or.sungrak.cba.cba_retreat.common.CBAUtil
 import kr.or.sungrak.cba.cba_retreat.common.Tag
 import kr.or.sungrak.cba.cba_retreat.models.Post
 
@@ -36,7 +34,24 @@ class InfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val database = FirebaseDatabase.getInstance().reference
-        val myRef = database.child(Tag.CBA_DB).child(Tag.MESSAGE)
+        lateinit var myRef:DatabaseReference
+        when (CBAUtil.getRetreat(activity)) {
+            Tag.RETERAT_CBA -> {
+                backGroundImage.setImageResource(R.drawable.backgroundtext)
+                cbaInfoLayout.visibleOrGone(true)
+                srInfoLayout.visibleOrGone(false)
+                myRef = database.child(Tag.RETERAT_CBA).child(Tag.MESSAGE)
+
+            }
+            Tag.RETREAT_SUNGRAK, Tag.RETREAT_SUNGRAK_ADMIN -> {
+                backGroundImage.setImageResource(R.drawable.sr_background)
+                cbaInfoLayout.visibleOrGone(false)
+                srInfoLayout.visibleOrGone(true)
+                myRef = database.child(Tag.RETREAT_SUNGRAK).child(Tag.MESSAGE)
+            }
+        }
+
+
 
         myRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
@@ -64,6 +79,10 @@ class InfoFragment : Fragment() {
             }
         })
 
+        notiTextView.setOnClickListener {
+            (activity as MainActivity).replaceFragment(PostListFragment())
+        }
+
         QABtn.setOnClickListener {
             (activity as MainActivity).replaceFragment(PostListFragment())
         }
@@ -81,4 +100,9 @@ class InfoFragment : Fragment() {
             (activity as MainActivity).replaceFragment(GBSFragment())
         }
     }
+
+    fun View.visibleOrGone(visible: Boolean) {
+        visibility = if(visible) View.VISIBLE else View.GONE
+    }
 }
+

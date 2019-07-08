@@ -3,43 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item android:title="장소">
+    <item android:title="안내">
         <menu>
             <item
-                android:id="@+id/gbs_info"
-                android:title="성락교회" />
+                android:id="@+id/sr_welcom"
+                android:title="초청과 환영의 글" />
             <item
-                android:id="@+id/lecture"
-                android:title="메뉴입니다." />
-            <!--android:icon="@drawable/ic_menu_share"-->
+                android:id="@+id/sr_noti"
+                android:title="공지사항" />
             <item
-                android:id="@+id/menu"
-                android:title="바꿔야해요" />
+                android:id="@+id/sr_place"
+                android:title="장소안내" />
             <item
-                android:id="@+id/mealwork"
-                android:title="식단/간식봉사" />
+                android:id="@+id/sr_safe"
+                android:title="안전사고지원 및 여행자보험 관련 안내" />
             <item
-                android:id="@+id/cleaning"
-                android:title="청소 구역" />
-        </menu>
-    </item>
-    <item android:title="장소">
-        <menu>
-            <item
-                android:id="@+id/room"
-                android:title="숙소 안내" />
-            <item
-                android:id="@+id/campus_place"
-                android:title="캠퍼스 모임" />
-            <item
-                android:id="@+id/gbs_place"
-                android:title="GBS 장소"></item>
-            <item
-                android:id="@+id/check_attendance"
-                android:title="출석체크"></item>
-            <item
-                android:id="@+id/statistic_attendance"
-                android:title="출석통계"></item>
+                android:id="@+id/sr_sponsor"
+                android:title="협력(후원)기관안내" />
         </menu>
     </item>
 

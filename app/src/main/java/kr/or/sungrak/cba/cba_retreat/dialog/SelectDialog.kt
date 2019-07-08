@@ -14,13 +14,14 @@ class SelectDialog(mContext: Context) : MyProgessDialog(mContext) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.select_dialog)
 
+        selectSungrak.setOnClickListener { }
         selectSungrak.setOnClickListener {
-            CBAUtil.setRetreatTitle(context, Tag.RETREAT_SUNGRAK)
+            CBAUtil.setRetreat(context, Tag.RETREAT_SUNGRAK)
             dismiss()
         }
 
         selectCBA.setOnClickListener {
-            CBAUtil.setRetreatTitle(context, Tag.RETERAT_CBA)
+            CBAUtil.setRetreat(context, Tag.RETERAT_CBA)
             Toast.makeText(context, "cba", Toast.LENGTH_SHORT).show()
             dismiss()
         }

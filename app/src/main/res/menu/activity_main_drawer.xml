@@ -1,48 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
     <item android:title="안내">
         <menu>
             <item
-                android:id="@+id/gbs_info"
-                android:title="GBS 정보" />
-            <item
                 android:id="@+id/lecture"
-                android:title="강의 안내" />
+                android:title="또래별 강의" />
             <!--android:icon="@drawable/ic_menu_share"-->
-            <item
-                android:id="@+id/menu"
-                android:title="식단 안내" />
-            <item
-                android:id="@+id/mealwork"
-                android:title="식단/간식봉사" />
-            <item
-                android:id="@+id/cleaning"
-                android:title="청소 구역" />
-        </menu>
-    </item>
-
-    <item android:title="장소">
-        <menu>
-            <item
-                android:id="@+id/room"
-                android:title="숙소 안내" />
-            <item
-                android:id="@+id/campus_place"
-                android:title="캠퍼스 모임" />
             <item
                 android:id="@+id/gbs_place"
                 android:title="GBS 장소"></item>
             <item
-                android:id="@+id/check_attendance"
-                android:title="출석체크"></item>
+                android:id="@+id/menu"
+                android:title="식단" />
             <item
-                android:id="@+id/statistic_attendance"
-                android:title="출석통계"></item>
+                android:id="@+id/mealwork"
+                android:title="식사/간식 봉사" />
+            <item
+                android:id="@+id/cleaning"
+                android:title="청소 구역" />
+            <item
+                android:id="@+id/room"
+                android:title="숙소" />
+            <item
+                android:id="@+id/campus_place"
+                android:title="캠모 장소" />
+
+            <!--<item-->
+                <!--android:id="@+id/check_attendance"-->
+                <!--android:title="출석체크"></item>-->
+            <!--<item-->
+                <!--android:id="@+id/statistic_attendance"-->
+                <!--android:title="출석통계"></item>-->
         </menu>
     </item>
+
 
 </menu>

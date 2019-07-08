@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,8 +40,6 @@ import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.common.Tag;
 import kr.or.sungrak.cba.cba_retreat.dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.dialog.SelectDialog;
-import kr.or.sungrak.cba.cba_retreat.fragment.AttendCampusFragment;
-import kr.or.sungrak.cba.cba_retreat.fragment.DateStatisticFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
@@ -72,7 +71,7 @@ public class MainActivity extends AppCompatActivity
         mContext = this;
         setContentView(R.layout.activity_main);
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        if (TextUtils.isEmpty(CBAUtil.getRetreatTitle(this))) {
+        if (TextUtils.isEmpty(CBAUtil.getRetreat(this))) {
             showSelectDialog();
         } else {
             initialActivity();
@@ -102,6 +101,7 @@ public class MainActivity extends AppCompatActivity
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        TextView mainTitle = findViewById(R.id.main_title);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -113,14 +113,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
+        ImageView bannerImage =  navigationView.getHeaderView(0).findViewById(R.id.bannerImage);
 
-        switch (CBAUtil.getRetreatTitle(this)) {
+        switch (CBAUtil.getRetreat(this)) {
             case Tag.RETERAT_CBA:
                 navigationView.inflateMenu(R.menu.activity_main_drawer);
-                Menu menu = navigationView.getMenu();
-                mCheckAttMenu = menu.findItem(R.id.check_attendance);
-                mCheckAttMenu.setVisible(false);
-                CBAUtil.setSelectedTitle(this, "예수로 사는 ");
+                mainTitle.setText(Tag.CBA_TITLE);
+                mainTitle.setTextSize(25);
+                bannerImage.setImageResource(R.drawable.banner);
                 FirebaseMessaging.getInstance().subscribeToTopic("2019cbasummer");
                 FirebaseMessaging.getInstance().unsubscribeFromTopic("2019srsummer");
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.CBA_DB);
@@ -128,14 +128,16 @@ public class MainActivity extends AppCompatActivity
             case Tag.RETREAT_SUNGRAK:
             case Tag.RETREAT_SUNGRAK_ADMIN:
                 navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
-                CBAUtil.setSelectedTitle(this, "내영혼아");
+                mainTitle.setText(Tag.SR_TITLE);
+                mainTitle.setTextSize(15);
+                bannerImage.setImageResource(R.drawable.logo);
                 FirebaseMessaging.getInstance().subscribeToTopic("2019srsummer");
                 FirebaseMessaging.getInstance().unsubscribeFromTopic("2019cbasummer");
                 mDatabase = FirebaseDatabase.getInstance().getReference("2019_SR_SUMMER");
                 //관리자 모드 설정
-                if (CBAUtil.getRetreatTitle(this).equals(Tag.RETREAT_SUNGRAK_ADMIN)) {
+                if (CBAUtil.getRetreat(this).equals(Tag.RETREAT_SUNGRAK_ADMIN)) {
                     Menu menu2 = navigationView.getMenu();
-                    mCheckAttMenu = menu2.findItem(R.id.gbs_info);
+                    mCheckAttMenu = menu2.findItem(R.id.sr_noti);
                     mCheckAttMenu.setTitle("관리자모드입니다.");
                 }
                 break;
@@ -153,7 +155,6 @@ public class MainActivity extends AppCompatActivity
         Button logInBtn = headerView.findViewById(R.id.loginBtn);
         Button logOutBtn = headerView.findViewById(R.id.logOutBtn);
         TextView loginText = headerView.findViewById(R.id.logintextView);
-        TextView selectedTitle = headerView.findViewById(R.id.selectedTitle);
         LinearLayout selectedTitleLayOut = headerView.findViewById(R.id.selectedTitleLayOut);
 
         if (mAuth.getCurrentUser() == null) {
@@ -182,8 +183,6 @@ public class MainActivity extends AppCompatActivity
                 replaceFragment(new InfoFragment());
             }
         });
-
-        selectedTitle.setText(CBAUtil.getSelectedTitle(this));
 
         selectedTitleLayOut.setOnClickListener((v) -> showSelectDialog());
     }
@@ -243,20 +242,12 @@ public class MainActivity extends AppCompatActivity
             case R.id.gbs_place:
                 replaceFragment(new SwipeImageFragment("gbs_place", new String[]{"2층(C/OJ)", "3층(CH)", "4층(CH/A,B)", "5층(E,F,J)"}));
                 break;
-            case R.id.gbs_info:
-                if (mAuth.getCurrentUser() == null) {
-                    showLoginDialog(true);
-                    return true;
-                } else {
-                    replaceFragment(new GBSFragment());
-                }
-                break;
-            case R.id.check_attendance:
-                replaceFragment(new AttendCampusFragment());
-                break;
-            case R.id.statistic_attendance:
-                replaceFragment(new DateStatisticFragment());
-                break;
+//            case R.id.check_attendance:
+//                replaceFragment(new AttendCampusFragment());
+//                break;
+//            case R.id.statistic_attendance:
+//                replaceFragment(new DateStatisticFragment());
+//                break;
             default:
                 break;
         }
@@ -281,7 +272,7 @@ public class MainActivity extends AppCompatActivity
                 });
     }
 
-    private void showLoginDialog(boolean needToChangeFrament) {
+    public void showLoginDialog(boolean needToChangeFrament) {
         final LoginDialog loginDialog = new LoginDialog(this, needToChangeFrament);
 
         loginDialog.show();
@@ -330,7 +321,7 @@ public class MainActivity extends AppCompatActivity
                                         .setPositiveButton("ok",
                                                 (dialog, which) -> {
                                                     if (et.getText().toString().equals(dataSnapshot.getValue())) {
-                                                        CBAUtil.setRetreatTitle(getApplication(), Tag.RETREAT_SUNGRAK_ADMIN);
+                                                        CBAUtil.setRetreat(getApplication(), Tag.RETREAT_SUNGRAK_ADMIN);
                                                         Toast.makeText(getApplication(), "일치", Toast.LENGTH_SHORT).show();
                                                         initialActivity();
                                                     }

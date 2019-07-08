@@ -1,41 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="235dp"
+    android:layout_height="400dp"
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="235dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_gravity="center"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:fontFamily="@font/gyungodic"
         android:text="수련회를 선택해주세요" />
 
-    <TextView
-        android:id="@+id/selectSungrak"
-        android:layout_width="235dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="104dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="성락교회" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/black" />
 
-    <TextView
-        android:id="@+id/selectCBA"
-        android:layout_width="235dp"
+    <ImageView
+        android:id="@+id/selectSungrak"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="CBA" />
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/logo" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@android:color/black" />
+
+    <ImageView
+        android:id="@+id/selectCBA"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/banner" />
 
 
 </LinearLayout>
