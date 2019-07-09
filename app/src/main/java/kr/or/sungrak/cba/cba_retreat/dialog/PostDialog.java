@@ -92,7 +92,7 @@ public class PostDialog extends MyProgessDialog {
         showProgressDialog();
 
         // [START single_value_read]
-        mDatabase.child(Tag.CBA_DB).child(Tag.MESSAGE).addListenerForSingleValueEvent(
+        mDatabase.child(Tag.RETREAT_CBA).child(Tag.MESSAGE).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -127,7 +127,7 @@ public class PostDialog extends MyProgessDialog {
     private void writeNewPost(String username, String body, boolean isNoti) {
         // Create new post at /user-posts/$userid/$postid and at
         // /posts/$postid simultaneously
-        String key = mDatabase.child(Tag.CBA_DB).child(Tag.MESSAGE).push().getKey();
+        String key = mDatabase.child(Tag.RETREAT_CBA).child(Tag.MESSAGE).push().getKey();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         Post post;
         if (auth.getCurrentUser() == null) {
@@ -147,7 +147,7 @@ public class PostDialog extends MyProgessDialog {
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(Tag.CBA_DB + "/" + Tag.MESSAGE + "/" + key, postValues);
+        childUpdates.put(Tag.RETREAT_CBA + "/" + Tag.MESSAGE + "/" + key, postValues);
         mDatabase.updateChildren(childUpdates);
 
     }

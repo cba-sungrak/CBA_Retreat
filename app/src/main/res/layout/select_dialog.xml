@@ -2,8 +2,8 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="235dp"
-    android:layout_height="400dp"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
@@ -29,9 +29,9 @@
     <ImageView
         android:id="@+id/selectSungrak"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="80dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/sr_banner" />
 
     <View
         android:layout_width="match_parent"
@@ -43,7 +43,7 @@
     <ImageView
         android:id="@+id/selectCBA"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="80dp"
         android:layout_gravity="center"
         app:srcCompat="@drawable/banner" />
 

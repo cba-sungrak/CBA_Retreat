@@ -108,7 +108,7 @@
             android:orientation="horizontal">
 
             <ImageButton
-                android:id="@+id/srQABtn"
+                android:id="@+id/srRegi"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -129,7 +129,7 @@
                 android:background="#00000000" />
 
             <ImageButton
-                android:id="@+id/srYoutubeBtn"
+                android:id="@+id/srQABtn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -137,7 +137,7 @@
 
 
             <ImageButton
-                android:id="@+id/srGbsBtn"
+                android:id="@+id/srMapBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

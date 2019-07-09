@@ -1,11 +1,12 @@
 package kr.or.sungrak.cba.cba_retreat;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -35,13 +36,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.common.Tag;
 import kr.or.sungrak.cba.cba_retreat.dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.dialog.SelectDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
-import kr.or.sungrak.cba.cba_retreat.fragment.ImageViewFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
@@ -70,7 +75,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.activity_main);
-//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         if (TextUtils.isEmpty(CBAUtil.getRetreat(this))) {
             showSelectDialog();
         } else {
@@ -113,35 +117,53 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().clear();
-        ImageView bannerImage =  navigationView.getHeaderView(0).findViewById(R.id.bannerImage);
+        ImageView bannerImage = navigationView.getHeaderView(0).findViewById(R.id.bannerImage);
+        LinearLayout logInLayout = navigationView.getHeaderView(0).findViewById(R.id.loginLayout);
 
         switch (CBAUtil.getRetreat(this)) {
-            case Tag.RETERAT_CBA:
+            case Tag.RETREAT_CBA:
                 navigationView.inflateMenu(R.menu.activity_main_drawer);
                 mainTitle.setText(Tag.CBA_TITLE);
                 mainTitle.setTextSize(25);
                 bannerImage.setImageResource(R.drawable.banner);
                 FirebaseMessaging.getInstance().subscribeToTopic("2019cbasummer");
                 FirebaseMessaging.getInstance().unsubscribeFromTopic("2019srsummer");
-                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.CBA_DB);
+                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
+                logInLayout.setVisibility(View.VISIBLE);
                 break;
             case Tag.RETREAT_SUNGRAK:
             case Tag.RETREAT_SUNGRAK_ADMIN:
                 navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
                 mainTitle.setText(Tag.SR_TITLE);
                 mainTitle.setTextSize(15);
-                bannerImage.setImageResource(R.drawable.logo);
+                bannerImage.setImageResource(R.drawable.sr_banner);
+                logInLayout.setVisibility(View.GONE);
                 FirebaseMessaging.getInstance().subscribeToTopic("2019srsummer");
                 FirebaseMessaging.getInstance().unsubscribeFromTopic("2019cbasummer");
-                mDatabase = FirebaseDatabase.getInstance().getReference("2019_SR_SUMMER");
+                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
                 //관리자 모드 설정
                 if (CBAUtil.getRetreat(this).equals(Tag.RETREAT_SUNGRAK_ADMIN)) {
-                    Menu menu2 = navigationView.getMenu();
-                    mCheckAttMenu = menu2.findItem(R.id.sr_noti);
-                    mCheckAttMenu.setTitle("관리자모드입니다.");
                 }
                 break;
         }
+
+        mDatabase.child(Tag.IMAGES).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Log.e("Count ", "" + snapshot.getChildrenCount());
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String product = ds.getKey();
+                    Map<String, String> td = (HashMap<String, String>) ds.getValue();
+                    saveImage(product, td);
+                    Log.e("TAG", product + "/" + td);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         replaceFragment(new InfoFragment());
 
@@ -222,25 +244,25 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         switch (item.getItemId()) {
             case R.id.lecture:
-                replaceFragment(new ImageViewFragment("lecture"));
+                replaceFragment(new SwipeImageFragment("lecture"));
                 break;
             case R.id.menu:
-                replaceFragment(new ImageViewFragment("menu"));
+                replaceFragment(new SwipeImageFragment("menu"));
                 break;
             case R.id.mealwork:
-                replaceFragment(new ImageViewFragment("mealwork"));
+                replaceFragment(new SwipeImageFragment("mealwork"));
                 break;
             case R.id.cleaning:
-                replaceFragment(new ImageViewFragment("cleaning"));
+                replaceFragment(new SwipeImageFragment("cleaning"));
                 break;
             case R.id.room:
-                replaceFragment(new SwipeImageFragment("room", new String[]{"2층", "별관(형제)", "3층(형제/자매)", "4층(자매)"}));
+                replaceFragment(new SwipeImageFragment("room"));
                 break;
             case R.id.campus_place:
-                replaceFragment(new SwipeImageFragment("campus_place", new String[]{"3층", "4층", "5층", "별관"}));
+                replaceFragment(new SwipeImageFragment("campus_place"));
                 break;
             case R.id.gbs_place:
-                replaceFragment(new SwipeImageFragment("gbs_place", new String[]{"2층(C/OJ)", "3층(CH)", "4층(CH/A,B)", "5층(E,F,J)"}));
+                replaceFragment(new SwipeImageFragment("gbs_place"));
                 break;
 //            case R.id.check_attendance:
 //                replaceFragment(new AttendCampusFragment());
@@ -248,10 +270,98 @@ public class MainActivity extends AppCompatActivity
 //            case R.id.statistic_attendance:
 //                replaceFragment(new DateStatisticFragment());
 //                break;
+            case R.id.sr_welcom:
+                replaceFragment(new SwipeImageFragment("c1"));
+                break;
+            case R.id.sr_noti:
+                break;
+            case R.id.sr_program:
+                replaceFragment(new SwipeImageFragment("m3"));
+                break;
+            case R.id.sr_place:
+                replaceFragment(new SwipeImageFragment("c4"));
+                break;
+            case R.id.sr_safe:
+                replaceFragment(new SwipeImageFragment("c5"));
+                break;
+            case R.id.sr_sponsor:
+                replaceFragment(new SwipeImageFragment("c6"));
+                break;
             default:
                 break;
         }
         return true;
+    }
+
+    private void cbaImageDBmake() {
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> campus_place = new HashMap<>();
+        Map<String, Object> menu = new HashMap<>();
+        Map<String, Object> lecture = new HashMap<>();
+        Map<String, Object> gbs_place = new HashMap<>();
+        Map<String, Object> mealwork = new HashMap<>();
+        Map<String, Object> cleaning = new HashMap<>();
+        Map<String, Object> room = new HashMap<>();
+        menu.put("메뉴", "menu.png");
+        lecture.put("강의", "lecture.png");
+        gbs_place.put("1층", "gbs_place1.png");
+        gbs_place.put("2층", "gbs_place2.png");
+        mealwork.put("식사_간식봉사", "mealwork.png");
+        cleaning.put("청소구역", "cleang.png");
+        room.put("1층", "room1.png");
+        room.put("1층", "room2.png");
+
+
+        campus_place.put("3층", "campus_place1.png");
+        campus_place.put("4층", "campus_place2.png");
+
+
+        map.put("menu", menu);
+        map.put("campus_place", campus_place);
+        map.put("lecture", lecture);
+        map.put("gbs_place", gbs_place);
+        map.put("mealwork", mealwork);
+        map.put("cleaning", cleaning);
+        map.put("room", room);
+//and os on
+        mDatabase.child("images").updateChildren(map);
+    }
+
+    private void srImageDBmake() {
+        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> c1 = new HashMap<>();
+        Map<String, Object> c2 = new HashMap<>();
+        Map<String, Object> m3 = new HashMap<>();
+        Map<String, Object> c4 = new HashMap<>();
+        Map<String, Object> c5 = new HashMap<>();
+        Map<String, Object> c6 = new HashMap<>();
+        Map<String, Object> m5 = new HashMap<>();
+        c1.put("a초청의 글", "c1-a.png");
+        c1.put("b환영의 글", "c1-b.png");
+
+        c4.put("a몽산포성락원", "c4-a.png");
+        c4.put("b교육 및 성회 장소", "c4-b.png");
+        c4.put("c공동숙소", "c4-c.png");
+        c4.put("d센터 선택형 프로그램", "c4-d.png");
+
+        m3.put("a몽산포성락원", "m3-pro1.png");
+        m3.put("b세계센터", "m3-pro2.png");
+
+        c5.put("a안전사고 지원", "c5-a");
+        c5.put("b여행자보험", "c5-b");
+
+        c6.put("협력(후원)기관", "c6-a.png");
+
+        m5.put("오시는길", "m5-map.png");
+
+
+        map.put("c1", c1);
+        map.put("m3", m3);
+        map.put("c4", c4);
+        map.put("c5", c5);
+        map.put("c6", c6);
+        map.put("m5", m5);
+        FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK).child("images").updateChildren(map);
     }
 
     private void fetchRemoteConfig() {
@@ -289,7 +399,6 @@ public class MainActivity extends AppCompatActivity
 
     private void showSelectDialog() {
         final SelectDialog selectDialog = new SelectDialog(this);
-
         selectDialog.setCancelable(false);
         selectDialog.show();
         selectDialog.setOnDismissListener(dialog -> {
@@ -343,6 +452,29 @@ public class MainActivity extends AppCompatActivity
             hiddenCodeIndex = 0;
         }
         return false;
+    }
+
+    private void saveImage(String key, Map<String, String> td) {
+        Gson gson = new Gson();
+        String myInfo = gson.toJson(td);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(key, myInfo);
+        Log.e(TAG, "saveimgae //" + myInfo);
+        editor.commit();
+    }
+
+    public HashMap<String, String> loadImage(String key) {
+        Gson gson = new Gson();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        String json = pref.getString(key, "");
+        if (TextUtils.isEmpty(json)) {
+            return null;
+        }
+        Log.e(TAG, "/// " + json);
+        java.lang.reflect.Type type = new TypeToken<HashMap<String, String>>() {
+        }.getType();
+        return gson.fromJson(json, type);
     }
 }
 

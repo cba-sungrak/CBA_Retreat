@@ -21,7 +21,7 @@ class SelectDialog(mContext: Context) : MyProgessDialog(mContext) {
         }
 
         selectCBA.setOnClickListener {
-            CBAUtil.setRetreat(context, Tag.RETERAT_CBA)
+            CBAUtil.setRetreat(context, Tag.RETREAT_CBA)
             Toast.makeText(context, "cba", Toast.LENGTH_SHORT).show()
             dismiss()
         }

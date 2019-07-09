@@ -132,7 +132,7 @@ public class PostListFragment extends Fragment {
         // [START recent_posts_query]
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
-        Query recentPostsQuery = databaseReference.child(Tag.CBA_DB).child(Tag.MESSAGE).limitToFirst(100);
+        Query recentPostsQuery = databaseReference.child(Tag.RETREAT_CBA).child(Tag.MESSAGE).limitToFirst(100);
         // [END recent_posts_query]
 
         return recentPostsQuery;

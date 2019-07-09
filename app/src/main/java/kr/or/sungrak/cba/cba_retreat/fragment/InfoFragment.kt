@@ -34,13 +34,13 @@ class InfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val database = FirebaseDatabase.getInstance().reference
-        lateinit var myRef:DatabaseReference
+        lateinit var myRef: DatabaseReference
         when (CBAUtil.getRetreat(activity)) {
-            Tag.RETERAT_CBA -> {
+            Tag.RETREAT_CBA -> {
                 backGroundImage.setImageResource(R.drawable.backgroundtext)
                 cbaInfoLayout.visibleOrGone(true)
                 srInfoLayout.visibleOrGone(false)
-                myRef = database.child(Tag.RETERAT_CBA).child(Tag.MESSAGE)
+                myRef = database.child(Tag.RETREAT_CBA).child(Tag.MESSAGE)
 
             }
             Tag.RETREAT_SUNGRAK, Tag.RETREAT_SUNGRAK_ADMIN -> {
@@ -83,6 +83,7 @@ class InfoFragment : Fragment() {
             (activity as MainActivity).replaceFragment(PostListFragment())
         }
 
+        //cba
         QABtn.setOnClickListener {
             (activity as MainActivity).replaceFragment(PostListFragment())
         }
@@ -91,7 +92,7 @@ class InfoFragment : Fragment() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:01050254375")))
         }
         timeBtn.setOnClickListener {
-            (activity as MainActivity).replaceFragment(ImageViewFragment("timetable"))
+            (activity as MainActivity).replaceFragment(SwipeImageFragment("timetable"))
         }
         youtubeBtn.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UCW6bF9L0ZK__Tlwl19B0FYQ")))
@@ -99,10 +100,27 @@ class InfoFragment : Fragment() {
         gbsBtn.setOnClickListener {
             (activity as MainActivity).replaceFragment(GBSFragment())
         }
+        //cba
+
+        srRegi.setOnClickListener {
+
+        }
+        srCallBtn.setOnClickListener {
+
+        }
+        srTimeBtn.setOnClickListener {
+            (activity as MainActivity).replaceFragment(SwipeImageFragment("m3"))
+        }
+        srQABtn.setOnClickListener {
+
+        }
+        srMapBtn.setOnClickListener {
+            (activity as MainActivity).replaceFragment(SwipeImageFragment("m5"))
+        }
     }
 
-    fun View.visibleOrGone(visible: Boolean) {
-        visibility = if(visible) View.VISIBLE else View.GONE
+    private fun View.visibleOrGone(visible: Boolean) {
+        visibility = if (visible) View.VISIBLE else View.GONE
     }
 }
 
