@@ -33,7 +33,7 @@ constructor(private var mImage: String) : Fragment() {
             Tag.RETREAT_CBA -> {
                 storageReference = FirebaseStorage.getInstance().reference.child(Tag.RETREAT_CBA)
             }
-            Tag.RETREAT_SUNGRAK, Tag.RETREAT_SUNGRAK_ADMIN -> {
+            Tag.RETREAT_SUNGRAK -> {
                 storageReference = FirebaseStorage.getInstance().reference.child(Tag.RETREAT_SUNGRAK)
                 rootView.imageViewLayout.background = ContextCompat.getDrawable(requireContext(), R.drawable.sub_bg)
             }

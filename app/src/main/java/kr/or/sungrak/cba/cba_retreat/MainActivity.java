@@ -48,6 +48,7 @@ import kr.or.sungrak.cba.cba_retreat.dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.dialog.SelectDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.SRNotiFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 
@@ -126,23 +127,23 @@ public class MainActivity extends AppCompatActivity
                 mainTitle.setText(Tag.CBA_TITLE);
                 mainTitle.setTextSize(25);
                 bannerImage.setImageResource(R.drawable.banner);
-                FirebaseMessaging.getInstance().subscribeToTopic("2019cbasummer");
-                FirebaseMessaging.getInstance().unsubscribeFromTopic("2019srsummer");
+                FirebaseMessaging.getInstance().subscribeToTopic(Tag.RETREAT_CBA);
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.RETREAT_SUNGRAK);
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
                 logInLayout.setVisibility(View.VISIBLE);
                 break;
             case Tag.RETREAT_SUNGRAK:
-            case Tag.RETREAT_SUNGRAK_ADMIN:
                 navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
                 mainTitle.setText(Tag.SR_TITLE);
                 mainTitle.setTextSize(15);
                 bannerImage.setImageResource(R.drawable.sr_banner);
                 logInLayout.setVisibility(View.GONE);
-                FirebaseMessaging.getInstance().subscribeToTopic("2019srsummer");
-                FirebaseMessaging.getInstance().unsubscribeFromTopic("2019cbasummer");
+                FirebaseMessaging.getInstance().subscribeToTopic(Tag.RETREAT_SUNGRAK);
+                FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.RETREAT_CBA);
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
                 //관리자 모드 설정
                 if (CBAUtil.getRetreat(this).equals(Tag.RETREAT_SUNGRAK_ADMIN)) {
+
                 }
                 break;
         }
@@ -274,6 +275,7 @@ public class MainActivity extends AppCompatActivity
                 replaceFragment(new SwipeImageFragment("c1"));
                 break;
             case R.id.sr_noti:
+                replaceFragment(new SRNotiFragment());
                 break;
             case R.id.sr_program:
                 replaceFragment(new SwipeImageFragment("m3"));
@@ -354,6 +356,18 @@ public class MainActivity extends AppCompatActivity
 
         m5.put("오시는길", "m5-map.png");
 
+        c2.put("1차 예배통역안내","c2-a.png");
+        c2.put("1차 교회학교 안내","c2-b.png");
+        c2.put("1차 선택식강의 안내","c2-c.png");
+        c2.put("1차 의료서비스 안내","c2-d.png");
+        c2.put("1차 전문인상담 안내","c2-e.png");
+        c2.put("1차 월산재단 봉사인증활동 안내","c2-f.png");
+        c2.put("2차 시무언 역사 전시관 안내","c2-g.png");
+        c2.put("2차 센터 기도실 사용안내","c2-h.png");
+        c2.put("2차 센터 편의시설 안내","c2-i.png");
+        c2.put("교회기관 수련회안내","c2-j.png");
+
+
 
         map.put("c1", c1);
         map.put("m3", m3);
@@ -430,8 +444,8 @@ public class MainActivity extends AppCompatActivity
                                         .setPositiveButton("ok",
                                                 (dialog, which) -> {
                                                     if (et.getText().toString().equals(dataSnapshot.getValue())) {
-                                                        CBAUtil.setRetreat(getApplication(), Tag.RETREAT_SUNGRAK_ADMIN);
                                                         Toast.makeText(getApplication(), "일치", Toast.LENGTH_SHORT).show();
+                                                        CBAUtil.setAdmin(getApplication(), true);
                                                         initialActivity();
                                                     }
                                                 })

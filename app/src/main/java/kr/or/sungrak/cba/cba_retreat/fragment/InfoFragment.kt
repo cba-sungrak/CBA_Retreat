@@ -43,7 +43,7 @@ class InfoFragment : Fragment() {
                 myRef = database.child(Tag.RETREAT_CBA).child(Tag.MESSAGE)
 
             }
-            Tag.RETREAT_SUNGRAK, Tag.RETREAT_SUNGRAK_ADMIN -> {
+            Tag.RETREAT_SUNGRAK -> {
                 backGroundImage.setImageResource(R.drawable.sr_background)
                 cbaInfoLayout.visibleOrGone(false)
                 srInfoLayout.visibleOrGone(true)

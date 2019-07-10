@@ -18,7 +18,7 @@ import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 public class CBAUtil {
     private static final String TAG = "CBA/CBAUtil";
     private static final String RETREAT_TITLE = "Retreat_Title";
-    private static final String SELECTED_TITLE = "Selected_Title";
+    private static final String ADMIN = "check_admin";
 
     public static MyInfo loadMyInfo(Context context) {
         Gson gson = new Gson();
@@ -64,14 +64,14 @@ public class CBAUtil {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(RETREAT_TITLE, "");
     }
 
-    public static void setSelectedTitle(Context context, String s){
+    public static void setAdmin(Context context, boolean isAdmin){
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putString(SELECTED_TITLE, s);
+        editor.putBoolean(ADMIN, isAdmin);
         editor.commit();
     }
 
-    public static String getSelectedTitle(Context context){
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(SELECTED_TITLE, "");
+    public static boolean isAdmin(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADMIN, false);
     }
 }
