@@ -52,7 +52,6 @@ class InfoFragment : Fragment() {
         }
 
 
-
         myRef.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 val post = dataSnapshot.getValue(Post::class.java)  // chatDat
@@ -85,7 +84,7 @@ class InfoFragment : Fragment() {
 
         //cba
         QABtn.setOnClickListener {
-            (activity as MainActivity).replaceFragment(PostListFragment())
+            (activity as MainActivity).replaceFragment(QAListFragment())
         }
 
         callBtn.setOnClickListener {

@@ -11,6 +11,7 @@ class Tag {
 
         const val IMAGES = "images"
         const val MESSAGE = "message"
+        const val NOTI = "noti"
 
     }
 

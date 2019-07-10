@@ -37,7 +37,6 @@ public class SwipeImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.ui_swipe_layout, container, false);
-
         HashMap<String, String> imageMap = ((MainActivity) getActivity()).loadImage(mImage);
         mFragments = new ArrayList<>();
         mFragmentNames = new ArrayList<>();
@@ -76,83 +75,7 @@ public class SwipeImageFragment extends Fragment {
         } else {
             tabLayout.setVisibility(View.VISIBLE);
         }
-
         return rootView;
-//
-//
-//
-//
-//        if (mImage.equalsIgnoreCase("room")) {
-//            mPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
-//                private final ImageViewFragment[] mFragments = new ImageViewFragment[]{
-//                        new ImageViewFragment(mImage + "1.png"),
-//                };
-//
-//                @Override
-//                public Fragment getItem(int position) {
-//                    return mFragments[position];
-//                }
-//
-//                @Override
-//                public int getCount() {
-//                    return mFragments.length;
-//                }
-//
-//                @Override
-//                public CharSequence getPageTitle(int position) {
-//                    return mFragmentNames[position];
-//                }
-//            };
-//        } else if (mImage.equalsIgnoreCase("gbs_place")) {
-//            mPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
-//                private final ImageViewFragment[] mFragments = new ImageViewFragment[]{
-//                        new ImageViewFragment(mImage + "1.png"),
-//                        new ImageViewFragment(mImage + "2.png"),
-//                        new ImageViewFragment(mImage + "3.png"),
-//                        new ImageViewFragment(mImage + "4.png"),
-//                };
-//
-//                @Override
-//                public Fragment getItem(int position) {
-//                    return mFragments[position];
-//                }
-//
-//                @Override
-//                public int getCount() {
-//                    return mFragments.length;
-//                }
-//
-//                @Override
-//                public CharSequence getPageTitle(int position) {
-//                    return mFragmentNames[position];
-//                }
-//            };
-//        } else if (mImage.equalsIgnoreCase("campus_place")) {
-//            mPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
-//                private final ImageViewFragment[] mFragments = new ImageViewFragment[]{
-//                        new ImageViewFragment(mImage + "1.png"),
-//                        new ImageViewFragment(mImage + "2.png"),
-//                        new ImageViewFragment(mImage + "3.png"),
-//                        new ImageViewFragment(mImage + "4.png"),
-//                };
-//
-//                @Override
-//                public Fragment getItem(int position) {
-//                    return mFragments[position];
-//                }
-//
-//                @Override
-//                public int getCount() {
-//                    return mFragments.length;
-//                }
-//
-//                @Override
-//                public CharSequence getPageTitle(int position) {
-//                    return mFragmentNames[position];
-//                }
-//            };
-//        }
-        // Set up the ViewPager with the sections adapter.
 
     }
 }

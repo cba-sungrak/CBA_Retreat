@@ -23,33 +23,31 @@ import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.common.Tag;
 import kr.or.sungrak.cba.cba_retreat.dialog.PostDialog;
 import kr.or.sungrak.cba.cba_retreat.models.Post;
-import kr.or.sungrak.cba.cba_retreat.viewholder.PostViewHolder;
+import kr.or.sungrak.cba.cba_retreat.viewholder.QAViewHolder;
 
-public class PostListFragment extends Fragment {
+public class QAListFragment extends Fragment {
 
-    private static final String TAG = "PostListFragment";
+    private static final String TAG = "QAListFragment";
 
     // [START define_database_reference]
     private DatabaseReference mDatabase;
     // [END define_database_reference]
 
-    private FirebaseRecyclerAdapter<Post, PostViewHolder> mAdapter;
+    private FirebaseRecyclerAdapter<Post, QAViewHolder> mAdapter;
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
     FloatingActionButton mFab;
 
-    public PostListFragment() {
+    public QAListFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
+        View rootView = inflater.inflate(R.layout.qa_all_posts, container, false);
 
-        // [START create_database_reference]
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        // [END create_database_reference]
 
         mRecycler = rootView.findViewById(R.id.messages_list);
         mRecycler.setHasFixedSize(true);
@@ -88,24 +86,25 @@ public class PostListFragment extends Fragment {
                 .setQuery(postsQuery, Post.class)
                 .build();
 
-        mAdapter = new FirebaseRecyclerAdapter<Post, PostViewHolder>(options) {
-
-            @Override
-            public PostViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new PostViewHolder(inflater.inflate(R.layout.item_post, viewGroup, false));
-            }
+        mAdapter = new FirebaseRecyclerAdapter<Post, QAViewHolder>(options) {
 
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
-            protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
-                if (model.isStaff.equalsIgnoreCase("봉사자") || (model.isStaff.equalsIgnoreCase("공지"))) {
-                    viewHolder.authorImageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.app_icon, getActivity().getTheme()));
-                    int colorRed = getActivity().getResources().getColor(R.color.grey_200);
-                    viewHolder.cardView.setCardBackgroundColor(colorRed);
-                }
-                viewHolder.bindToPost(model, getContext());
+            protected void onBindViewHolder(@NonNull QAViewHolder qaViewHolder, int i, @NonNull Post post) {
+//                if (model.isStaff.equalsIgnoreCase("봉사자") || (model.isStaff.equalsIgnoreCase("공지"))) {
+//                    viewHolder.authorImageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.app_icon, getActivity().getTheme()));
+//                    int colorRed = getActivity().getResources().getColor(R.color.grey_200);
+//                    viewHolder.cardView.setCardBackgroundColor(colorRed);
+//                }
+                qaViewHolder.bindToPost(post, getContext());
             }
+
+            @Override
+            public QAViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+                return new QAViewHolder(inflater.inflate(R.layout.qa_item, viewGroup, false));
+            }
+
         };
         mRecycler.setAdapter(mAdapter);
     }
