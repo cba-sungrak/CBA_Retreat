@@ -56,6 +56,7 @@ import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SRNotiFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.VideoViewFragment;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 
 public class MainActivity extends AppCompatActivity
@@ -83,7 +84,9 @@ public class MainActivity extends AppCompatActivity
         mContext = this;
         setContentView(R.layout.activity_main);
         if (TextUtils.isEmpty(CBAUtil.getRetreat(this))) {
-            showSelectDialog();
+            CBAUtil.setRetreat(this, Tag.RETREAT_SUNGRAK);
+//            showSelectDialog();
+            initialActivity();
         } else {
             initialActivity();
         }
@@ -171,23 +174,6 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
-//        mDatabase.child(Tag.IMAGES).child("c2").orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot snapshot) {
-//                Log.e("Count ", "" + snapshot.getChildrenCount());
-//                for (DataSnapshot ds : snapshot.getChildren()) {
-//                    String key = ds.getKey();
-////                    Map<String, String> value = (HashMap<String, String>) ds.getValue();
-////                    saveImage(key, value);
-//                    Log.e("TAG", key + "/" + ds.getValue());
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
 
         replaceFragment(new InfoFragment());
 
@@ -306,7 +292,7 @@ public class MainActivity extends AppCompatActivity
 //                replaceFragment(new DateStatisticFragment());
 //                break;
             case R.id.sr_welcom:
-                replaceFragment(new SwipeImageFragment("c1"));
+                replaceFragment(new VideoViewFragment("c1"));
                 break;
             case R.id.sr_noti:
                 replaceFragment(new SRNotiFragment());
