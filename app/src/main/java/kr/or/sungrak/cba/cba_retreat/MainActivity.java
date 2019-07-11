@@ -39,7 +39,13 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
@@ -148,15 +154,15 @@ public class MainActivity extends AppCompatActivity
                 break;
         }
 
-        mDatabase.child(Tag.IMAGES).addValueEventListener(new ValueEventListener() {
+        mDatabase.child(Tag.IMAGES).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 Log.e("Count ", "" + snapshot.getChildrenCount());
                 for (DataSnapshot ds : snapshot.getChildren()) {
-                    String product = ds.getKey();
-                    Map<String, String> td = (HashMap<String, String>) ds.getValue();
-                    saveImage(product, td);
-                    Log.e("TAG", product + "/" + td);
+                    String key = ds.getKey();
+                    Map<String, String> value = (HashMap<String, String>) ds.getValue();
+                    saveImage(key, value);
+                    Log.e("TAG", key + "/" + value);
                 }
             }
 
@@ -165,6 +171,23 @@ public class MainActivity extends AppCompatActivity
 
             }
         });
+//        mDatabase.child(Tag.IMAGES).child("c2").orderByValue().addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot snapshot) {
+//                Log.e("Count ", "" + snapshot.getChildrenCount());
+//                for (DataSnapshot ds : snapshot.getChildren()) {
+//                    String key = ds.getKey();
+////                    Map<String, String> value = (HashMap<String, String>) ds.getValue();
+////                    saveImage(key, value);
+//                    Log.e("TAG", key + "/" + ds.getValue());
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
         replaceFragment(new InfoFragment());
 
@@ -216,6 +239,12 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
         closeDrawer();
     }
+    public void addFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+        closeDrawer();
+    }
 
     private void closeDrawer() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -227,6 +256,11 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+            return;
+        }
+
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack();
             return;
         }
 
@@ -338,19 +372,19 @@ public class MainActivity extends AppCompatActivity
         Map<String, Object> c5 = new HashMap<>();
         Map<String, Object> c6 = new HashMap<>();
         Map<String, Object> m5 = new HashMap<>();
-        c1.put("a초청의 글", "c1-a.png");
-        c1.put("b환영의 글", "c1-b.png");
+        c1.put("초청의 글", "c1-a.png");
+        c1.put("환영의 글", "c1-b.png");
 
-        c4.put("a몽산포성락원", "c4-a.png");
-        c4.put("b교육 및 성회 장소", "c4-b.png");
-        c4.put("c공동숙소", "c4-c.png");
-        c4.put("d센터 선택형 프로그램", "c4-d.png");
+        c4.put("몽산포성락원", "c4-a.png");
+        c4.put("교육 및 성회 장소", "c4-b.png");
+        c4.put("공동숙소", "c4-c.png");
+        c4.put("센터 선택형 프로그램", "c4-d.png");
 
-        m3.put("a몽산포성락원", "m3-pro1.png");
-        m3.put("b세계센터", "m3-pro2.png");
+        m3.put("몽산포성락원", "m3-pro1.png");
+        m3.put("세계센터", "m3-pro2.png");
 
-        c5.put("a안전사고 지원", "c5-a");
-        c5.put("b여행자보험", "c5-b");
+        c5.put("안전사고 지원", "c5-a");
+        c5.put("여행자보험", "c5-b");
 
         c6.put("협력(후원)기관", "c6-a.png");
 
@@ -478,17 +512,36 @@ public class MainActivity extends AppCompatActivity
         editor.commit();
     }
 
-    public HashMap<String, String> loadImage(String key) {
+    public Map<String, String> loadImage(String key) {
         Gson gson = new Gson();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         String json = pref.getString(key, "");
         if (TextUtils.isEmpty(json)) {
             return null;
         }
-        Log.e(TAG, "/// " + json);
+
         java.lang.reflect.Type type = new TypeToken<HashMap<String, String>>() {
         }.getType();
-        return gson.fromJson(json, type);
+        Map retValue = sortByValue(gson.fromJson(json, type));
+        Log.e(TAG, "loadimage " + retValue);
+        return retValue;
+    }
+
+    private static <K, V> Map<K, V> sortByValue(Map<K, V> map) {
+        List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
+        Collections.sort(list, (Comparator<Object>) (o1, o2) -> ((Comparable<V>) ((Map.Entry<K, V>) (o1)).getValue()).compareTo(((Map.Entry<K, V>) (o2)).getValue()));
+
+        Map<K, V> result = new LinkedHashMap<>();
+        for (Iterator<Map.Entry<K, V>> it = list.iterator(); it.hasNext();) {
+            Map.Entry<K, V> entry = it.next();
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
     }
 }
+
+
+
+
 

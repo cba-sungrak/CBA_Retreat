@@ -13,8 +13,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Map;
 
 import kr.or.sungrak.cba.cba_retreat.MainActivity;
 import kr.or.sungrak.cba.cba_retreat.R;
@@ -37,15 +36,14 @@ public class SwipeImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.ui_swipe_layout, container, false);
-        HashMap<String, String> imageMap = ((MainActivity) getActivity()).loadImage(mImage);
+        Map<String, String> imageMap = ((MainActivity) getActivity()).loadImage(mImage);
+
         mFragments = new ArrayList<>();
         mFragmentNames = new ArrayList<>();
         for (String key : imageMap.keySet()) {
             mFragmentNames.add(key);
             mFragments.add(new ImageViewFragment(imageMap.get(key)));
         }
-        Collections.reverse(mFragmentNames);
-        Collections.reverse(mFragments);
 
         mPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
@@ -78,4 +76,7 @@ public class SwipeImageFragment extends Fragment {
         return rootView;
 
     }
+
+
+
 }
