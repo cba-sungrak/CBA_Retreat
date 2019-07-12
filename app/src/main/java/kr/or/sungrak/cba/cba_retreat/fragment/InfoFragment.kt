@@ -40,25 +40,23 @@ class InfoFragment : Fragment() {
                 backGroundImage.setImageResource(R.drawable.backgroundtext)
                 cbaInfoLayout.visibleOrGone(true)
                 srInfoLayout.visibleOrGone(false)
-                myRef = database.child(Tag.RETREAT_CBA).child(Tag.MESSAGE)
+                myRef = database.child(Tag.RETREAT_CBA)
 
             }
             Tag.RETREAT_SUNGRAK -> {
                 backGroundImage.setImageResource(R.drawable.sr_background)
                 cbaInfoLayout.visibleOrGone(false)
                 srInfoLayout.visibleOrGone(true)
-                myRef = database.child(Tag.RETREAT_SUNGRAK).child(Tag.MESSAGE)
+                myRef = database.child(Tag.RETREAT_SUNGRAK)
             }
         }
 
 
-        myRef.addChildEventListener(object : ChildEventListener {
+        myRef.child(Tag.NOTI).addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 val post = dataSnapshot.getValue(Post::class.java)  // chatDat
-                if (post!!.isStaff.contentEquals("공지")) {
-                    notiTextView.text = post.message
+                    notiTextView.text = post!!.message
                     notiTextView.isSelected = true
-                }
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {

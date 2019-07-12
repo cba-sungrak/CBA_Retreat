@@ -55,21 +55,26 @@ public class PostDialog extends MyProgessDialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
 
-        // [START initialize_database_ref]
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        // [END initialize_database_ref]
+        switch (CBAUtil.getRetreat(mContext)) {
+            case Tag.RETREAT_CBA:
+                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
+                break;
+            case Tag.RETREAT_SUNGRAK:
+                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
+                break;
+        }
 
         mNameField = findViewById(R.id.field_name);
         mBodyField = findViewById(R.id.field_body);
         mSubmitButton = findViewById(R.id.fab_submit_post);
         mIsNotiChk = findViewById(R.id.is_noti_chk);
         MyInfo myInfo = CBAUtil.loadMyInfo(getContext());
-        if (myInfo != null) {
-            mNameField.setText(myInfo.getName());
-            if (myInfo.getGbsLevel().equals("봉사자")) {
-                mIsNotiChk.setVisibility(View.VISIBLE);
-            }
-        }
+//        if (myInfo != null) {
+//            mNameField.setText(myInfo.getName());
+//            if (myInfo.getGbsLevel().equals("봉사자")) {
+//                mIsNotiChk.setVisibility(View.VISIBLE);
+//            }
+//        }
         mSubmitButton.setOnClickListener(v -> submitPost());
     }
 
@@ -92,7 +97,7 @@ public class PostDialog extends MyProgessDialog {
         showProgressDialog();
 
         // [START single_value_read]
-        mDatabase.child(Tag.RETREAT_CBA).child("noti").addListenerForSingleValueEvent(
+        mDatabase.child(Tag.NOTI).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -125,30 +130,20 @@ public class PostDialog extends MyProgessDialog {
 
     // [START write_fan_out]
     private void writeNewPost(String username, String body, boolean isNoti) {
-        // Create new post at /user-posts/$userid/$postid and at
-        // /posts/$postid simultaneously
-        String key = mDatabase.child(Tag.RETREAT_CBA).child(Tag.NOTI).push().getKey();
+        String key = mDatabase.child(Tag.NOTI).push().getKey();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         Post post;
-        if (auth.getCurrentUser() == null) {
-            post = new Post("NOTlogin", username, body, getCurrentTimeStr(), "NOTlogin");
+        if (isNoti) {
+            post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "공지");
+            SendFCM.sendOKhttp(body, mContext);
         } else {
-            MyInfo myInfo = CBAUtil.loadMyInfo(getContext());
-            if (isNoti) {
-                post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "공지");
-                SendFCM.sendOKhttp(body);
-            } else if (myInfo != null) {
-                post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), myInfo.getGbsLevel());
-            } else {
-                post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "NA");
-            }
-
+            post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "NA");
         }
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
-        childUpdates.put(Tag.RETREAT_CBA + "/" + Tag.NOTI + "/" + key, postValues);
-        mDatabase.updateChildren(childUpdates);
+        childUpdates.put(key, postValues);
+        mDatabase.child(Tag.NOTI).updateChildren(childUpdates);
 
     }
 

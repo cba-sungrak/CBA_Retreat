@@ -150,10 +150,8 @@ public class MainActivity extends AppCompatActivity
                 FirebaseMessaging.getInstance().subscribeToTopic(Tag.RETREAT_SUNGRAK);
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.RETREAT_CBA);
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
-                //관리자 모드 설정
-                if (CBAUtil.getRetreat(this).equals(Tag.RETREAT_SUNGRAK_ADMIN)) {
 
-                }
+
                 break;
         }
 

@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,8 +19,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import kr.or.sungrak.cba.cba_retreat.R;
+import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.common.Tag;
 import kr.or.sungrak.cba.cba_retreat.dialog.PostDialog;
+import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 import kr.or.sungrak.cba.cba_retreat.models.Post;
 import kr.or.sungrak.cba.cba_retreat.viewholder.PostViewHolder;
 
@@ -47,23 +48,39 @@ public class PostListFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
 
-        // [START create_database_reference]
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        // [END create_database_reference]
+
+        switch (CBAUtil.getRetreat(getActivity())) {
+            case Tag.RETREAT_CBA:
+                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
+                break;
+            case Tag.RETREAT_SUNGRAK:
+                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
+                break;
+        }
 
         mRecycler = rootView.findViewById(R.id.messages_list);
         mRecycler.setHasFixedSize(true);
         mFab = rootView.findViewById(R.id.fab);
-        mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy < 0) {
-                    mFab.show();
-                } else if (dy > 0) {
-                    mFab.hide();
-                }
-            }
-        });
+
+        MyInfo myInfo = CBAUtil.loadMyInfo(getContext());
+
+        if (myInfo != null && (myInfo.getGbsLevel().equals("STAFF")) || CBAUtil.isAdmin(getActivity())) {
+            mFab.show();
+        } else {
+            mFab.hide();
+        }
+
+
+//        mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                if (dy < 0) {
+//                    mFab.show();
+//                } else if (dy > 0) {
+//                    mFab.hide();
+//                }
+//            }
+//        });
 
         mFab.setOnClickListener(view -> showPostDialog());
 
@@ -99,11 +116,6 @@ public class PostListFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
-                if (model.isStaff.equalsIgnoreCase("봉사자") || (model.isStaff.equalsIgnoreCase("공지"))) {
-                    viewHolder.authorImageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.app_icon, getActivity().getTheme()));
-                    int colorRed = getActivity().getResources().getColor(R.color.grey_200);
-                    viewHolder.cardView.setCardBackgroundColor(colorRed);
-                }
                 viewHolder.bindToPost(model, getContext());
             }
         };
@@ -131,7 +143,7 @@ public class PostListFragment extends Fragment {
         // [START recent_posts_query]
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
-        Query recentPostsQuery = databaseReference.child(Tag.RETREAT_CBA).child(Tag.MESSAGE).limitToFirst(1000);
+        Query recentPostsQuery = databaseReference.child(Tag.NOTI).limitToFirst(1000);
         // [END recent_posts_query]
 
         return recentPostsQuery;

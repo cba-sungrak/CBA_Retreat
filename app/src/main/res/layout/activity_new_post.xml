@@ -58,7 +58,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/field_body"
         android:layout_alignParentLeft="true"
-        android:visibility="gone"
         android:text="공지로보네기" />
 
 
