@@ -1,14 +1,19 @@
 package kr.or.sungrak.cba.cba_retreat.fragment
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.info_layout2.*
+import kotlinx.android.synthetic.main.info_layout2.view.*
 import kr.or.sungrak.cba.cba_retreat.MainActivity
 import kr.or.sungrak.cba.cba_retreat.R
 import kr.or.sungrak.cba.cba_retreat.common.CBAUtil
@@ -55,8 +60,8 @@ class InfoFragment : Fragment() {
         myRef.child(Tag.NOTI).addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(dataSnapshot: DataSnapshot, s: String?) {
                 val post = dataSnapshot.getValue(Post::class.java)  // chatDat
-                    notiTextView.text = post!!.message
-                    notiTextView.isSelected = true
+                view.notiTextView.text = post!!.message
+                view.notiTextView.isSelected = true
             }
 
             override fun onChildChanged(dataSnapshot: DataSnapshot, s: String?) {
@@ -103,13 +108,18 @@ class InfoFragment : Fragment() {
 
         }
         srCallBtn.setOnClickListener {
-
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:01050254375")))
         }
         srTimeBtn.setOnClickListener {
             (activity as MainActivity).replaceFragment(SwipeImageFragment("m3"))
         }
         srQABtn.setOnClickListener {
-
+            if (ContextCompat.checkSelfPermission(activity!!,
+                            Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(activity!! ,arrayOf(Manifest.permission.READ_PHONE_STATE), 0)
+            } else {
+                (activity as MainActivity).replaceFragment(QAListFragment())
+            }
         }
         srMapBtn.setOnClickListener {
             (activity as MainActivity).replaceFragment(SwipeImageFragment("m5"))

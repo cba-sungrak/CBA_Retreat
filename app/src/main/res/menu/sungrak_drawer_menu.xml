@@ -3,27 +3,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item android:title="안내">
-        <menu>
-            <item
-                android:id="@+id/sr_welcom"
-                android:title="초청과 환영의 글" />
-            <item
-                android:id="@+id/sr_noti"
-                android:title="공지사항" />
-            <item
-                android:id="@+id/sr_program"
-                android:title="프로그램" />
-            <item
-                android:id="@+id/sr_place"
-                android:title="장소안내" />
-            <item
-                android:id="@+id/sr_safe"
-                android:title="안전사고지원 및 여행자보험 관련 안내" />
-            <item
-                android:id="@+id/sr_sponsor"
-                android:title="협력(후원)기관안내" />
-        </menu>
-    </item>
+    <item
+        android:id="@+id/sr_welcom"
+        android:icon="@drawable/arrow"
+        android:title="초청과 환영의 글" />
+    <item
+        android:id="@+id/sr_noti"
+        android:icon="@drawable/arrow"
+        android:title="공지사항" />
+    <item
+        android:id="@+id/sr_program"
+        android:icon="@drawable/arrow"
+        android:title="프로그램" />
+    <item
+        android:id="@+id/sr_place"
+        android:icon="@drawable/arrow"
+        android:title="장소안내" />
+    <item
+        android:id="@+id/sr_safe"
+        android:icon="@drawable/arrow"
+        android:title="안전사고지원 및 여행자보험 관련 안내" />
+    <item
+        android:id="@+id/sr_sponsor"
+        android:icon="@drawable/arrow"
+        android:title="협력(후원)기관안내" />
 
 </menu>

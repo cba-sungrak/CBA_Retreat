@@ -1,10 +1,15 @@
 package kr.or.sungrak.cba.cba_retreat.common;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
+
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
@@ -73,5 +78,27 @@ public class CBAUtil {
 
     public static boolean isAdmin(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADMIN, false);
+    }
+
+    public static String getPhoneNumber(Context context) {
+        if (ContextCompat.checkSelfPermission(context,
+                Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED) {
+            return "";
+
+        }
+        String phoneNumber = "";
+
+        TelephonyManager mgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        try {
+
+            String tmpPhoneNumber = mgr.getLine1Number();
+            phoneNumber = tmpPhoneNumber.replace("+82", "0");
+
+        } catch (Exception e) {
+            phoneNumber = "";
+        }
+
+        return phoneNumber;
+
     }
 }

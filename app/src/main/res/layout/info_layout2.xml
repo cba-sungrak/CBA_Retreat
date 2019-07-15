@@ -19,7 +19,8 @@
                 android:id="@+id/backGroundImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
+                android:layout_gravity="center|bottom"
+                android:scaleType="fitEnd"
                 app:srcCompat="@drawable/backgroundtext" />
 
         </LinearLayout>

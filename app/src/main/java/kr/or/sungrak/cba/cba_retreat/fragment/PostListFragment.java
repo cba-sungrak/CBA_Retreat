@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -64,23 +65,22 @@ public class PostListFragment extends Fragment {
 
         MyInfo myInfo = CBAUtil.loadMyInfo(getContext());
 
-        if (myInfo != null && (myInfo.getGbsLevel().equals("STAFF")) || CBAUtil.isAdmin(getActivity())) {
+        if ((myInfo != null && (myInfo.getGbsLevel().equals("STAFF"))) || CBAUtil.isAdmin(getActivity())) {
             mFab.show();
         } else {
             mFab.hide();
         }
 
-
-//        mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                if (dy < 0) {
-//                    mFab.show();
-//                } else if (dy > 0) {
-//                    mFab.hide();
-//                }
-//            }
-//        });
+        mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy < 0) {
+                    mFab.show();
+                } else if (dy > 0) {
+                    mFab.hide();
+                }
+            }
+        });
 
         mFab.setOnClickListener(view -> showPostDialog());
 
@@ -154,7 +154,9 @@ public class PostListFragment extends Fragment {
 
         postDialog.show();
         postDialog.setOnDismissListener(dialog -> {
+            mRecycler.smoothScrollToPosition(mAdapter.getItemCount()-1);
         });
 
     }
+
 }

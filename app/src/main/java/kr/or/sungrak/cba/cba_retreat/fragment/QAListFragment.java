@@ -20,8 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import kr.or.sungrak.cba.cba_retreat.R;
+import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.common.Tag;
-import kr.or.sungrak.cba.cba_retreat.dialog.PostDialog;
+import kr.or.sungrak.cba.cba_retreat.dialog.QAPostDialog;
 import kr.or.sungrak.cba.cba_retreat.models.Post;
 import kr.or.sungrak.cba.cba_retreat.viewholder.QAViewHolder;
 
@@ -37,6 +38,8 @@ public class QAListFragment extends Fragment {
     private RecyclerView mRecycler;
     private LinearLayoutManager mManager;
     FloatingActionButton mFab;
+    String mNumber = "";
+    Query mPostsQuery;
 
     public QAListFragment() {
     }
@@ -47,7 +50,6 @@ public class QAListFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.qa_all_posts, container, false);
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         mRecycler = rootView.findViewById(R.id.messages_list);
         mRecycler.setHasFixedSize(true);
@@ -63,7 +65,20 @@ public class QAListFragment extends Fragment {
             }
         });
 
-        mFab.setOnClickListener(view -> showPostDialog());
+        switch (CBAUtil.getRetreat(getActivity())) {
+            case Tag.RETREAT_CBA:
+                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
+                mFab.setOnClickListener(view -> showPostDialog());
+                mPostsQuery = getQuery(mDatabase);
+                break;
+            case Tag.RETREAT_SUNGRAK:
+                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
+                mFab.setOnClickListener(view -> showCheckPostDialog());
+                mNumber = CBAUtil.getPhoneNumber(getActivity());
+                mPostsQuery = getSRQuery(mDatabase);
+                break;
+        }
+
 
         return rootView;
     }
@@ -79,11 +94,9 @@ public class QAListFragment extends Fragment {
         mManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(mManager);
 
-        // Set up FirebaseRecyclerAdapter with the Query
-        Query postsQuery = getQuery(mDatabase);
 
         FirebaseRecyclerOptions options = new FirebaseRecyclerOptions.Builder<Post>()
-                .setQuery(postsQuery, Post.class)
+                .setQuery(mPostsQuery, Post.class)
                 .build();
 
         mAdapter = new FirebaseRecyclerAdapter<Post, QAViewHolder>(options) {
@@ -91,11 +104,10 @@ public class QAListFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             protected void onBindViewHolder(@NonNull QAViewHolder qaViewHolder, int i, @NonNull Post post) {
-//                if (model.isStaff.equalsIgnoreCase("봉사자") || (model.isStaff.equalsIgnoreCase("공지"))) {
-//                    viewHolder.authorImageView.setImageDrawable(getActivity().getResources().getDrawable(R.drawable.app_icon, getActivity().getTheme()));
-//                    int colorRed = getActivity().getResources().getColor(R.color.grey_200);
-//                    viewHolder.cardView.setCardBackgroundColor(colorRed);
-//                }
+                if (post.isStaff.equalsIgnoreCase("봉사자") || (post.isStaff.equalsIgnoreCase("공지"))) {
+                    int colorRed = getActivity().getResources().getColor(R.color.grey_200);
+                    qaViewHolder.cardView.setCardBackgroundColor(colorRed);
+                }
                 qaViewHolder.bindToPost(post, getContext());
             }
 
@@ -130,17 +142,38 @@ public class QAListFragment extends Fragment {
         // [START recent_posts_query]
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
-        Query recentPostsQuery = databaseReference.child(Tag.RETREAT_CBA).child(Tag.MESSAGE).limitToFirst(1000);
+        Query recentPostsQuery = databaseReference.child(Tag.MESSAGE).limitToFirst(1000);
         // [END recent_posts_query]
 
         return recentPostsQuery;
     }
 
-    private void showPostDialog() {
-        final PostDialog postDialog = new PostDialog(getActivity());
+    public Query getSRQuery(DatabaseReference databaseReference) {
+        // [START recent_posts_query]
+        // Last 100 posts, these are automatically the 100 most recent
+        // due to sorting by push() keys
+        Query recentPostsQuery = databaseReference.child(Tag.MESSAGE).orderByChild("author").equalTo(CBAUtil.getPhoneNumber(getActivity())).limitToFirst(1000);
+        // [END recent_posts_query]
+
+        return recentPostsQuery;
+    }
+
+    public void showPostDialog() {
+        final QAPostDialog postDialog = new QAPostDialog(getActivity());
 
         postDialog.show();
         postDialog.setOnDismissListener(dialog -> {
+            mRecycler.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+        });
+
+    }
+
+    private void showCheckPostDialog() {
+        final QAPostDialog postDialog = new QAPostDialog(getActivity());
+
+        postDialog.show();
+        postDialog.setOnDismissListener(dialog -> {
+            mRecycler.smoothScrollToPosition(mAdapter.getItemCount() - 1);
         });
 
     }

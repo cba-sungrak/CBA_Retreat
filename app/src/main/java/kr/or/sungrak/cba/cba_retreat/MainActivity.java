@@ -9,8 +9,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -51,9 +51,11 @@ import java.util.Map;
 import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.common.Tag;
 import kr.or.sungrak.cba.cba_retreat.dialog.LoginDialog;
+import kr.or.sungrak.cba.cba_retreat.dialog.MyProgessDialog;
 import kr.or.sungrak.cba.cba_retreat.dialog.SelectDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.QAListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SRNotiFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.VideoViewFragment;
@@ -67,6 +69,8 @@ public class MainActivity extends AppCompatActivity
     FirebaseAuth mAuth;
     Context mContext;
     MenuItem mCheckAttMenu;
+    MyProgessDialog myDialog;
+
     private static int sHiddenCode[] = {
             KeyEvent.KEYCODE_VOLUME_UP,
             KeyEvent.KEYCODE_VOLUME_UP,
@@ -82,6 +86,8 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        myDialog = new MyProgessDialog(this);
+        myDialog.showProgressDialog();
         setContentView(R.layout.activity_main);
         if (TextUtils.isEmpty(CBAUtil.getRetreat(this))) {
             CBAUtil.setRetreat(this, Tag.RETREAT_SUNGRAK);
@@ -165,11 +171,12 @@ public class MainActivity extends AppCompatActivity
                     saveImage(key, value);
                     Log.e("TAG", key + "/" + value);
                 }
+                myDialog.hideProgressDialog();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                myDialog.hideProgressDialog();
             }
         });
 
@@ -182,8 +189,8 @@ public class MainActivity extends AppCompatActivity
     public void updateNavHeader() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        Button logInBtn = headerView.findViewById(R.id.loginBtn);
-        Button logOutBtn = headerView.findViewById(R.id.logOutBtn);
+        ImageButton logInBtn = headerView.findViewById(R.id.loginBtn);
+        ImageButton logOutBtn = headerView.findViewById(R.id.logOutBtn);
         TextView loginText = headerView.findViewById(R.id.logintextView);
         LinearLayout selectedTitleLayOut = headerView.findViewById(R.id.selectedTitleLayOut);
 
@@ -191,7 +198,7 @@ public class MainActivity extends AppCompatActivity
             //logOut
             logOutBtn.setVisibility(View.GONE);
             logInBtn.setVisibility(View.VISIBLE);
-            loginText.setText("로그인 해주세요");
+            loginText.setText("홍길동      |      OJ조      |      조원");
         } else {
             //logIn
             logInBtn.setVisibility(View.GONE);
@@ -464,6 +471,7 @@ public class MainActivity extends AppCompatActivity
                                                     if (et.getText().toString().equals(dataSnapshot.getValue())) {
                                                         Toast.makeText(getApplication(), "일치", Toast.LENGTH_SHORT).show();
                                                         CBAUtil.setAdmin(getApplication(), true);
+                                                        FirebaseMessaging.getInstance().subscribeToTopic(Tag.ADMIN);
                                                         initialActivity();
                                                     }
                                                 })
@@ -522,6 +530,19 @@ public class MainActivity extends AppCompatActivity
         }
 
         return result;
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == 0) {
+            if (grantResults[0] == 0) {
+                Log.e(TAG,"승인");
+                replaceFragment(new QAListFragment());
+            } else {
+                Log.e(TAG,"거절");
+            }
+        }
+
     }
 }
 
