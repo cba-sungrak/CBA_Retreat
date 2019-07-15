@@ -67,22 +67,20 @@ public class PostListFragment extends Fragment {
 
         if ((myInfo != null && (myInfo.getGbsLevel().equals("STAFF"))) || CBAUtil.isAdmin(getActivity())) {
             mFab.show();
+            mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    if (dy < 0) {
+                        mFab.show();
+                    } else if (dy > 0) {
+                        mFab.hide();
+                    }
+                }
+            });
+            mFab.setOnClickListener(view -> showPostDialog());
         } else {
             mFab.hide();
         }
-
-        mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                if (dy < 0) {
-                    mFab.show();
-                } else if (dy > 0) {
-                    mFab.hide();
-                }
-            }
-        });
-
-        mFab.setOnClickListener(view -> showPostDialog());
 
         return rootView;
     }

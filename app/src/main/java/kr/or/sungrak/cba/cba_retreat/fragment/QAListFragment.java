@@ -74,7 +74,7 @@ public class QAListFragment extends Fragment {
                 break;
             case Tag.RETREAT_SUNGRAK:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
-                mFab.setOnClickListener(view -> showCheckPostDialog());
+                mFab.setOnClickListener(view -> showCheckPostDialog(CBAUtil.getPhoneNumber(getActivity())));
                 mNumber = CBAUtil.getPhoneNumber(getActivity());
                 mPostsQuery = getSRQuery(mDatabase);
                 break;
@@ -102,6 +102,12 @@ public class QAListFragment extends Fragment {
 
         mAdapter = new FirebaseRecyclerAdapter<Post, QAViewHolder>(options) {
 
+            @Override
+            public QAViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+                return new QAViewHolder(inflater.inflate(R.layout.qa_item, viewGroup, false));
+            }
+
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             protected void onBindViewHolder(@NonNull QAViewHolder qaViewHolder, int i, @NonNull Post post) {
@@ -109,19 +115,19 @@ public class QAListFragment extends Fragment {
                     int colorRed = getActivity().getResources().getColor(R.color.grey_200);
                     qaViewHolder.cardView.setCardBackgroundColor(colorRed);
                     float density = getActivity().getResources().getDisplayMetrics().density;
-                    int left = (int)(80 * density);
+                    int left = (int) (80 * density);
                     int right = (int) (18 * density);
-                    qaViewHolder.linearLayout.setPadding(left,0, right,0);
+                    qaViewHolder.linearLayout.setPadding(left, 0, right, 0);
                     qaViewHolder.nameLayout.setGravity(Gravity.RIGHT);
-                    qaViewHolder.nameLayout.setPadding(0,0,right,0);
-            }
-                qaViewHolder.bindToPost(post, getContext());
-            }
-
-            @Override
-            public QAViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-                LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-                return new QAViewHolder(inflater.inflate(R.layout.qa_item, viewGroup, false));
+                    qaViewHolder.nameLayout.setPadding(0, 0, right, 0);
+                }
+                if (CBAUtil.isAdmin(getActivity())) {
+                    qaViewHolder.itemView.setOnLongClickListener(v -> {
+                        showCheckPostDialog(post.author);
+                        return false;
+                    });
+                }
+                qaViewHolder.bindToPost(post);
             }
 
         };
@@ -171,7 +177,7 @@ public class QAListFragment extends Fragment {
     }
 
     public void showPostDialog() {
-        final QAPostDialog postDialog = new QAPostDialog(getActivity());
+        final QAPostDialog postDialog = new QAPostDialog(getActivity(), "");
 
         postDialog.show();
         postDialog.setOnDismissListener(dialog -> {
@@ -180,8 +186,8 @@ public class QAListFragment extends Fragment {
 
     }
 
-    private void showCheckPostDialog() {
-        final QAPostDialog postDialog = new QAPostDialog(getActivity());
+    private void showCheckPostDialog(String auth) {
+        final QAPostDialog postDialog = new QAPostDialog(getActivity(), auth);
 
         postDialog.show();
         postDialog.setOnDismissListener(dialog -> {

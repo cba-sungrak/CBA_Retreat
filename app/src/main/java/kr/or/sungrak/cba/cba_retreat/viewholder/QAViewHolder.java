@@ -1,6 +1,5 @@
 package kr.or.sungrak.cba.cba_retreat.viewholder;
 
-import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -33,7 +32,7 @@ public class QAViewHolder extends RecyclerView.ViewHolder {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void bindToPost(Post post, Context context) {
+    public void bindToPost(Post post) {
         nameView.setText(post.author);
         bodyView.setText(post.message);
         timeView.setText(post.time);

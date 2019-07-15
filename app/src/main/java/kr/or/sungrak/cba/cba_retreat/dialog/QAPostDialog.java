@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import kr.or.sungrak.cba.cba_retreat.FCM.SendFCM;
 import kr.or.sungrak.cba.cba_retreat.R;
 import kr.or.sungrak.cba.cba_retreat.common.CBAUtil;
 import kr.or.sungrak.cba.cba_retreat.common.Tag;
@@ -39,11 +40,14 @@ public class QAPostDialog extends MyProgessDialog {
     private Button mSubmitButton;
     private CheckBox mIsNotiChk;
     Context mContext;
+    private String mAuth;
+    private String mTopic;
 
 
-    public QAPostDialog(@NonNull Context context) {
+    public QAPostDialog(@NonNull Context context, String auth) {
         super(context);
         mContext = context;
+        mAuth = auth;
     }
 
     @Override
@@ -62,11 +66,13 @@ public class QAPostDialog extends MyProgessDialog {
             case Tag.RETREAT_CBA:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
                 tv.setText("Q&A");
+                mTopic = Tag.CBA_ADMIN;
                 break;
             case Tag.RETREAT_SUNGRAK:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
                 tv.setText("불편신고");
-                mNameField.setText(CBAUtil.getPhoneNumber(mContext));
+                mTopic = Tag.SR_ADMIN;
+                mNameField.setText(mAuth);
                 mNameField.setFocusable(false);
                 break;
         }
@@ -112,10 +118,13 @@ public class QAPostDialog extends MyProgessDialog {
         String key = mDatabase.child(Tag.MESSAGE).push().getKey();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         Post post;
-//        SendFCM.sendOKhttp(body, mContext);
 
-        post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "공지");
-//        post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "NA");
+        if(CBAUtil.isAdmin(getContext())){
+            post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "공지");
+        }else{
+            post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "");
+            SendFCM.sendOKhttp(mContext, "건의사항", body, mTopic);
+        }
 
         Map<String, Object> postValues = post.toMap();
 

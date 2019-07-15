@@ -11,7 +11,8 @@ class Tag {
 
         const val MESSAGE = "message"
         const val NOTI = "noti"
-        const val ADMIN = "admin"
+        const val SR_ADMIN = "sr_admin"
+        const val CBA_ADMIN = "cba_admin"
 
     }
 

@@ -148,6 +148,10 @@ public class MainActivity extends AppCompatActivity
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.RETREAT_SUNGRAK);
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
                 logInLayout.setVisibility(View.VISIBLE);
+                if(CBAUtil.isAdmin(this)){
+                    FirebaseMessaging.getInstance().subscribeToTopic(Tag.CBA_ADMIN);
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.SR_ADMIN);
+                }
                 break;
             case Tag.RETREAT_SUNGRAK:
                 navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
@@ -158,8 +162,10 @@ public class MainActivity extends AppCompatActivity
                 FirebaseMessaging.getInstance().subscribeToTopic(Tag.RETREAT_SUNGRAK);
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.RETREAT_CBA);
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
-
-
+                if(CBAUtil.isAdmin(this)){
+                    FirebaseMessaging.getInstance().subscribeToTopic(Tag.SR_ADMIN);
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.CBA_ADMIN);
+                }
                 break;
         }
 
@@ -473,7 +479,6 @@ public class MainActivity extends AppCompatActivity
                                                     if (et.getText().toString().equals(dataSnapshot.getValue())) {
                                                         Toast.makeText(getApplication(), "관리자 모드가 되셨습니다.", Toast.LENGTH_LONG).show();
                                                         CBAUtil.setAdmin(getApplication(), true);
-                                                        FirebaseMessaging.getInstance().subscribeToTopic(Tag.ADMIN);
                                                         initialActivity();
                                                     }
                                                 })

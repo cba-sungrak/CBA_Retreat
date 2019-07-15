@@ -1,17 +1,18 @@
 package kr.or.sungrak.cba.cba_retreat.fragment;
 
 
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -60,12 +61,10 @@ public class AttendCampusFragment extends Fragment {
                     btn.setText(campus);
                     final CharSequence campusName = btn.getText();
                     mBinding.checkAttendance.addView(btn);
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        public void onClick(View view) {
-                            FragmentManager fragmentManager = getFragmentManager();
-                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                            fragmentTransaction.replace(R.id.fragment_container, new AttendFragment(campusName)).commit();
-                        }
+                    btn.setOnClickListener(view -> {
+                        FragmentManager fragmentManager = getFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.fragment_container, new AttendFragment(campusName)).commit();
                     });
                 }
             }

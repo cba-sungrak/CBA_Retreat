@@ -40,6 +40,8 @@ public class PostDialog extends MyProgessDialog {
     private Button mSubmitButton;
     private CheckBox mIsNotiChk;
     Context mContext;
+    private String mTitle;
+    private String mTopic;
 
 
     public PostDialog(@NonNull Context context) {
@@ -68,10 +70,12 @@ public class PostDialog extends MyProgessDialog {
             case Tag.RETREAT_CBA:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
                 mNameField.setText("CBA 본부");
+                mTitle = "예수로 사는 교회";
                 break;
             case Tag.RETREAT_SUNGRAK:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
                 mNameField.setText("몽산포 수련회 진행");
+                mTitle = "내 영혼아 교회를 수호하자";
                 break;
         }
 
@@ -120,7 +124,7 @@ public class PostDialog extends MyProgessDialog {
         Post post;
         if (isNoti) {
             post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "알림공지");
-            SendFCM.sendOKhttp(body, mContext);
+            SendFCM.sendOKhttp(mContext, mTitle, body, CBAUtil.getRetreat(mContext));
         } else {
             post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "공지");
         }
