@@ -72,14 +72,16 @@ public class MainActivity extends AppCompatActivity
     MyProgessDialog myDialog;
 
     private static int sHiddenCode[] = {
+            KeyEvent.KEYCODE_VOLUME_DOWN,
+            KeyEvent.KEYCODE_VOLUME_DOWN,
             KeyEvent.KEYCODE_VOLUME_UP,
             KeyEvent.KEYCODE_VOLUME_UP,
             KeyEvent.KEYCODE_VOLUME_UP,
             KeyEvent.KEYCODE_VOLUME_DOWN,
             KeyEvent.KEYCODE_VOLUME_DOWN,
-            KeyEvent.KEYCODE_VOLUME_UP,
-            KeyEvent.KEYCODE_VOLUME_UP,
-            KeyEvent.KEYCODE_VOLUME_UP};
+            KeyEvent.KEYCODE_VOLUME_DOWN,
+            KeyEvent.KEYCODE_VOLUME_DOWN};
+
     private int hiddenCodeIndex;
 
     @Override
@@ -469,7 +471,7 @@ public class MainActivity extends AppCompatActivity
                                         .setPositiveButton("ok",
                                                 (dialog, which) -> {
                                                     if (et.getText().toString().equals(dataSnapshot.getValue())) {
-                                                        Toast.makeText(getApplication(), "일치", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(getApplication(), "관리자 모드가 되셨습니다.", Toast.LENGTH_LONG).show();
                                                         CBAUtil.setAdmin(getApplication(), true);
                                                         FirebaseMessaging.getInstance().subscribeToTopic(Tag.ADMIN);
                                                         initialActivity();

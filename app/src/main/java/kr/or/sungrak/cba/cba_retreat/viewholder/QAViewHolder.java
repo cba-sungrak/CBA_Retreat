@@ -3,6 +3,7 @@ package kr.or.sungrak.cba.cba_retreat.viewholder;
 import android.content.Context;
 import android.os.Build;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -18,6 +19,8 @@ public class QAViewHolder extends RecyclerView.ViewHolder {
     public TextView bodyView;
     public TextView timeView;
     public CardView cardView;
+    public LinearLayout linearLayout;
+    public LinearLayout nameLayout;
 
     public QAViewHolder(View itemView) {
         super(itemView);
@@ -25,6 +28,8 @@ public class QAViewHolder extends RecyclerView.ViewHolder {
         bodyView = itemView.findViewById(R.id.qa_body);
         timeView = itemView.findViewById(R.id.qa_time);
         cardView = itemView.findViewById(R.id.post_card_view);
+        linearLayout = itemView.findViewById(R.id.qa_layout);
+        nameLayout= itemView.findViewById(R.id.qa_name_layout);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

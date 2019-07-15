@@ -2,6 +2,7 @@ package kr.or.sungrak.cba.cba_retreat.fragment;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,7 +108,13 @@ public class QAListFragment extends Fragment {
                 if (post.isStaff.equalsIgnoreCase("봉사자") || (post.isStaff.equalsIgnoreCase("공지"))) {
                     int colorRed = getActivity().getResources().getColor(R.color.grey_200);
                     qaViewHolder.cardView.setCardBackgroundColor(colorRed);
-                }
+                    float density = getActivity().getResources().getDisplayMetrics().density;
+                    int left = (int)(80 * density);
+                    int right = (int) (18 * density);
+                    qaViewHolder.linearLayout.setPadding(left,0, right,0);
+                    qaViewHolder.nameLayout.setGravity(Gravity.RIGHT);
+                    qaViewHolder.nameLayout.setPadding(0,0,right,0);
+            }
                 qaViewHolder.bindToPost(post, getContext());
             }
 
@@ -152,7 +159,12 @@ public class QAListFragment extends Fragment {
         // [START recent_posts_query]
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
-        Query recentPostsQuery = databaseReference.child(Tag.MESSAGE).orderByChild("author").equalTo(CBAUtil.getPhoneNumber(getActivity())).limitToFirst(1000);
+        Query recentPostsQuery;
+        if (CBAUtil.isAdmin(getActivity())) {
+            recentPostsQuery = databaseReference.child(Tag.MESSAGE).limitToFirst(1000);
+        } else {
+            recentPostsQuery = databaseReference.child(Tag.MESSAGE).orderByChild("author").equalTo(CBAUtil.getPhoneNumber(getActivity())).limitToFirst(1000);
+        }
         // [END recent_posts_query]
 
         return recentPostsQuery;
