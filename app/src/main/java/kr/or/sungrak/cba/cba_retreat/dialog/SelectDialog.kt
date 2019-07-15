@@ -15,12 +15,13 @@ class SelectDialog(mContext: Context) : MyProgessDialog(mContext) {
 
         selectSungrak.setOnClickListener {
             CBAUtil.setRetreat(context, Tag.RETREAT_SUNGRAK)
+            CBAUtil.removeAllPreferences(context)
             dismiss()
         }
 
         selectCBA.setOnClickListener {
             CBAUtil.setRetreat(context, Tag.RETREAT_CBA)
-//            Toast.makeText(context, "cba", Toast.LENGTH_SHORT).show()
+            CBAUtil.removeAllPreferences(context)
             dismiss()
         }
     }

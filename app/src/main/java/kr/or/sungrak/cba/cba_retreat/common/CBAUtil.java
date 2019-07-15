@@ -41,6 +41,7 @@ public class CBAUtil {
         SharedPreferences pref =  PreferenceManager.getDefaultSharedPreferences(context);
         pref.edit().remove("MyInfo").commit();
         pref.edit().remove("GBSInfo").commit();
+        pref.edit().remove(ADMIN).commit();
     }
 
     public static void signOut(Context context) {
