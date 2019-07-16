@@ -1,5 +1,6 @@
 package kr.or.sungrak.cba.cba_retreat.network;
 
+import kr.or.sungrak.cba.cba_retreat.fragment.CampMemList;
 import kr.or.sungrak.cba.cba_retreat.models.AttendList;
 import kr.or.sungrak.cba.cba_retreat.models.Campus;
 import kr.or.sungrak.cba.cba_retreat.models.CampusStatisticList;
@@ -52,5 +53,14 @@ public interface ApiService {
     @GET("/statistics/total")
     Call<CampusStatisticList> getStatisticCampusList(@Query("date") String date, @Query("nav") String nav);
 
+    //-------- 몽산포 수련회 --------------------------------------------------------------------------------------------------------------//
+    //1. 수련회 등록
+    //POST /mongsanpo/members
+    @POST("/mongsanpo/members")
+    Call<ResponseBody> regiCampMember(@Body RequestBody body);
 
+    //2. 수련회 등록 명단
+    //GET /mongsanpo/members
+    @GET("/mongsanpo/members")
+    Call<CampMemList> getRegiCampMember();
 }

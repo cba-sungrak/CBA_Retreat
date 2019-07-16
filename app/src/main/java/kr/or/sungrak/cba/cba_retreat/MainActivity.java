@@ -53,6 +53,7 @@ import kr.or.sungrak.cba.cba_retreat.common.Tag;
 import kr.or.sungrak.cba.cba_retreat.dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.dialog.MyProgessDialog;
 import kr.or.sungrak.cba.cba_retreat.dialog.SelectDialog;
+import kr.or.sungrak.cba.cba_retreat.fragment.CampMemberListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.QAListFragment;
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.RETREAT_SUNGRAK);
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
                 logInLayout.setVisibility(View.VISIBLE);
-                if(CBAUtil.isAdmin(this)){
+                if (CBAUtil.isAdmin(this)) {
                     FirebaseMessaging.getInstance().subscribeToTopic(Tag.CBA_ADMIN);
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.SR_ADMIN);
                 }
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity
                 FirebaseMessaging.getInstance().subscribeToTopic(Tag.RETREAT_SUNGRAK);
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.RETREAT_CBA);
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
-                if(CBAUtil.isAdmin(this)){
+                if (CBAUtil.isAdmin(this)) {
                     FirebaseMessaging.getInstance().subscribeToTopic(Tag.SR_ADMIN);
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.CBA_ADMIN);
                 }
@@ -238,6 +239,7 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.fragment_container, fragment).commit();
         closeDrawer();
     }
+
     public void addFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -322,6 +324,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.sr_sponsor:
                 replaceFragment(new SwipeImageFragment("c6"));
                 break;
+            case R.id.sr_member_list:
+                replaceFragment(new CampMemberListFragment());
             default:
                 break;
         }
@@ -389,17 +393,16 @@ public class MainActivity extends AppCompatActivity
 
         m5.put("오시는길", "m5-map.png");
 
-        c2.put("1차 예배통역안내","c2-a.png");
-        c2.put("1차 교회학교 안내","c2-b.png");
-        c2.put("1차 선택식강의 안내","c2-c.png");
-        c2.put("1차 의료서비스 안내","c2-d.png");
-        c2.put("1차 전문인상담 안내","c2-e.png");
-        c2.put("1차 월산재단 봉사인증활동 안내","c2-f.png");
-        c2.put("2차 시무언 역사 전시관 안내","c2-g.png");
-        c2.put("2차 센터 기도실 사용안내","c2-h.png");
-        c2.put("2차 센터 편의시설 안내","c2-i.png");
-        c2.put("교회기관 수련회안내","c2-j.png");
-
+        c2.put("1차 예배통역안내", "c2-a.png");
+        c2.put("1차 교회학교 안내", "c2-b.png");
+        c2.put("1차 선택식강의 안내", "c2-c.png");
+        c2.put("1차 의료서비스 안내", "c2-d.png");
+        c2.put("1차 전문인상담 안내", "c2-e.png");
+        c2.put("1차 월산재단 봉사인증활동 안내", "c2-f.png");
+        c2.put("2차 시무언 역사 전시관 안내", "c2-g.png");
+        c2.put("2차 센터 기도실 사용안내", "c2-h.png");
+        c2.put("2차 센터 편의시설 안내", "c2-i.png");
+        c2.put("교회기관 수련회안내", "c2-j.png");
 
 
         map.put("c1", c1);
@@ -531,22 +534,23 @@ public class MainActivity extends AppCompatActivity
         Collections.sort(list, (Comparator<Object>) (o1, o2) -> ((Comparable<V>) ((Map.Entry<K, V>) (o1)).getValue()).compareTo(((Map.Entry<K, V>) (o2)).getValue()));
 
         Map<K, V> result = new LinkedHashMap<>();
-        for (Iterator<Map.Entry<K, V>> it = list.iterator(); it.hasNext();) {
+        for (Iterator<Map.Entry<K, V>> it = list.iterator(); it.hasNext(); ) {
             Map.Entry<K, V> entry = it.next();
             result.put(entry.getKey(), entry.getValue());
         }
 
         return result;
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
         if (requestCode == 0) {
             if (grantResults[0] == 0) {
-                Log.e(TAG,"승인");
+                Log.e(TAG, "승인");
                 replaceFragment(new QAListFragment());
             } else {
-                Log.e(TAG,"거절");
+                Log.e(TAG, "거절");
             }
         }
 

@@ -124,7 +124,7 @@ public class PostDialog extends MyProgessDialog {
         Post post;
         if (isNoti) {
             post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "알림공지");
-            SendFCM.sendOKhttp(mContext, mTitle, body, CBAUtil.getRetreat(mContext));
+            SendFCM.sendOKhttp(mTitle, body, CBAUtil.getRetreat(mContext));
         } else {
             post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "공지");
         }

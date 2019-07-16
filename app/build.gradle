@@ -36,6 +36,8 @@ ext {
 dependencies {
     testImplementation 'junit:junit:4.12'
 
+    implementation 'com.android.support:multidex:1.0.3'
+
     // Needed to fix a dependency conflict with FirebaseUI'
     implementation 'androidx.arch.core:core-runtime:2.0.0'
 

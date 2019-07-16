@@ -27,5 +27,9 @@
         android:id="@+id/sr_sponsor"
         android:icon="@drawable/arrow"
         android:title="협력(후원)기관안내" />
+    <item
+        android:id="@+id/sr_member_list"
+        android:icon="@drawable/arrow"
+        android:title="등록인원" />
 
 </menu>

@@ -119,11 +119,11 @@ public class QAPostDialog extends MyProgessDialog {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         Post post;
 
-        if(CBAUtil.isAdmin(getContext())){
+        if (CBAUtil.isAdmin(getContext())) {
             post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "공지");
-        }else{
+        } else {
             post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "");
-            SendFCM.sendOKhttp(mContext, "건의사항", body, mTopic);
+            SendFCM.sendOKhttp("건의사항", body, mTopic);
         }
 
         Map<String, Object> postValues = post.toMap();

@@ -1,6 +1,5 @@
 package kr.or.sungrak.cba.cba_retreat.FCM;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import org.json.JSONObject;
@@ -15,12 +14,10 @@ public class SendFCM {
     private static final String BASE_URL = "https://fcm.googleapis.com/fcm/send";
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
-
-    private static final String TITLE = "교회수호 진리수호";
     private static final String SERVER_KEY = "AAAA-PRsYvs:APA91bFiNlDHb8bBp5N4CJJuhtNSiV4Ej1KIh3tkIRsUbfrmHcCPvJvphxAWwg2oLohhgll1Ui0owWyRSP3nrkSDSrnr6M3ktjo75p2YFeqSl24naWo5ILf0yXVbWu08EvbqX0w8SoGSFFml6SmwIOh12ZmAgP1bMg";
     private static String TAG = "CBA/SendFCM";
 
-    public static void sendOKhttp(Context context, String title, String message, String topic) {
+    public static void sendOKhttp(String title, String message, String topic) {
 
         new AsyncTask<Void, Void, Void>() {
             @Override

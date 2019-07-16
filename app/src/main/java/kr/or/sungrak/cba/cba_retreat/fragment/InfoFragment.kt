@@ -105,7 +105,7 @@ class InfoFragment : Fragment() {
         //cba
 
         srRegi.setOnClickListener {
-
+            (activity as MainActivity).replaceFragment(CampRegistFragment())
         }
         srCallBtn.setOnClickListener {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:01050254375")))
