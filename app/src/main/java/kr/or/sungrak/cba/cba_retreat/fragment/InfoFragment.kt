@@ -116,7 +116,7 @@ class InfoFragment : Fragment() {
         srQABtn.setOnClickListener {
             if (ContextCompat.checkSelfPermission(activity!!,
                             Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(activity!! ,arrayOf(Manifest.permission.READ_PHONE_STATE), 0)
+                ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_PHONE_STATE), 0)
             } else {
                 (activity as MainActivity).replaceFragment(QAListFragment())
             }

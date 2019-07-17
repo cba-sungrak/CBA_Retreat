@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/imageViewLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <uk.co.senab.photoview.PhotoView
-        android:id="@+id/singleImageView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:contentDescription="no image.."
-        android:scaleType="fitStart" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scrollbars="none">
+
+        <uk.co.senab.photoview.PhotoView
+            android:id="@+id/singleImageView"
+            android:adjustViewBounds="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="no image.."
+            android:scrollbars="vertical"
+            />
+        <!--<ImageView-->
+            <!--android:id="@+id/singleImageView"-->
+            <!--android:adjustViewBounds="true"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:contentDescription="no image.."-->
+            <!--android:scrollbars="vertical"-->
+             <!--/>-->
+    </ScrollView>
+
+
+
+
 </LinearLayout>
 

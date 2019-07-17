@@ -7,6 +7,7 @@
         android:id="@+id/sr_welcom"
         android:icon="@drawable/arrow"
         android:title="초청과 환영의 글" />
+
     <item
         android:id="@+id/sr_noti"
         android:icon="@drawable/arrow"
@@ -30,6 +31,7 @@
     <item
         android:id="@+id/sr_member_list"
         android:icon="@drawable/arrow"
+        android:visible="false"
         android:title="등록인원" />
 
 </menu>

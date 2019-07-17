@@ -18,7 +18,6 @@ import kr.or.sungrak.cba.cba_retreat.FCM.GlideApp
 import kr.or.sungrak.cba.cba_retreat.R
 import kr.or.sungrak.cba.cba_retreat.common.CBAUtil
 import kr.or.sungrak.cba.cba_retreat.common.Tag
-import uk.co.senab.photoview.PhotoView
 
 @SuppressLint("ValidFragment")
 class ImageViewFragment @SuppressLint("ValidFragment")
@@ -40,9 +39,10 @@ constructor(private var mImage: String) : Fragment() {
         }
 
         val sharedPref: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
-        val imageView: PhotoView
+//        val imageView: PhotoView
+
         // ImageView in your Activity
-        imageView = rootView.findViewById(R.id.singleImageView)
+        val imageView = rootView.singleImageView
 
         val pathReference = storageReference.child(mImage)
         pathReference.metadata.addOnSuccessListener { storageMetadata ->

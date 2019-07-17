@@ -74,7 +74,7 @@ public class QAListFragment extends Fragment {
                 break;
             case Tag.RETREAT_SUNGRAK:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
-                mFab.setOnClickListener(view -> showCheckPostDialog(CBAUtil.getPhoneNumber(getActivity())));
+                mFab.setOnClickListener(view -> showCheckPostDialog(CBAUtil.getPhoneNumber(getActivity()), CBAUtil.getPhoneNumber(getActivity())));
                 mNumber = CBAUtil.getPhoneNumber(getActivity());
                 mPostsQuery = getSRQuery(mDatabase);
                 break;
@@ -123,7 +123,7 @@ public class QAListFragment extends Fragment {
                 }
                 if (CBAUtil.isAdmin(getActivity())) {
                     qaViewHolder.itemView.setOnLongClickListener(v -> {
-                        showCheckPostDialog(post.author);
+                        showCheckPostDialog(post.uid, post.author);
                         return false;
                     });
                 }
@@ -169,7 +169,7 @@ public class QAListFragment extends Fragment {
         if (CBAUtil.isAdmin(getActivity())) {
             recentPostsQuery = databaseReference.child(Tag.MESSAGE).limitToFirst(1000);
         } else {
-            recentPostsQuery = databaseReference.child(Tag.MESSAGE).orderByChild("author").equalTo(CBAUtil.getPhoneNumber(getActivity())).limitToFirst(1000);
+            recentPostsQuery = databaseReference.child(Tag.MESSAGE).orderByChild("uid").equalTo(CBAUtil.getPhoneNumber(getActivity())).limitToFirst(1000);
         }
         // [END recent_posts_query]
 
@@ -177,7 +177,7 @@ public class QAListFragment extends Fragment {
     }
 
     public void showPostDialog() {
-        final QAPostDialog postDialog = new QAPostDialog(getActivity(), "");
+        final QAPostDialog postDialog = new QAPostDialog(getActivity(), "","");
 
         postDialog.show();
         postDialog.setOnDismissListener(dialog -> {
@@ -186,8 +186,8 @@ public class QAListFragment extends Fragment {
 
     }
 
-    private void showCheckPostDialog(String auth) {
-        final QAPostDialog postDialog = new QAPostDialog(getActivity(), auth);
+    private void showCheckPostDialog(String uid, String auth) {
+        final QAPostDialog postDialog = new QAPostDialog(getActivity(), uid, auth);
 
         postDialog.show();
         postDialog.setOnDismissListener(dialog -> {

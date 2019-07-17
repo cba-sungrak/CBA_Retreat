@@ -1,16 +1,22 @@
 package kr.or.sungrak.cba.cba_retreat.fragment
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import kotlinx.android.synthetic.main.camp_member_list.*
+import kotlinx.android.synthetic.main.camp_member_list.view.*
 import kotlinx.android.synthetic.main.sr_camp_member_listitem.view.*
 import kr.or.sungrak.cba.cba_retreat.R
 import kr.or.sungrak.cba.cba_retreat.network.ApiService
@@ -47,7 +53,7 @@ class CampMemberListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val service = ServiceGenerator.createService(ApiService::class.java)
 
-        val request = service.getRegiCampMember()
+        val request = service.regiCampMember
         request.enqueue(object : Callback<CampMemList> {
             override fun onResponse(call: Call<CampMemList>, response: Response<CampMemList>) {
                 if (response.code() / 100 == 4) {
@@ -65,6 +71,23 @@ class CampMemberListFragment : Fragment() {
             }
         })
 
+        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        view.memberSearchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+        view.memberSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextChange(newText: String): Boolean {
+                adapter!!.filter.filter(newText)
+                adapter.notifyDataSetChanged()
+                return true
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                adapter!!.filter.filter(query)
+                adapter.notifyDataSetChanged()
+                return true
+            }
+
+        })
+
         activity?.let {
             campMemberRecyclerView.layoutManager = LinearLayoutManager(activity)
             campMemberRecyclerView.adapter = adapter
@@ -73,12 +96,17 @@ class CampMemberListFragment : Fragment() {
     }
 }
 
-private class CampMemberAdapter : RecyclerView.Adapter<CampMemberAdapter.Holder>() {
+private class CampMemberAdapter : RecyclerView.Adapter<CampMemberAdapter.Holder>(), Filterable {
     var srMembers: List<SRCampMember> = emptyList()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+    var memberSearchList: List<SRCampMember>? = null
+
+    init {
+        memberSearchList = srMembers
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = Holder(parent)
 
@@ -113,6 +141,39 @@ private class CampMemberAdapter : RecyclerView.Adapter<CampMemberAdapter.Holder>
         */
 
     }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(charSequence: CharSequence): FilterResults {
+                val charString = charSequence.toString()
+                if (charString.isEmpty()) {
+                    memberSearchList = srMembers
+                } else {
+                    val filteredList = ArrayList<SRCampMember>()
+                    for (row in srMembers) {
+                        if (row.name!!.toLowerCase().contains(charString.toLowerCase())
+                                || row.mobile!!.contains(charSequence)
+                                || row.carNumber!!.toLowerCase().contains(charString.toLowerCase())
+                                || row.belongTo!!.toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row)
+                        }
+                    }
+                    memberSearchList = filteredList
+                }
+                val filterResults = FilterResults()
+                Log.e("1",memberSearchList.toString())
+                filterResults.values = memberSearchList
+                return filterResults
+            }
+
+            override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
+                memberSearchList = filterResults.values as ArrayList<SRCampMember>
+                Log.e("2",memberSearchList.toString())
+                notifyDataSetChanged()
+            }
+        }
+    }
+
 
     class Holder(parent: ViewGroup) : RecyclerView.ViewHolder(
             LayoutInflater.from(parent.context)

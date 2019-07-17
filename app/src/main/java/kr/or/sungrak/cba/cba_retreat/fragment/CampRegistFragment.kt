@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
@@ -41,6 +42,19 @@ class CampRegistFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        view.isHaveCar.setOnClickListener {
+            if ((it as CheckBox).isChecked) {
+                view.carModel.visibility = View.VISIBLE
+                view.carNo.visibility = View.VISIBLE
+            } else {
+                view.carModel.visibility = View.INVISIBLE
+                view.carNo.visibility = View.INVISIBLE
+            }
+
+        }
+
+
         view.campRegiBtn.setOnClickListener {
             val service = ServiceGenerator.createService(ApiService::class.java)
 
@@ -48,26 +62,20 @@ class CampRegistFragment : Fragment() {
 
             val obj = Gson().toJson(regiMem)
 
-//            val obj = JSONObject()
-//            try {
-//                obj.put("name", )
-//                obj.put("mobile", )
-//                obj.put("belongTo", )
-//                obj.put("carNumber", )
-//            } catch (e: JSONException) {
-//                e.printStackTrace()
-//            }
-
             val body = RequestBody.create(MediaType.parse("application/json"), obj.toString())
             val request = service.regiCampMember(body)
             request.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    if (response.code() / 100 == 4) {
-                        Toast.makeText(context,
+                    when {
+                        response.code() == 403 -> {
+                            Toast.makeText(context,
+                                    "이미 등록 되어 있는 정보입니다.", Toast.LENGTH_LONG)
+                                    .show()
+                        }
+                        response.code() / 100 == 4 -> Toast.makeText(context,
                                 "등록에 실패하였습니다. ", Toast.LENGTH_LONG)
                                 .show()
-                    } else {
-                        Toast.makeText(context,
+                        else -> Toast.makeText(context,
                                 "등록 되었습니다. ", Toast.LENGTH_LONG)
                                 .show()
                     }

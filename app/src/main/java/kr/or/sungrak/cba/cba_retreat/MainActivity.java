@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.getMenu().clear();
         ImageView bannerImage = navigationView.getHeaderView(0).findViewById(R.id.bannerImage);
         LinearLayout logInLayout = navigationView.getHeaderView(0).findViewById(R.id.loginLayout);
-
         switch (CBAUtil.getRetreat(this)) {
             case Tag.RETREAT_CBA:
                 navigationView.inflateMenu(R.menu.activity_main_drawer);
@@ -160,10 +159,12 @@ public class MainActivity extends AppCompatActivity
                 mainTitle.setTextSize(15);
                 bannerImage.setImageResource(R.drawable.sr_banner);
                 logInLayout.setVisibility(View.GONE);
+
                 FirebaseMessaging.getInstance().subscribeToTopic(Tag.RETREAT_SUNGRAK);
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.RETREAT_CBA);
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
                 if (CBAUtil.isAdmin(this)) {
+                    navigationView.getMenu().findItem(R.id.sr_member_list).setVisible(true);
                     FirebaseMessaging.getInstance().subscribeToTopic(Tag.SR_ADMIN);
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.CBA_ADMIN);
                 }
@@ -326,6 +327,7 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.sr_member_list:
                 replaceFragment(new CampMemberListFragment());
+//                srImageDBmake();
             default:
                 break;
         }
@@ -393,24 +395,26 @@ public class MainActivity extends AppCompatActivity
 
         m5.put("오시는길", "m5-map.png");
 
-        c2.put("1차 예배통역안내", "c2-a.png");
-        c2.put("1차 교회학교 안내", "c2-b.png");
-        c2.put("1차 선택식강의 안내", "c2-c.png");
-        c2.put("1차 의료서비스 안내", "c2-d.png");
-        c2.put("1차 전문인상담 안내", "c2-e.png");
-        c2.put("1차 월산재단 봉사인증활동 안내", "c2-f.png");
-        c2.put("2차 시무언 역사 전시관 안내", "c2-g.png");
-        c2.put("2차 센터 기도실 사용안내", "c2-h.png");
-        c2.put("2차 센터 편의시설 안내", "c2-i.png");
-        c2.put("교회기관 수련회안내", "c2-j.png");
+        c2.put("예배통역안내", "c2-a.png");
+        c2.put("교회학교 안내", "c2-b.png");
+        c2.put("선택식강의 안내", "c2-c.png");
+        c2.put("성락인의 고백", "c2-d.png");
+        c2.put("의료 서비스 안내", "c2-e.png");
+        c2.put("전문인 상담 안내", "c2-f.png");
+        c2.put("시무언 역사 전시관 안내", "c2-g.png");
+        c2.put("센터 기도실 사용 안내", "c2-h.png");
+        c2.put("센터 편의시설 안내", "c2-i.png");
+        c2.put("월산재단 청소년 봉사인증 활동 안내", "c2-j.png");
+        c2.put("교회기관 수련회 안내", "c2-k.png");
 
 
         map.put("c1", c1);
-        map.put("m3", m3);
-        map.put("c4", c4);
-        map.put("c5", c5);
-        map.put("c6", c6);
-        map.put("m5", m5);
+        map.put("c2", c2);
+//        map.put("m3", m3);
+//        map.put("c4", c4);
+//        map.put("c5", c5);
+//        map.put("c6", c6);
+//        map.put("m5", m5);
         FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK).child("images").updateChildren(map);
     }
 

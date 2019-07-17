@@ -41,13 +41,15 @@ public class QAPostDialog extends MyProgessDialog {
     private CheckBox mIsNotiChk;
     Context mContext;
     private String mAuth;
+    private String mUid;
     private String mTopic;
 
 
-    public QAPostDialog(@NonNull Context context, String auth) {
+    public QAPostDialog(@NonNull Context context, String uid, String auth) {
         super(context);
         mContext = context;
         mAuth = auth;
+        mUid = uid;
     }
 
     @Override
@@ -72,7 +74,11 @@ public class QAPostDialog extends MyProgessDialog {
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
                 tv.setText("불편신고");
                 mTopic = Tag.SR_ADMIN;
-                mNameField.setText(mAuth);
+                if (CBAUtil.isAdmin(getContext())) {
+                    mNameField.setText(mAuth + " 답장");
+                } else {
+                    mNameField.setText(mAuth);
+                }
                 mNameField.setFocusable(false);
                 break;
         }
@@ -120,9 +126,9 @@ public class QAPostDialog extends MyProgessDialog {
         Post post;
 
         if (CBAUtil.isAdmin(getContext())) {
-            post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "공지");
+            post = new Post(mUid, username, body, getCurrentTimeStr(), "공지");
         } else {
-            post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "");
+            post = new Post(mUid, username, body, getCurrentTimeStr(), "");
             SendFCM.sendOKhttp("건의사항", body, mTopic);
         }
 
