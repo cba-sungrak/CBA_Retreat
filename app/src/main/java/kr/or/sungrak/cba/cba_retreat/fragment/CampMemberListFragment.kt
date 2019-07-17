@@ -51,6 +51,12 @@ class CampMemberListFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        activity?.let {
+            campMemberRecyclerView.layoutManager = LinearLayoutManager(activity)
+            campMemberRecyclerView.adapter = adapter
+        }
+
         val service = ServiceGenerator.createService(ApiService::class.java)
 
         val request = service.regiCampMember
@@ -74,6 +80,7 @@ class CampMemberListFragment : Fragment() {
         val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
         view.memberSearchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
         view.memberSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
             override fun onQueryTextChange(newText: String): Boolean {
                 adapter!!.filter.filter(newText)
                 adapter.notifyDataSetChanged()
@@ -88,11 +95,6 @@ class CampMemberListFragment : Fragment() {
 
         })
 
-        activity?.let {
-            campMemberRecyclerView.layoutManager = LinearLayoutManager(activity)
-            campMemberRecyclerView.adapter = adapter
-        }
-
     }
 }
 
@@ -100,45 +102,25 @@ private class CampMemberAdapter : RecyclerView.Adapter<CampMemberAdapter.Holder>
     var srMembers: List<SRCampMember> = emptyList()
         set(value) {
             field = value
+            memberSearchList = srMembers
             notifyDataSetChanged()
         }
-    var memberSearchList: List<SRCampMember>? = null
+    var memberSearchList: List<SRCampMember> = emptyList()
 
-    init {
-        memberSearchList = srMembers
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = Holder(parent)
 
-    override fun getItemCount() = srMembers.count()
+    override fun getItemCount() = memberSearchList.count()
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val srMember = srMembers[position]
+        val srMember = memberSearchList[position]
 
         with(holder.itemView) {
             srItemName.text = srMember.name
             srItemMobile.text = srMember.mobile
             srItemBelongTo.text = srMember.belongTo
             srItemCarNumber.text = srMember.carNumber
-//            helloButton.setOnClickListener {
-////                context.toast("Hello ${user.name}")
-////
-////                /*
-////                Toast.makeText(
-////                    context, "Hello, ${user.name}!", Toast.LENGTH_SHORT
-////                ).show()
-////                */
-////            }
         }
 
-        /*
-        holder.itemView.textView.text = user.name
-        holder.itemView.helloButton.setOnClickListener {
-            Toast.makeText(
-                holder.itemView.context,
-                "Hello, ${user.name}!", Toast.LENGTH_SHORT
-            ).show()
-        }
-        */
 
     }
 
@@ -161,14 +143,14 @@ private class CampMemberAdapter : RecyclerView.Adapter<CampMemberAdapter.Holder>
                     memberSearchList = filteredList
                 }
                 val filterResults = FilterResults()
-                Log.e("1",memberSearchList.toString())
+                Log.e("1", memberSearchList.toString())
                 filterResults.values = memberSearchList
                 return filterResults
             }
 
             override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
                 memberSearchList = filterResults.values as ArrayList<SRCampMember>
-                Log.e("2",memberSearchList.toString())
+                Log.e("2", memberSearchList.toString())
                 notifyDataSetChanged()
             }
         }
