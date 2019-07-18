@@ -14,6 +14,9 @@ class Tag {
         const val SR_ADMIN = "sr_admin"
         const val CBA_ADMIN = "cba_admin"
 
+        const val SETTING = "setting"
+        const val YOUTUBE = "youtube"
+
     }
 
 

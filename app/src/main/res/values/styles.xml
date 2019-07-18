@@ -99,4 +99,17 @@
         <item name="android:background">@drawable/edge_member</item>
 
     </style>
+
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <!-- Gets rid of the search icon -->
+        <item name="searchIcon">@color/colorPrimary</item>
+        <!-- Gets rid of the "underline" in the text -->
+        <item name="queryBackground">@color/colorPrimary</item>
+        <!-- Gets rid of the search icon when the SearchView is expanded -->
+        <item name="searchHintIcon">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
+        <!-- The hint text that appears when the user has not typed anything -->
+        <!--<item name="queryHint">@string/search_hint</item>-->
+    </style>
 </resources>

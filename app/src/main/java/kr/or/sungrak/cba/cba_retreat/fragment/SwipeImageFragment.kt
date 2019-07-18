@@ -21,8 +21,13 @@ constructor(private var mImage: String) : Fragment() {
         val rootView = inflater.inflate(R.layout.ui_swipe_layout, container, false)
 
         val imageMap = (activity as MainActivity).loadImage(mImage)
-        var mFragments = mutableListOf<ImageViewFragment>()
+        var mFragments = mutableListOf<Fragment>()
         var mFragmentNames = mutableListOf<String>()
+
+        if(mImage == "c2"){
+            mFragments.add(VideoViewFragment())
+        }
+
 
         for (key in imageMap!!.keys) {
             mFragmentNames.add(key)
@@ -46,7 +51,7 @@ constructor(private var mImage: String) : Fragment() {
         }
         val tabLayout = rootView.findViewById<TabLayout>(R.id.tabs)
         tabLayout.setupWithViewPager(mViewPager)
-        if (imageMap.size == 1) {
+        if (imageMap.size == 1||mImage=="c1"||mImage=="c2") {
             tabLayout.visibility = View.GONE
         } else {
             tabLayout.visibility = View.VISIBLE

@@ -37,10 +37,11 @@ class SRNotiFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val newContext = ContextThemeWrapper(context, R.style.ThemeOverlay_MyWhiteButton)
-        val map = (activity as MainActivity).loadImage("c2")
+        val map = (activity as MainActivity).loadImage("c3")
         for (key in map!!.keys) {
             val btn = Button(newContext)
             btn.text = key
+            btn.textSize = 17F
             buttonLayout.addView(btn)
             btn.setOnClickListener {
                 (activity as MainActivity).addFragment(ImageViewFragment((map[key].toString())))

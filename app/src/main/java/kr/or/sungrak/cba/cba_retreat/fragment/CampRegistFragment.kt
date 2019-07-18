@@ -12,6 +12,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.regist_layout.view.*
 import kr.or.sungrak.cba.cba_retreat.MainActivity
 import kr.or.sungrak.cba.cba_retreat.R
+import kr.or.sungrak.cba.cba_retreat.common.CBAUtil
 import kr.or.sungrak.cba.cba_retreat.network.ApiService
 import kr.or.sungrak.cba.cba_retreat.network.ServiceGenerator
 import okhttp3.MediaType
@@ -28,7 +29,7 @@ data class SRCampMember(
         val carNumber: String
 )
 
-class CampRegistFragment : Fragment() {
+class CampRegistFragment() : Fragment() {
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -42,7 +43,7 @@ class CampRegistFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        view.regiPhone.setText(CBAUtil.getPhoneNumber(context))
         view.isHaveCar.setOnClickListener {
             if ((it as CheckBox).isChecked) {
                 view.carModel.visibility = View.VISIBLE
@@ -58,7 +59,24 @@ class CampRegistFragment : Fragment() {
         view.campRegiBtn.setOnClickListener {
             val service = ServiceGenerator.createService(ApiService::class.java)
 
-            val regiMem = SRCampMember(view.regiName.text.toString(), view.regiPhone.text.toString(), view.regiChurch.text.toString(), view.carModel.text.toString() + "/" + view.carNo.text.toString())
+            if (view.isHaveCar.isChecked) {
+                if (view.regiName.text.isEmpty() || view.regiChurch.text.isEmpty() || view.regiPhone.text.isEmpty() || view.carModel.text.isEmpty() || view.carNo.text.isEmpty()) {
+                    Toast.makeText(context,
+                            "정보를 입력하세요", Toast.LENGTH_SHORT)
+                            .show()
+                    return@setOnClickListener
+                }
+            } else {
+                if (view.regiName.text.isEmpty() || view.regiChurch.text.isEmpty() || view.regiPhone.text.isEmpty()) {
+                    Toast.makeText(context,
+                            "정보를 입력하세요", Toast.LENGTH_SHORT)
+                            .show()
+                    return@setOnClickListener
+                }
+            }
+
+
+            val regiMem = SRCampMember(view.regiName.text.toString(), view.regiPhone.text.toString(), view.regiChurch.text.toString(), view.carModel.text.toString() + " " + view.carNo.text.toString())
 
             val obj = Gson().toJson(regiMem)
 
@@ -89,4 +107,5 @@ class CampRegistFragment : Fragment() {
 
         }
     }
+
 }

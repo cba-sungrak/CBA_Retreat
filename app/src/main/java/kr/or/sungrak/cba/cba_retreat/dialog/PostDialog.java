@@ -74,7 +74,7 @@ public class PostDialog extends MyProgessDialog {
                 break;
             case Tag.RETREAT_SUNGRAK:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
-                mNameField.setText("몽산포 수련회 진행");
+                mNameField.setText("진행 본부");
                 mTitle = "내 영혼아 교회를 수호하자";
                 break;
         }

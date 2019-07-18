@@ -6,8 +6,11 @@
     <item
         android:id="@+id/sr_welcom"
         android:icon="@drawable/arrow"
-        android:title="초청과 환영의 글" />
-
+        android:title="초청의 글" />
+    <item
+        android:id="@+id/sr_welcom2"
+        android:icon="@drawable/arrow"
+        android:title="환영의 글" />
     <item
         android:id="@+id/sr_noti"
         android:icon="@drawable/arrow"
@@ -23,7 +26,11 @@
     <item
         android:id="@+id/sr_safe"
         android:icon="@drawable/arrow"
-        android:title="안전사고지원 및 여행자보험 관련 안내" />
+        android:title="안전사고지원" />
+    <item
+        android:id="@+id/sr_trable_insurance"
+        android:icon="@drawable/arrow"
+        android:title="여행자보험 관련 안내" />
     <item
         android:id="@+id/sr_sponsor"
         android:icon="@drawable/arrow"
@@ -31,7 +38,7 @@
     <item
         android:id="@+id/sr_member_list"
         android:icon="@drawable/arrow"
-        android:visible="false"
-        android:title="등록인원" />
+        android:title="등록인원"
+        android:visible="false" />
 
 </menu>

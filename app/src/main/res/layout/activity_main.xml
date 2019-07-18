@@ -21,28 +21,23 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="49dp">
+                android:layout_height="49dp"
+                android:layout_marginRight="30dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+
+                <TextView
+                    android:id="@+id/main_title"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="25dp"
+                    android:fontFamily="@font/gyungodic"
+                    android:text="test"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMaxTextSize="25sp"
+                    app:autoSizeMinTextSize="10sp"
+                    app:autoSizeStepGranularity="1sp" />
 
-                    <TextView
-                        android:id="@+id/main_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="64dp"
-                        android:layout_marginRight="64dp"
-                        android:fontFamily="@font/gyungodic"
-                        android:text="test"
-                        android:textColor="@android:color/black"
-                        android:textSize="25sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 

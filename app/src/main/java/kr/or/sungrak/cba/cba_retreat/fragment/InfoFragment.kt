@@ -97,7 +97,8 @@ class InfoFragment : Fragment() {
             (activity as MainActivity).replaceFragment(SwipeImageFragment("timetable"))
         }
         youtubeBtn.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UCW6bF9L0ZK__Tlwl19B0FYQ")))
+            (activity as MainActivity).replaceFragment(VideoViewFragment())
+//            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UCW6bF9L0ZK__Tlwl19B0FYQ")))
         }
         gbsBtn.setOnClickListener {
             (activity as MainActivity).replaceFragment(GBSFragment())
@@ -105,18 +106,24 @@ class InfoFragment : Fragment() {
         //cba
 
         srRegi.setOnClickListener {
-            (activity as MainActivity).replaceFragment(CampRegistFragment())
+            if (ContextCompat.checkSelfPermission(activity!!,
+                            Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_PHONE_STATE), 20)
+            } else {
+                (activity as MainActivity).replaceFragment(CampRegistFragment())
+            }
+
         }
         srCallBtn.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:01050254375")))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:07073006239")))
         }
         srTimeBtn.setOnClickListener {
-            (activity as MainActivity).replaceFragment(SwipeImageFragment("m3"))
+            (activity as MainActivity).replaceFragment(SwipeImageFragment("c4"))
         }
         srQABtn.setOnClickListener {
             if (ContextCompat.checkSelfPermission(activity!!,
                             Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_PHONE_STATE), 0)
+                ActivityCompat.requestPermissions(activity!!, arrayOf(Manifest.permission.READ_PHONE_STATE), 10)
             } else {
                 (activity as MainActivity).replaceFragment(QAListFragment())
             }

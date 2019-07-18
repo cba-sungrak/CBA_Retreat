@@ -24,6 +24,7 @@ public class CBAUtil {
     private static final String TAG = "CBA/CBAUtil";
     private static final String RETREAT_TITLE = "Retreat_Title";
     private static final String ADMIN = "check_admin";
+    private static final String YOUTUBE = "check_admin";
 
     public static MyInfo loadMyInfo(Context context) {
         Gson gson = new Gson();
@@ -38,7 +39,7 @@ public class CBAUtil {
 
 
     public static void removeAllPreferences(Context context) {
-        SharedPreferences pref =  PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         pref.edit().remove("MyInfo").commit();
         pref.edit().remove("GBSInfo").commit();
         pref.edit().remove(ADMIN).commit();
@@ -59,25 +60,25 @@ public class CBAUtil {
 //        return String.format("%d-%d-%d", mYear, mMonth + 1, mDay);
     }
 
-    public static void setRetreat(Context context, String s){
+    public static void setRetreat(Context context, String s) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(RETREAT_TITLE, s);
         editor.commit();
     }
 
-    public static String getRetreat(Context context){
+    public static String getRetreat(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(RETREAT_TITLE, "");
     }
 
-    public static void setAdmin(Context context, boolean isAdmin){
+    public static void setAdmin(Context context, boolean isAdmin) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = pref.edit();
         editor.putBoolean(ADMIN, isAdmin);
         editor.commit();
     }
 
-    public static boolean isAdmin(Context context){
+    public static boolean isAdmin(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADMIN, false);
     }
 
@@ -102,4 +103,18 @@ public class CBAUtil {
         return phoneNumber;
 
     }
+
+    public static void setPref(Context context, String key, String s) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(key, s);
+        Log.e(TAG, "setPref : key[" + key + "] value[" + s + "]");
+        editor.commit();
+    }
+
+    public static String getPref(Context context, String key) {
+        Log.e(TAG, "getPref : [" + key + "]");
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(key, "");
+    }
 }
+

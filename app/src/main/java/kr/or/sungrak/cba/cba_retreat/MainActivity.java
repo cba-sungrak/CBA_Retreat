@@ -54,12 +54,12 @@ import kr.or.sungrak.cba.cba_retreat.dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_retreat.dialog.MyProgessDialog;
 import kr.or.sungrak.cba.cba_retreat.dialog.SelectDialog;
 import kr.or.sungrak.cba.cba_retreat.fragment.CampMemberListFragment;
+import kr.or.sungrak.cba.cba_retreat.fragment.CampRegistFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.InfoFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.QAListFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SRNotiFragment;
 import kr.or.sungrak.cba.cba_retreat.fragment.SwipeImageFragment;
-import kr.or.sungrak.cba.cba_retreat.fragment.VideoViewFragment;
 import kr.or.sungrak.cba.cba_retreat.models.MyInfo;
 
 public class MainActivity extends AppCompatActivity
@@ -142,7 +142,6 @@ public class MainActivity extends AppCompatActivity
             case Tag.RETREAT_CBA:
                 navigationView.inflateMenu(R.menu.activity_main_drawer);
                 mainTitle.setText(Tag.CBA_TITLE);
-                mainTitle.setTextSize(25);
                 bannerImage.setImageResource(R.drawable.banner);
                 FirebaseMessaging.getInstance().subscribeToTopic(Tag.RETREAT_CBA);
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.RETREAT_SUNGRAK);
@@ -156,7 +155,6 @@ public class MainActivity extends AppCompatActivity
             case Tag.RETREAT_SUNGRAK:
                 navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
                 mainTitle.setText(Tag.SR_TITLE);
-                mainTitle.setTextSize(15);
                 bannerImage.setImageResource(R.drawable.sr_banner);
                 logInLayout.setVisibility(View.GONE);
 
@@ -170,6 +168,20 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
         }
+
+        mDatabase.child(Tag.SETTING).child(Tag.YOUTUBE).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        CBAUtil.setPref(MainActivity.this, Tag.YOUTUBE, (String) dataSnapshot.getValue());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+
+                });
 
         mDatabase.child(Tag.IMAGES).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -190,6 +202,9 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+        mainTitle.setOnClickListener(v -> {
+            replaceFragment(new InfoFragment());
+        });
         replaceFragment(new InfoFragment());
 
         updateNavHeader();
@@ -308,22 +323,28 @@ public class MainActivity extends AppCompatActivity
 //                replaceFragment(new DateStatisticFragment());
 //                break;
             case R.id.sr_welcom:
-                replaceFragment(new VideoViewFragment("c1"));
+                replaceFragment(new SwipeImageFragment("c1"));
+                break;
+            case R.id.sr_welcom2:
+                replaceFragment(new SwipeImageFragment("c2"));
                 break;
             case R.id.sr_noti:
                 replaceFragment(new SRNotiFragment());
                 break;
             case R.id.sr_program:
-                replaceFragment(new SwipeImageFragment("m3"));
-                break;
-            case R.id.sr_place:
                 replaceFragment(new SwipeImageFragment("c4"));
                 break;
-            case R.id.sr_safe:
+            case R.id.sr_place:
                 replaceFragment(new SwipeImageFragment("c5"));
                 break;
-            case R.id.sr_sponsor:
+            case R.id.sr_safe:
                 replaceFragment(new SwipeImageFragment("c6"));
+                break;
+            case R.id.sr_trable_insurance:
+                replaceFragment(new SwipeImageFragment("c7"));
+                break;
+            case R.id.sr_sponsor:
+                replaceFragment(new SwipeImageFragment("c8"));
                 break;
             case R.id.sr_member_list:
                 replaceFragment(new CampMemberListFragment());
@@ -372,44 +393,72 @@ public class MainActivity extends AppCompatActivity
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> c1 = new HashMap<>();
         Map<String, Object> c2 = new HashMap<>();
-        Map<String, Object> m3 = new HashMap<>();
+        Map<String, Object> c3 = new HashMap<>();
         Map<String, Object> c4 = new HashMap<>();
         Map<String, Object> c5 = new HashMap<>();
         Map<String, Object> c6 = new HashMap<>();
+        Map<String, Object> c7 = new HashMap<>();
+        Map<String, Object> c8 = new HashMap<>();
         Map<String, Object> m5 = new HashMap<>();
-        c1.put("초청의 글", "c1-a.png");
-        c1.put("환영의 글", "c1-b.png");
+        c1.put("초청의 글1", "c1-01.png");
+        c1.put("초청의 글2", "c1-02.png");
+        c1.put("초청의 글3", "c1-03.png");
 
-        c4.put("몽산포성락원", "c4-a.png");
-        c4.put("교육 및 성회 장소", "c4-b.png");
-        c4.put("공동숙소", "c4-c.png");
-        c4.put("센터 선택형 프로그램", "c4-d.png");
+        c2.put("환영의 글1", "c2-01.png");
+        c2.put("환영의 글2", "c2-02.png");
+        c2.put("환영의 글3", "c2-03.png");
 
-        m3.put("몽산포성락원", "m3-pro1.png");
-        m3.put("세계센터", "m3-pro2.png");
+        c3.put("제4차 특별 신유 집회 안내", "c3-01.png");
+        c3.put("오전 신유성회 안내", "c3-02.png");
+        c3.put("새벽기도 안내", "c3-03.png");
+        c3.put("선택식 강의 안내", "c3-04.png");
+        c3.put("성락인의 고백 안내", "c3-05.png");
+        c3.put("성락원 공동숙소 안내", "c3-06.png");
+        c3.put("센터 기도실 사용수칙 안내", "c3-07.png");
+        c3.put("센터 편의시설 장소 안내", "c3-08.png");
+        c3.put("어린이 예배 안내", "c3-09.png");
+        c3.put("새가족 교육 및 침례 안내", "c3-10.png");
+        c3.put("시무언성락역사전시관 안내", "c3-11.png");
+        c3.put("예배통역 안내", "c3-12.png");
+        c3.put("월산재단 봉사인증활동 안내", "c3-13.png");
+        c3.put("의료 서비스 안내", "c3-14.png");
+        c3.put("전문인 상담 안내", "c3-15.png");
+        c3.put("성라교회 기관별 수련회 안내", "c3-16.png");
 
-        c5.put("안전사고 지원", "c5-a");
-        c5.put("여행자보험", "c5-b");
+        c4.put("몽산포성락원", "c4-01.png");
+        c4.put("세계센터", "c4-02.png");
 
-        c6.put("협력(후원)기관", "c6-a.png");
+        c5.put("몽산포성락원 안내도", "c5-01.png");
+        c5.put("몽산포성락원 안내도", "c5-02.png");
+        c5.put("공동숙소", "c5-03.png");
+
+
+        c6.put("안전사고 지원1", "c6-01.png");
+        c6.put("안전사고 지원1", "c6-02.png");
+        c6.put("안전사고 지원1", "c6-03.png");
+
+        c7.put("여행자보험 안내1", "c7-01.png");
+        c7.put("여행자보험 안내1", "c7-02.png");
+        c7.put("여행자보험 안내1", "c7-02.png");
+
+        c8.put("교회기관1", "c8-01.png");
+        c8.put("교회기관2", "c8-02.png");
+        c8.put("유관기관1", "c8-03.png");
+        c8.put("유관기관2", "c8-04.png");
+        c8.put("기업후원1", "c8-05.png");
+        c8.put("기업후원2", "c8-06.png");
 
         m5.put("오시는길", "m5-map.png");
-
-        c2.put("예배통역안내", "c2-a.png");
-        c2.put("교회학교 안내", "c2-b.png");
-        c2.put("선택식강의 안내", "c2-c.png");
-        c2.put("성락인의 고백", "c2-d.png");
-        c2.put("의료 서비스 안내", "c2-e.png");
-        c2.put("전문인 상담 안내", "c2-f.png");
-        c2.put("시무언 역사 전시관 안내", "c2-g.png");
-        c2.put("센터 기도실 사용 안내", "c2-h.png");
-        c2.put("센터 편의시설 안내", "c2-i.png");
-        c2.put("월산재단 청소년 봉사인증 활동 안내", "c2-j.png");
-        c2.put("교회기관 수련회 안내", "c2-k.png");
 
 
         map.put("c1", c1);
         map.put("c2", c2);
+        map.put("c3", c3);
+        map.put("c4", c4);
+        map.put("c5", c5);
+        map.put("c6", c6);
+        map.put("c7", c7);
+        map.put("c8", c8);
 //        map.put("m3", m3);
 //        map.put("c4", c4);
 //        map.put("c5", c5);
@@ -549,14 +598,17 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (requestCode == 0) {
-            if (grantResults[0] == 0) {
-                Log.e(TAG, "승인");
+        if (grantResults[0] == 0) {
+            if (requestCode == 10) {
                 replaceFragment(new QAListFragment());
-            } else {
-                Log.e(TAG, "거절");
+            } else if (requestCode == 20) {
+                replaceFragment(new CampRegistFragment());
             }
+            Log.e(TAG, "승인");
+        } else {
+            Log.e(TAG, "거절");
         }
+
 
     }
 }

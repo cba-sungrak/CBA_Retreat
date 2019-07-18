@@ -82,13 +82,13 @@ class CampMemberListFragment : Fragment() {
         view.memberSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextChange(newText: String): Boolean {
-                adapter!!.filter.filter(newText)
+                adapter.filter.filter(newText)
                 adapter.notifyDataSetChanged()
                 return true
             }
 
             override fun onQueryTextSubmit(query: String): Boolean {
-                adapter!!.filter.filter(query)
+                adapter.filter.filter(query)
                 adapter.notifyDataSetChanged()
                 return true
             }
@@ -128,28 +128,28 @@ private class CampMemberAdapter : RecyclerView.Adapter<CampMemberAdapter.Holder>
         return object : Filter() {
             override fun performFiltering(charSequence: CharSequence): FilterResults {
                 val charString = charSequence.toString()
+                var filteredList = mutableListOf<SRCampMember>()
                 if (charString.isEmpty()) {
-                    memberSearchList = srMembers
+                    filteredList = srMembers as MutableList<SRCampMember>
                 } else {
-                    val filteredList = ArrayList<SRCampMember>()
                     for (row in srMembers) {
-                        if (row.name!!.toLowerCase().contains(charString.toLowerCase())
-                                || row.mobile!!.contains(charSequence)
-                                || row.carNumber!!.toLowerCase().contains(charString.toLowerCase())
-                                || row.belongTo!!.toLowerCase().contains(charString.toLowerCase())) {
+                        if (row.name.toLowerCase().contains(charString.toLowerCase())
+                                || row.mobile.contains(charSequence)
+                                || row.carNumber.toLowerCase().contains(charString.toLowerCase())
+                                || row.belongTo.toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row)
                         }
                     }
-                    memberSearchList = filteredList
+//                    memberSearchList = filteredList
                 }
                 val filterResults = FilterResults()
-                Log.e("1", memberSearchList.toString())
-                filterResults.values = memberSearchList
+                Log.e("1", filteredList.toString())
+                filterResults.values = filteredList
                 return filterResults
             }
 
             override fun publishResults(charSequence: CharSequence, filterResults: FilterResults) {
-                memberSearchList = filterResults.values as ArrayList<SRCampMember>
+                memberSearchList = filterResults.values as List<SRCampMember>
                 Log.e("2", memberSearchList.toString())
                 notifyDataSetChanged()
             }
