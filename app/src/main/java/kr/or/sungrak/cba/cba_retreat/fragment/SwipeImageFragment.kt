@@ -25,6 +25,7 @@ constructor(private var mImage: String) : Fragment() {
         var mFragmentNames = mutableListOf<String>()
 
         if(mImage == "c2"){
+            mFragmentNames.add("환영의 영상")
             mFragments.add(VideoViewFragment())
         }
 
