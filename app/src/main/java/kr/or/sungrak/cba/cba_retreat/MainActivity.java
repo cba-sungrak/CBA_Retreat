@@ -400,46 +400,44 @@ public class MainActivity extends AppCompatActivity
         Map<String, Object> c7 = new HashMap<>();
         Map<String, Object> c8 = new HashMap<>();
         Map<String, Object> m5 = new HashMap<>();
+        Map<String, Object> m4 = new HashMap<>();
         c1.put("초청의 글1", "c1-01.png");
         c1.put("초청의 글2", "c1-02.png");
-        c1.put("초청의 글3", "c1-03.png");
 
         c2.put("환영의 글1", "c2-01.png");
         c2.put("환영의 글2", "c2-02.png");
-        c2.put("환영의 글3", "c2-03.png");
 
-        c3.put("제4차 특별 신유 집회 안내", "c3-01.png");
-        c3.put("오전 신유성회 안내", "c3-02.png");
-        c3.put("새벽기도 안내", "c3-03.png");
-        c3.put("선택식 강의 안내", "c3-04.png");
-        c3.put("성락인의 고백 안내", "c3-05.png");
-        c3.put("성락원 공동숙소 안내", "c3-06.png");
-        c3.put("센터 기도실 사용수칙 안내", "c3-07.png");
-        c3.put("센터 편의시설 장소 안내", "c3-08.png");
-        c3.put("어린이 예배 안내", "c3-09.png");
-        c3.put("새가족 교육 및 침례 안내", "c3-10.png");
-        c3.put("시무언성락역사전시관 안내", "c3-11.png");
-        c3.put("예배통역 안내", "c3-12.png");
-        c3.put("월산재단 봉사인증활동 안내", "c3-13.png");
-        c3.put("의료 서비스 안내", "c3-14.png");
-        c3.put("전문인 상담 안내", "c3-15.png");
-        c3.put("성라교회 기관별 수련회 안내", "c3-16.png");
+        c3.put("성락원 공동숙소 안내", "c3-01.png");
+        c3.put("센터 기도실 사용수칙 안내", "c3-02.png");
+        c3.put("센터 편의시설 장소 안내", "c3-03.png");
+        c3.put("어린이 예배 안내", "c3-04.png");
+        c3.put("새가족 교육 및 침례 안내", "c3-05.png");
+        c3.put("시무언성락역사전시관 안내", "c3-06.png");
+        c3.put("예배통역 안내", "c3-07.png");
+        c3.put("월산재단 봉사인증활동 안내", "c3-08.png");
+        c3.put("의료 서비스 안내", "c3-09.png");
+        c3.put("전문인 상담 안내", "c3-10.png");
+        c3.put("성락교회 기관별 수련회 안내", "c3-11.png");
 
-        c4.put("몽산포성락원", "c4-01.png");
-        c4.put("세계센터", "c4-02.png");
+        c4.put("제4차 특별 신유 집회", "c4-01.png");
+        c4.put("오전 신유성회", "c4-02.png");
+        c4.put("새벽기도", "c4-03.png");
+        c4.put("선택식 강의", "c4-04.png");
+        c4.put("성락인의 고백", "c4-05.png");
 
-        c5.put("몽산포성락원 안내도", "c5-01.png");
-        c5.put("몽산포성락원 안내도", "c5-02.png");
+
+        c5.put("몽산포성락원 안내도1", "c5-01.png");
+        c5.put("몽산포성락원 안내도2", "c5-02.png");
         c5.put("공동숙소", "c5-03.png");
 
 
         c6.put("안전사고 지원1", "c6-01.png");
-        c6.put("안전사고 지원1", "c6-02.png");
-        c6.put("안전사고 지원1", "c6-03.png");
+        c6.put("안전사고 지원2", "c6-02.png");
+        c6.put("안전사고 지원3", "c6-03.png");
 
         c7.put("여행자보험 안내1", "c7-01.png");
-        c7.put("여행자보험 안내1", "c7-02.png");
-        c7.put("여행자보험 안내1", "c7-02.png");
+        c7.put("여행자보험 안내2", "c7-02.png");
+        c7.put("여행자보험 안내3", "c7-02.png");
 
         c8.put("교회기관1", "c8-01.png");
         c8.put("교회기관2", "c8-02.png");
@@ -448,18 +446,20 @@ public class MainActivity extends AppCompatActivity
         c8.put("기업후원1", "c8-05.png");
         c8.put("기업후원2", "c8-06.png");
 
+        m4.put("몽산포성락원", "m3-01.png");
+        m4.put("세계센터", "m3-02.png");
         m5.put("오시는길", "m5-map.png");
 
 
-        map.put("c1", c1);
-        map.put("c2", c2);
-        map.put("c3", c3);
+//        map.put("c1", c1);
+//        map.put("c2", c2);
+//        map.put("c3", c3);
         map.put("c4", c4);
-        map.put("c5", c5);
-        map.put("c6", c6);
-        map.put("c7", c7);
-        map.put("c8", c8);
-//        map.put("m3", m3);
+//        map.put("c5", c5);
+//        map.put("c6", c6);
+//        map.put("c7", c7);
+//        map.put("c8", c8);
+//        map.put("m3", m4);
 //        map.put("c4", c4);
 //        map.put("c5", c5);
 //        map.put("c6", c6);

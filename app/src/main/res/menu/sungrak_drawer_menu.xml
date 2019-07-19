@@ -18,7 +18,7 @@
     <item
         android:id="@+id/sr_program"
         android:icon="@drawable/arrow"
-        android:title="프로그램" />
+        android:title="세부 프로그램" />
     <item
         android:id="@+id/sr_place"
         android:icon="@drawable/arrow"

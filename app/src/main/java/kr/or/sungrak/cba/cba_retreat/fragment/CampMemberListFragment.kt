@@ -68,6 +68,8 @@ class CampMemberListFragment : Fragment() {
                     if (member != null) {
                         adapter.srMembers = member.srCampMemberList!!
                         adapter.notifyDataSetChanged()
+                        val count = member.srCampMemberList!!.size
+                        view.memberCount.text = "총 등록 인원 : ${count}명"
                     }
                 }
             }
@@ -120,8 +122,6 @@ private class CampMemberAdapter : RecyclerView.Adapter<CampMemberAdapter.Holder>
             srItemBelongTo.text = srMember.belongTo
             srItemCarNumber.text = srMember.carNumber
         }
-
-
     }
 
     override fun getFilter(): Filter {

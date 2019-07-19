@@ -118,7 +118,7 @@ class InfoFragment : Fragment() {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:07073006239")))
         }
         srTimeBtn.setOnClickListener {
-            (activity as MainActivity).replaceFragment(SwipeImageFragment("c4"))
+            (activity as MainActivity).replaceFragment(SwipeImageFragment("m3"))
         }
         srQABtn.setOnClickListener {
             if (ContextCompat.checkSelfPermission(activity!!,
