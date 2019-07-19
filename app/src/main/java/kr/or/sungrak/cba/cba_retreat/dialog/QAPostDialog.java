@@ -78,8 +78,10 @@ public class QAPostDialog extends MyProgessDialog {
                     mNameField.setText(mAuth + " 답장");
                 } else {
                     mNameField.setText(mAuth);
+                    if (!mAuth.isEmpty()) {
+                        mNameField.setFocusable(false);
+                    }
                 }
-                mNameField.setFocusable(false);
                 break;
         }
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);

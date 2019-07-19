@@ -60,4 +60,7 @@ constructor(private var mImage: String) : Fragment() {
 
         return rootView
     }
+
+
+
 }

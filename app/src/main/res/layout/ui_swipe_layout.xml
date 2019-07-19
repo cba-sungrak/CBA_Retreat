@@ -10,7 +10,7 @@ tools:context=".MainActivity">
     android:layout_width="match_parent"
     android:layout_height="wrap_content" />
 
-<androidx.viewpager.widget.ViewPager
+<kr.or.sungrak.cba.cba_retreat.fragment.CustomViewPager
     android:id="@+id/swipe_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

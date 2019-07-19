@@ -177,7 +177,7 @@ public class QAListFragment extends Fragment {
     }
 
     public void showPostDialog() {
-        final QAPostDialog postDialog = new QAPostDialog(getActivity(), "","");
+        final QAPostDialog postDialog = new QAPostDialog(getActivity(), "", "");
 
         postDialog.show();
         postDialog.setOnDismissListener(dialog -> {
@@ -191,7 +191,9 @@ public class QAListFragment extends Fragment {
 
         postDialog.show();
         postDialog.setOnDismissListener(dialog -> {
-            mRecycler.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+            if (mAdapter.getItemCount() > 0) {
+                mRecycler.smoothScrollToPosition(mAdapter.getItemCount() - 1);
+            }
         });
 
     }

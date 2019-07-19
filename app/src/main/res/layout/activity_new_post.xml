@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/edge"
     android:padding="16dp">
 
+
     <TextView
         android:id="@+id/postTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/gyungodic"
-        android:textColor="@android:color/black"
-        android:textSize="25sp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="5dp"
-        android:text="불편 신고" />
+        android:fontFamily="@font/gyungodic"
+        android:text="불편 신고"
+        android:textColor="@android:color/black"
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/post_message"
-        android:layout_below="@+id/postTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
+        android:layout_below="@+id/postTitle"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="5dp"
-        android:text="메시지 보네기" />
+        android:text="메시지 보네기"
+        android:textColor="@android:color/black" />
 
 
     <EditText
@@ -52,8 +54,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="5dp"
         android:layout_marginRight="16dp"
-        android:hint="문의 사항을 남겨주세요"
         android:background="@color/grey_100"
+        android:hint="문의 사항을 남겨주세요"
         android:inputType="textMultiLine"
         android:maxLines="10"
         android:scrollHorizontally="false" />
@@ -77,6 +79,5 @@
         android:layout_below="@+id/field_body"
         android:layout_alignParentLeft="true"
         android:text="공지로보네기" />
-
 
 </RelativeLayout>
