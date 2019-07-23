@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="kr.or.sungrak.cba.cba_retreat">
+    package="kr.or.sungrak.cba.cba_camp">
 
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET" />
@@ -32,7 +32,7 @@
             android:name="firebase_messaging_auto_init_enabled"
             android:value="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="kr.or.sungrak.cba.cba_camp.MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize"
             android:configChanges="orientation|screenSize"
@@ -44,7 +44,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name=".FCM.MyFirebaseMessagingService">
+        <service android:name="kr.or.sungrak.cba.cba_camp.FCM.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

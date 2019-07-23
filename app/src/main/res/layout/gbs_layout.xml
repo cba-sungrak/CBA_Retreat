@@ -6,7 +6,7 @@
         <import type="android.view.View" />
         <variable
             name="gbs"
-            type="kr.or.sungrak.cba.cba_retreat.models.GBSInfo" />
+            type="kr.or.sungrak.cba.cba_camp.models.GBSInfo" />
     </data>
 
     <LinearLayout

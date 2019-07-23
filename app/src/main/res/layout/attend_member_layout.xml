@@ -7,7 +7,7 @@
 
         <variable
             name="attend"
-            type="kr.or.sungrak.cba.cba_retreat.models.AttendList.AttendInfo" />
+            type="kr.or.sungrak.cba.cba_camp.models.AttendList.AttendInfo" />
     </data>
 
     <LinearLayout

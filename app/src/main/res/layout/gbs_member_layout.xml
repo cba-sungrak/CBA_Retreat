@@ -5,7 +5,7 @@
         <import type="android.view.View"/>
         <variable
             name="member"
-            type="kr.or.sungrak.cba.cba_retreat.models.MyInfo" />
+            type="kr.or.sungrak.cba.cba_camp.models.MyInfo" />
     </data>
 
     <LinearLayout

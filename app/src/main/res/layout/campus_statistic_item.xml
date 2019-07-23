@@ -7,7 +7,7 @@
 
         <variable
             name="statistic"
-            type="kr.or.sungrak.cba.cba_retreat.models.CampusStatisticList.CampusStatisticInfo" />
+            type="kr.or.sungrak.cba.cba_camp.models.CampusStatisticList.CampusStatisticInfo" />
     </data>
 
     <LinearLayout

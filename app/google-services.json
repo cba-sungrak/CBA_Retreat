@@ -8,6 +8,42 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1069252633339:android:2ab7446459b9ddcc",
+        "android_client_info": {
+          "package_name": "kr.or.sungrak.cba.cba_camp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069252633339-otn6n2o5qjbt0mi135h1e01hhmt0mh1h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9FWZ2iXIui4cr8E0zUtKCegzy3f6wv_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069252633339-otn6n2o5qjbt0mi135h1e01hhmt0mh1h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1069252633339-asenth31864fcoqc01c139ji999p8t6n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "CBA.CBACampProject"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1069252633339:android:409257390557a651",
         "android_client_info": {
           "package_name": "kr.or.sungrak.cba.cba_retreat"
@@ -15,11 +51,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "1069252633339-u5opc2r95l9la9j37d001g90jhsv5lf0.apps.googleusercontent.com",
+          "client_id": "1069252633339-jk27ndqjfsuhl3e12konvi6eb590voev.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "kr.or.sungrak.cba.cba_retreat",
-            "certificate_hash": "772d38c82e8e04c5481fe73e8287ba212d817ad9"
+            "certificate_hash": "766a8879e718562de7318cfc1780711f214fa24a"
           }
         },
         {
@@ -31,15 +67,15 @@
           }
         },
         {
-          "client_id": "1069252633339-jk27ndqjfsuhl3e12konvi6eb590voev.apps.googleusercontent.com",
+          "client_id": "1069252633339-u5opc2r95l9la9j37d001g90jhsv5lf0.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "kr.or.sungrak.cba.cba_retreat",
-            "certificate_hash": "766a8879e718562de7318cfc1780711f214fa24a"
+            "certificate_hash": "772d38c82e8e04c5481fe73e8287ba212d817ad9"
           }
         },
         {
-          "client_id": "1069252633339-68cucbmde2jov5mlu5mobapea06ml1e1.apps.googleusercontent.com",
+          "client_id": "1069252633339-otn6n2o5qjbt0mi135h1e01hhmt0mh1h.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -49,14 +85,10 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "1069252633339-68cucbmde2jov5mlu5mobapea06ml1e1.apps.googleusercontent.com",
+              "client_id": "1069252633339-otn6n2o5qjbt0mi135h1e01hhmt0mh1h.apps.googleusercontent.com",
               "client_type": 3
             },
             {
@@ -67,9 +99,78 @@
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069252633339:android:4c101d7b716ff3f2",
+        "android_client_info": {
+          "package_name": "kr.or.sungrak.cba.retreat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069252633339-otn6n2o5qjbt0mi135h1e01hhmt0mh1h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9FWZ2iXIui4cr8E0zUtKCegzy3f6wv_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069252633339-otn6n2o5qjbt0mi135h1e01hhmt0mh1h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1069252633339-asenth31864fcoqc01c139ji999p8t6n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "CBA.CBACampProject"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1069252633339:android:1d1f950d01195a3e",
+        "android_client_info": {
+          "package_name": "org.cba.checkbible"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1069252633339-otn6n2o5qjbt0mi135h1e01hhmt0mh1h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9FWZ2iXIui4cr8E0zUtKCegzy3f6wv_A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1069252633339-otn6n2o5qjbt0mi135h1e01hhmt0mh1h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1069252633339-asenth31864fcoqc01c139ji999p8t6n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "CBA.CBACampProject"
+              }
+            }
+          ]
         }
       }
     }

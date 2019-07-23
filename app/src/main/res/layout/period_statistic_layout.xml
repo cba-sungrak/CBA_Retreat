@@ -5,7 +5,7 @@
     <data>
         <variable
             name="fragment"
-            type="kr.or.sungrak.cba.cba_retreat.fragment.PeriodStatisticFragment"/>
+            type="kr.or.sungrak.cba.cba_camp.fragment.PeriodStatisticFragment"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"
