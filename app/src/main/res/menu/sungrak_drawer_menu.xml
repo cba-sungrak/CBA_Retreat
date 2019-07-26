@@ -6,11 +6,11 @@
     <item
         android:id="@+id/sr_welcom"
         android:icon="@drawable/arrow"
-        android:title="초청의 글" />
+        android:title="초청 인사" />
     <item
         android:id="@+id/sr_welcom2"
         android:icon="@drawable/arrow"
-        android:title="환영의 글" />
+        android:title="환영 인사" />
     <item
         android:id="@+id/sr_noti"
         android:icon="@drawable/arrow"

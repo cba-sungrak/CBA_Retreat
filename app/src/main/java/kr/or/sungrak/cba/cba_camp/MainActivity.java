@@ -150,6 +150,8 @@ public class MainActivity extends AppCompatActivity
                 if (CBAUtil.isAdmin(this)) {
                     FirebaseMessaging.getInstance().subscribeToTopic(Tag.CBA_ADMIN);
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.SR_ADMIN);
+                } else {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.CBA_ADMIN);
                 }
                 break;
             case Tag.RETREAT_SUNGRAK:
@@ -165,6 +167,8 @@ public class MainActivity extends AppCompatActivity
                     navigationView.getMenu().findItem(R.id.sr_member_list).setVisible(true);
                     FirebaseMessaging.getInstance().subscribeToTopic(Tag.SR_ADMIN);
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.CBA_ADMIN);
+                } else {
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.SR_ADMIN);
                 }
                 break;
         }

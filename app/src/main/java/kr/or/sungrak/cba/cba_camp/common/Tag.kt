@@ -17,6 +17,8 @@ class Tag {
         const val SETTING = "setting"
         const val YOUTUBE = "youtube"
 
+        const val NOTI_ID = 265
+
     }
 
 

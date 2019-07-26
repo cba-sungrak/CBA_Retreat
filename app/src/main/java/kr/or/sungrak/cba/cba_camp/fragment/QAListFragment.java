@@ -6,6 +6,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -71,6 +72,8 @@ public class QAListFragment extends Fragment {
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
                 mFab.setOnClickListener(view -> showPostDialog());
                 mPostsQuery = getQuery(mDatabase);
+                TextView tv = rootView.findViewById(R.id.qaInfoTextView);
+                tv.setVisibility(View.GONE);
                 break;
             case Tag.RETREAT_SUNGRAK:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);

@@ -1,6 +1,7 @@
 package kr.or.sungrak.cba.cba_camp.FCM;
 
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -21,6 +22,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import kr.or.sungrak.cba.cba_camp.MainActivity;
 import kr.or.sungrak.cba.cba_camp.R;
+import kr.or.sungrak.cba.cba_camp.common.Tag;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
@@ -51,8 +53,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
-        sendNotification(remoteMessage.getNotification().getBody());
+        sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
     }
+
     // [END receive_message]
     @Override
     public void onNewToken(String token) {
@@ -91,7 +94,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      *
      * @param messageBody FCM message body received.
      */
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String title, String messageBody) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
@@ -99,14 +102,20 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         String channelId = getString(R.string.default_notification_channel_id);
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
+
+        Notification notify =
+                new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.app_icon)
-                        .setContentTitle("성락교회 수련회")
+                        .setContentTitle(title)
                         .setContentText(messageBody)
                         .setAutoCancel(true)
                         .setSound(defaultSoundUri)
-                        .setContentIntent(pendingIntent);
+                        .setStyle(new NotificationCompat.InboxStyle().addLine(messageBody))
+                        .setGroup("group")
+                        .setGroupSummary(true)
+                        .setChannelId(channelId)
+                        .setContentIntent(pendingIntent)
+                        .build();
 
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -119,6 +128,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(Tag.NOTI_ID, notify);
     }
 }

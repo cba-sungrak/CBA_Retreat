@@ -1,5 +1,7 @@
 package kr.or.sungrak.cba.cba_camp.fragment;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -48,7 +50,7 @@ public class PostListFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
-
+        clearNoti();
 
         switch (CBAUtil.getRetreat(getActivity())) {
             case Tag.RETREAT_CBA:
@@ -152,9 +154,15 @@ public class PostListFragment extends Fragment {
 
         postDialog.show();
         postDialog.setOnDismissListener(dialog -> {
-            mRecycler.smoothScrollToPosition(mAdapter.getItemCount()-1);
+            mRecycler.smoothScrollToPosition(mAdapter.getItemCount() - 1);
         });
 
+    }
+
+    private void clearNoti() {
+        NotificationManager notiManager =
+                (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        notiManager.cancelAll();
     }
 
 }
