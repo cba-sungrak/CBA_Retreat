@@ -14,6 +14,38 @@
         android:padding="10dp">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_author_layout"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/post_body"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:autoLink="web"
+                android:fontFamily="@font/bongodic"
+                android:textColor="@android:color/black"
+                android:textColorLink="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="testesatawet" />
+
+
+            <TextView
+                android:id="@+id/post_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/bongodic"
+                android:gravity="right"
+                tools:text="2018-08-08" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/post_author_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,38 +64,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:fontFamily="@font/bongodic"
                 android:gravity="center_vertical"
                 android:textColor="@android:color/black"
-                android:fontFamily="@font/bongodic"
                 tools:text="Staff" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/post_author_layout"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/post_body"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:autoLink="web"
-                android:textColor="@android:color/black"
-                android:fontFamily="@font/bongodic"
-                tools:text="testesatawet" />
-
-            <TextView
-                android:id="@+id/post_time"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:gravity="right"
-                android:fontFamily="@font/bongodic"
-                tools:text="2018-08-08" />
 
         </LinearLayout>
 

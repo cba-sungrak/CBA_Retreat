@@ -123,11 +123,9 @@ public class PostDialog extends MyProgessDialog {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         Post post;
         if (isNoti) {
-            post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "알림공지");
             SendFCM.sendOKhttp(mTitle, body, CBAUtil.getRetreat(mContext));
-        } else {
-            post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "공지");
         }
+        post = new Post(auth.getUid(), username, body, getCurrentTimeStr(), "공지");
         Map<String, Object> postValues = post.toMap();
 
         Map<String, Object> childUpdates = new HashMap<>();
