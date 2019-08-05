@@ -72,7 +72,7 @@ public class QAPostDialog extends MyProgessDialog {
                 break;
             case Tag.RETREAT_SUNGRAK:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
-                tv.setText("불편신고");
+                tv.setText("불편접수");
                 mTopic = Tag.SR_ADMIN;
                 if (CBAUtil.isAdmin(getContext())) {
                     mNameField.setText(mAuth + " 답장");
@@ -131,7 +131,6 @@ public class QAPostDialog extends MyProgessDialog {
             post = new Post(mUid, username, body, getCurrentTimeStr(), "공지");
         } else {
             post = new Post(mUid, username, body, getCurrentTimeStr(), "");
-            SendFCM.sendOKhttp("건의사항", body, mTopic);
         }
 
         Map<String, Object> postValues = post.toMap();
@@ -139,6 +138,10 @@ public class QAPostDialog extends MyProgessDialog {
         Map<String, Object> childUpdates = new HashMap<>();
         childUpdates.put(key, postValues);
         mDatabase.child(Tag.MESSAGE).updateChildren(childUpdates);
+
+        if (!CBAUtil.isAdmin(getContext())) {
+            SendFCM.sendOKhttp("건의사항 " + username, body, mTopic);
+        }
 
     }
 
