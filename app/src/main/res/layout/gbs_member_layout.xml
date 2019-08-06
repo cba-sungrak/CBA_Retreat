@@ -2,7 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="member"
             type="kr.or.sungrak.cba.cba_camp.models.MyInfo" />
@@ -11,50 +13,116 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <TextView
-            style="@style/GBSPosition"
-            android:text="조원" />
-
-        <LinearLayout style="@style/GBSContentMember">
-
-            <TextView
-                android:id="@+id/gbs_member_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{@string/gbs_name + member.name}"
-                android:textColor="@android:color/black"
-                android:typeface="serif" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/gbs_member_age"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{@string/gbs_age + member.age}"
-                android:textColor="@android:color/black"
-                android:typeface="serif" />
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/bongodic"
+                android:gravity="center"
+                android:text="조원"
+                android:textColor="@android:color/black" />
 
-            <TextView
-                android:id="@+id/gbs_member_campus"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@{@string/gbs_campus + member.campus}"
-                android:textColor="@android:color/black"
-                android:typeface="serif" />
+                android:layout_weight="0.5"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/gbs_member_mobile"
-                android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bongodic"
+                    android:paddingBottom="8dp"
+                    android:text="@string/gbs_name"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bongodic"
+                    android:paddingBottom="8dp"
+                    android:text="@string/gbs_age"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bongodic"
+                    android:paddingBottom="8dp"
+                    android:text="@string/gbs_campus"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="phone"
+                    android:fontFamily="@font/bongodic"
+                    android:paddingBottom="8dp"
+                    android:text="@string/gbs_mobile"
+                    android:textColor="@android:color/black"
+                    android:textColorLink="@android:color/black"
+                    android:visibility="@{member.position.equals(@string/gbs_captain) ? View.VISIBLE : View.GONE}" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:autoLink="phone"
-                android:text="@{@string/gbs_mobile + member.mobile}"
-                android:textColor="@android:color/black"
-                android:textColorLink="@android:color/black"
-                android:typeface="serif"
-                android:visibility="@{member.position.equals(@string/gbs_captain) ? View.VISIBLE : View.GONE}"
-                />
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/gbs_member_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bongodic"
+                    android:paddingBottom="8dp"
+                    android:text="@{member.name}" />
+
+                <TextView
+                    android:id="@+id/gbs_member_age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bongodic"
+                    android:paddingBottom="8dp"
+                    android:text="@{member.age}" />
+
+                <TextView
+                    android:id="@+id/gbs_member_campus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bongodic"
+                    android:paddingBottom="8dp"
+                    android:text="@{member.campus}" />
+
+                <TextView
+                    android:id="@+id/gbs_member_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="phone"
+                    android:fontFamily="@font/bongodic"
+                    android:paddingBottom="8dp"
+                    android:text="@{member.mobile}"
+                    android:textColor="@android:color/black"
+                    android:textColorLink="@android:color/black"
+                    android:visibility="@{member.position.equals(@string/gbs_captain) ? View.VISIBLE : View.GONE}" />
+            </LinearLayout>
 
         </LinearLayout>
+
+        <View
+            android:id="@+id/gbsItemLine"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="8dp"
+            android:background="@color/grey_300" />
     </LinearLayout>
 </layout>

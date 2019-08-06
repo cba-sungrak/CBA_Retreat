@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="gbs"
             type="kr.or.sungrak.cba.cba_camp.models.GBSInfo" />
@@ -16,21 +17,6 @@
         android:layout_marginRight="30dp"
         android:orientation="vertical">
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="조장 조원 확인"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:typeface="sans" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_marginBottom="10dp"
-            android:background="#000000" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,6 +26,7 @@
             android:textStyle="bold"
             android:typeface="sans"
             android:visibility="@{gbs.leader==null ? View.VISIBLE:View.GONE }" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,82 +36,140 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="16dp">
 
                 <TextView
-                    style="@style/GBSPosition"
-                    android:text="단계" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/gyungodic"
+                    android:text="단계  "
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp" />
 
+                <TextView
+                    android:id="@+id/gbs_level"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bongodic"
+                    android:text="@{gbs.gbsLevel}"
+                    android:textSize="20sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bongodic"
+                    android:text="조"
+                    android:textSize="20sp" />
 
-                <LinearLayout style="@style/GBSContent">
-
-                    <TextView
-                        android:id="@+id/gbs_level"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{gbs.gbsLevel}"
-                        android:textColor="@android:color/black"
-                        android:typeface="serif" />
-                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="20dp">
+
+            <LinearLayout style="@style/GBSContent">
 
                 <TextView
-                    style="@style/GBSPosition"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:fontFamily="@font/bongodic"
+                    android:gravity="center"
                     android:text="조장"
-                    android:typeface="serif" />
+                    android:textColor="@android:color/black" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/bongodic"
+                        android:paddingBottom="8dp"
+                        android:text="@string/gbs_name"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/bongodic"
+                        android:paddingBottom="8dp"
+                        android:text="@string/gbs_age"
+                        android:textColor="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoLink="phone"
+                        android:fontFamily="@font/bongodic"
+                        android:paddingBottom="8dp"
+                        android:text="@string/gbs_mobile"
+                        android:textColor="@android:color/black"
+                        android:textColorLink="@android:color/black" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/bongodic"
+                        android:paddingBottom="8dp"
+                        android:text="@string/gbs_campus"
+                        android:textColor="@android:color/black" />
+
+                </LinearLayout>
 
 
-                <LinearLayout style="@style/GBSContent">
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
 
                     <TextView
                         android:id="@+id/gbs_leader_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{@string/gbs_name + gbs.leader.name}"
-                        android:textColor="@android:color/black"
-                        android:typeface="serif" />
+                        android:fontFamily="@font/bongodic"
+                        android:paddingBottom="8dp"
+                        android:text="@{gbs.leader.name}" />
 
                     <TextView
                         android:id="@+id/gbs_leader_age"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@{@string/gbs_age + gbs.leader.age}"
-                        android:textColor="@android:color/black"
-                        android:typeface="serif" />
-
-                    <TextView
-                        android:id="@+id/gbs_leader_campus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{@string/gbs_campus + gbs.leader.campus}"
-                        android:textColor="@android:color/black"
-                        android:typeface="serif" />
+                        android:fontFamily="@font/bongodic"
+                        android:paddingBottom="8dp"
+                        android:text="@{gbs.leader.age}" />
 
                     <TextView
                         android:id="@+id/gbs_leader_mobile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:autoLink="phone"
-                        android:text="@{@string/gbs_mobile + gbs.leader.mobile}"
-                        android:textColor="@android:color/black"
-                        android:textColorLink="@android:color/black"
-                        android:typeface="serif" />
+                        android:fontFamily="@font/bongodic"
+                        android:paddingBottom="8dp"
+                        android:text="@{gbs.leader.mobile}"
+                        android:textColorLink="@color/grey_800" />
+
+                    <TextView
+                        android:id="@+id/gbs_leader_campus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp"
+                        android:text="@{gbs.leader.campus}" />
+
                 </LinearLayout>
             </LinearLayout>
 
+            <LinearLayout style="@style/GBSContentMember">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/gbs_member_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="vertical" />
-
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/gbs_member_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </layout>

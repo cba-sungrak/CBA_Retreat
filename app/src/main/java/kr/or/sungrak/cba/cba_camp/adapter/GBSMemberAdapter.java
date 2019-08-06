@@ -1,10 +1,11 @@
 package kr.or.sungrak.cba.cba_camp.adapter;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,9 @@ public class GBSMemberAdapter extends RecyclerView.Adapter<GBSMemberViewHolder> 
     public void onBindViewHolder(@NonNull GBSMemberViewHolder GBSMemberViewHolder, int i) {
         MyInfo myInfo = mMemberList.get(i);
         GBSMemberViewHolder.binding.setMember(myInfo);
+        if (getItemCount() == i) {
+            GBSMemberViewHolder.binding.gbsItemLine.setVisibility(View.GONE);
+        }
     }
 
 

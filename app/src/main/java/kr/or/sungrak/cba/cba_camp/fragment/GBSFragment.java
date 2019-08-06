@@ -49,13 +49,13 @@ public class GBSFragment extends Fragment {
         } else {
             recyclerView = binding.gbsMemberList;
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-            recyclerView.setAdapter(gbsMemeberAdapter);
             gbsMemeberAdapter = new GBSMemberAdapter();
             if (loadGBSInfo() == null || loadGBSInfo().getLeader() == null) {
                 getGBSInfo();
             } else {
                 updateGBSInfo();
             }
+            recyclerView.setAdapter(gbsMemeberAdapter);
         }
 
         return rootView;
