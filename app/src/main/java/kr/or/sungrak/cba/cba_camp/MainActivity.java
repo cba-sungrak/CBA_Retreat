@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity
             if (mAuth.getCurrentUser() == null) {
                 CBAUtil.removeAllPreferences(this);
             }
-            updateNavHeader();
         }
+        updateNavHeader();
     }
 
     public void initialActivity() {
