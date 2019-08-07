@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 // [START blog_user_class]
 @IgnoreExtraProperties
-public class MyInfo {
+public class MemberInfo {
     // GBSLevel STAFF = 99;
     @SerializedName("name")
     String name;

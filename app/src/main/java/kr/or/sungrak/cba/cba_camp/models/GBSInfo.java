@@ -12,19 +12,19 @@ public class GBSInfo {
     @SerializedName("gbsLevel")
     String gbsLevel;
     @SerializedName("leader")
-    MyInfo leader;
+    MemberInfo leader;
     @SerializedName("members")
-    List<MyInfo> members;
+    List<MemberInfo> members;
 
     public String getGbsLevel() {
         return gbsLevel;
     }
 
-    public MyInfo getLeader() {
+    public MemberInfo getLeader() {
         return leader;
     }
 
-    public List<MyInfo> getMembers() {
+    public List<MemberInfo> getMembers() {
         return members;
     }
 

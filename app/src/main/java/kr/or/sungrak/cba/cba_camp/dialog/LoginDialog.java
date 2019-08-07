@@ -2,26 +2,26 @@ package kr.or.sungrak.cba.cba_camp.dialog;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
 
-import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
 import kr.or.sungrak.cba.cba_camp.R;
+import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
 import kr.or.sungrak.cba.cba_camp.models.MyInfo;
 import kr.or.sungrak.cba.cba_camp.network.ApiService;
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
@@ -54,6 +54,8 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
         // Buttons
         findViewById(R.id.emailSignInButton).setOnClickListener(this);
         findViewById(R.id.cancel).setOnClickListener(this);
+        //
+        findViewById(R.id.signUp).setOnClickListener(this);
         mLoginSuccess = false;
     }
 
@@ -106,10 +108,16 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
 
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.emailSignInButton) {
-            signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
-        } else if (i == R.id.cancel) {
-            dismiss();
+        switch (v.getId()) {
+            case R.id.emailSignInButton:
+                signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+                break;
+            case R.id.cancel:
+                dismiss();
+                break;
+            case R.id.signUp:
+                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://cba.sungrak.or.kr:9000")));
+                break;
         }
     }
 
@@ -121,7 +129,7 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
         ApiService service = ServiceGenerator.createService(ApiService.class);
 
         // API 요청.
-        Call<MyInfo> request = service.getMemberRepositories(uid);
+        Call<MyInfo> request = service.getMyInfo(uid);
         request.enqueue(new Callback<MyInfo>() {
             @Override
             public void onResponse(Call<MyInfo> call, Response<MyInfo> response) {
@@ -130,7 +138,7 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
                     //error 서버가 켜져 있으나 찾을 수가 없음
                     CBAUtil.signOut(mContext);
                 } else {
-                    saveMyInfo(response);
+                    CBAUtil.saveMyInfo(mContext, response);
                 }
                 dismiss();
                 hideProgressDialog();
@@ -144,15 +152,6 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
                 hideProgressDialog();
             }
         });
-    }
-
-    public void saveMyInfo(Response<MyInfo> response) {
-        Gson gson = new Gson();
-        String myInfo = gson.toJson(response.body());
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(mContext);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("MyInfo", myInfo);
-        editor.commit();
     }
 
 }

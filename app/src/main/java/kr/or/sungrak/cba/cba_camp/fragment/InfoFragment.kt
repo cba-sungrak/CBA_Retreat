@@ -39,7 +39,7 @@ class InfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val database = FirebaseDatabase.getInstance().reference
         lateinit var myRef: DatabaseReference
-        when (CBAUtil.getRetreat(this!!.activity)) {
+        when (CBAUtil.getRetreat(this.activity)) {
             Tag.RETREAT_CBA -> {
                 backGroundImage.setImageResource(R.drawable.backgroundtext)
                 cbaInfoLayout.visibleOrGone(true)
@@ -90,7 +90,7 @@ class InfoFragment : Fragment() {
         }
 
         callBtn.setOnClickListener {
-            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:01050254375")))
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("tel:01032253652")))
         }
         timeBtn.setOnClickListener {
             (activity as MainActivity).replaceFragment(SwipeImageFragment("timetable"))

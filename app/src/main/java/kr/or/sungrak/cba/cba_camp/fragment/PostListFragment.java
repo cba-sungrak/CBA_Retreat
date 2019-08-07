@@ -65,9 +65,9 @@ public class PostListFragment extends Fragment {
         mRecycler.setHasFixedSize(true);
         mFab = rootView.findViewById(R.id.fab);
 
-        MyInfo myInfo = CBAUtil.loadMyInfo(getContext());
+        MyInfo memberInfo = CBAUtil.loadMyInfo(getContext());
 
-        if ((myInfo != null && (myInfo.getGbsLevel().equals("STAFF"))) || CBAUtil.isAdmin(getActivity())) {
+        if ((memberInfo != null && (memberInfo.getRetreatGbs().equals("STAFF"))) || CBAUtil.isAdmin(getActivity())) {
             mFab.show();
             mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override

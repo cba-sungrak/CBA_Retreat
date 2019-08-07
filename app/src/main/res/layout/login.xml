@@ -58,6 +58,13 @@
                 android:layout_weight="1"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword" />
+
+            <TextView
+                android:id="@+id/signUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="회원가입" />
         </LinearLayout>
 
     </LinearLayout>

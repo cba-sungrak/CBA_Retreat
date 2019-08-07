@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import kr.or.sungrak.cba.cba_camp.models.MyInfo;
+import retrofit2.Response;
 
 public class CBAUtil {
     private static final String TAG = "CBA/CBAUtil";
@@ -37,6 +38,14 @@ public class CBAUtil {
         return gson.fromJson(json, MyInfo.class);
     }
 
+    public static void saveMyInfo(Context context, Response<MyInfo> response) {
+        Gson gson = new Gson();
+        String myInfo = gson.toJson(response.body());
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("MyInfo", myInfo);
+        editor.commit();
+    }
 
     public static void removeAllPreferences(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);

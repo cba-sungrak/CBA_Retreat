@@ -20,7 +20,7 @@ import retrofit2.http.Query;
 public interface ApiService {
     //1.관리자 여부 체크
     @GET("getMyInfo/{uid}")
-    Call<MyInfo> getMemberRepositories(@Path("uid") String uid);
+    Call<MyInfo> getMyInfo(@Path("uid") String uid);
 
     @GET("getGBSInfo/{uid}")
     Call<GBSInfo> getGBSRepositories(@Path("uid") String uid);

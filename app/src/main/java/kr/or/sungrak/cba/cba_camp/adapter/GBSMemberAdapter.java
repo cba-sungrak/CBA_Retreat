@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kr.or.sungrak.cba.cba_camp.R;
-import kr.or.sungrak.cba.cba_camp.models.MyInfo;
+import kr.or.sungrak.cba.cba_camp.models.MemberInfo;
 import kr.or.sungrak.cba.cba_camp.viewholder.GBSMemberViewHolder;
 
 public class GBSMemberAdapter extends RecyclerView.Adapter<GBSMemberViewHolder> {
-    private List<MyInfo> mMemberList;
+    private List<MemberInfo> mMemberList;
 
     @NonNull
     @Override
@@ -26,8 +26,8 @@ public class GBSMemberAdapter extends RecyclerView.Adapter<GBSMemberViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull GBSMemberViewHolder GBSMemberViewHolder, int i) {
-        MyInfo myInfo = mMemberList.get(i);
-        GBSMemberViewHolder.binding.setMember(myInfo);
+        MemberInfo memberInfo = mMemberList.get(i);
+        GBSMemberViewHolder.binding.setMember(memberInfo);
         if (getItemCount() == i) {
             GBSMemberViewHolder.binding.gbsItemLine.setVisibility(View.GONE);
         }
@@ -42,7 +42,7 @@ public class GBSMemberAdapter extends RecyclerView.Adapter<GBSMemberViewHolder> 
         return mMemberList.size();
     }
 
-    public void updateItems(List<MyInfo> items) {
+    public void updateItems(List<MemberInfo> items) {
         if (this.mMemberList == null) {
             mMemberList = new ArrayList<>();
         }

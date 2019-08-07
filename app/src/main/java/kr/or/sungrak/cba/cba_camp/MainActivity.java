@@ -104,13 +104,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        MyInfo myInfo = CBAUtil.loadMyInfo(this);
+        MyInfo memberInfo = CBAUtil.loadMyInfo(this);
         if (mCheckAttMenu != null) {
             mCheckAttMenu.setVisible(true);
-            if (myInfo != null) {
-                if (myInfo.isLeader()) {
-                    mCheckAttMenu.setVisible(true);
-                }
+            if (memberInfo != null) {
+//                if (memberInfo.isLeader()) {
+//                    mCheckAttMenu.setVisible(true);
+//                }
             }
             if (mAuth.getCurrentUser() == null) {
                 CBAUtil.removeAllPreferences(this);
@@ -227,13 +227,14 @@ public class MainActivity extends AppCompatActivity
             //logOut
             logOutBtn.setVisibility(View.GONE);
             logInBtn.setVisibility(View.VISIBLE);
-            loginText.setText("홍길동      |      OJ조      |      조원");
+//            loginText.setText("홍길동      |      OJ조      |      조원");
         } else {
             //logIn
             logInBtn.setVisibility(View.GONE);
             logOutBtn.setVisibility(View.VISIBLE);
-            if (CBAUtil.loadMyInfo(this) != null) {
-                loginText.setText(CBAUtil.loadMyInfo(this).getName() + "/" + CBAUtil.loadMyInfo(this).getGbsLevel());
+            MyInfo myInfo = CBAUtil.loadMyInfo(this);
+            if (myInfo != null) {
+                loginText.setText(myInfo.getName() + "      |      " + myInfo.getRetreatGbs() + "      |      " + myInfo.getPosition());
             }
         }
         logInBtn.setOnClickListener(v -> {
