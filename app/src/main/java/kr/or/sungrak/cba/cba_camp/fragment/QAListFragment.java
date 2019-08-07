@@ -31,7 +31,8 @@ import kr.or.sungrak.cba.cba_camp.viewholder.QAViewHolder;
 public class QAListFragment extends Fragment {
 
     private static final String TAG = "QAListFragment";
-
+    private static final int NOTI = 1;
+    private static final int MESSAGE = 2;
     // [START define_database_reference]
     private DatabaseReference mDatabase;
     // [END define_database_reference]
@@ -106,23 +107,43 @@ public class QAListFragment extends Fragment {
         mAdapter = new FirebaseRecyclerAdapter<Post, QAViewHolder>(options) {
 
             @Override
-            public QAViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            public QAViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+//                switch (viewType) {
+//                    case NOTI:
+//                        break;
+//                    case MESSAGE:
+//                        break;
+//                }
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
                 return new QAViewHolder(inflater.inflate(R.layout.qa_item, viewGroup, false));
             }
 
+            @Override
+            public int getItemViewType(int position) {
+                Post item = getItem(position);
+                if (item.isStaff.equalsIgnoreCase("공지")) {
+                    return NOTI;
+                } else {
+                    return MESSAGE;
+                }
+            }
+
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
-            protected void onBindViewHolder(@NonNull QAViewHolder qaViewHolder, int i, @NonNull Post post) {
-                if (post.isStaff.equalsIgnoreCase("봉사자") || (post.isStaff.equalsIgnoreCase("공지"))) {
-                    int colorRed = getActivity().getResources().getColor(R.color.grey_200);
-                    qaViewHolder.cardView.setCardBackgroundColor(colorRed);
-                    float density = getActivity().getResources().getDisplayMetrics().density;
-                    int left = (int) (80 * density);
-                    int right = (int) (18 * density);
-                    qaViewHolder.linearLayout.setPadding(left, 0, right, 0);
-                    qaViewHolder.nameLayout.setGravity(Gravity.RIGHT);
-                    qaViewHolder.nameLayout.setPadding(0, 0, right, 0);
+            protected void onBindViewHolder(@NonNull QAViewHolder qaViewHolder, int position, @NonNull Post post) {
+                switch (qaViewHolder.getItemViewType()) {
+                    case NOTI:
+                        int colorRed = getActivity().getResources().getColor(R.color.grey_200);
+                        qaViewHolder.cardView.setCardBackgroundColor(colorRed);
+                        float density = getActivity().getResources().getDisplayMetrics().density;
+                        int left = (int) (80 * density);
+                        int right = (int) (18 * density);
+                        qaViewHolder.linearLayout.setPadding(left, 0, right, 0);
+                        qaViewHolder.nameLayout.setGravity(Gravity.RIGHT);
+                        qaViewHolder.nameLayout.setPadding(0, 0, right, 0);
+                        break;
+                    case MESSAGE:
+                        break;
                 }
                 if (CBAUtil.isAdmin(getActivity())) {
                     qaViewHolder.itemView.setOnLongClickListener(v -> {
@@ -134,6 +155,7 @@ public class QAListFragment extends Fragment {
             }
 
         };
+
         mRecycler.setAdapter(mAdapter);
     }
 

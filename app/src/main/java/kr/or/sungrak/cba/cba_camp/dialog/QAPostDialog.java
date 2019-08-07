@@ -69,6 +69,9 @@ public class QAPostDialog extends MyProgessDialog {
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
                 tv.setText("Q&A");
                 mTopic = Tag.CBA_ADMIN;
+                if (CBAUtil.isAdmin(getContext())) {
+                    mNameField.setText(mAuth + " 답장");
+                }
                 break;
             case Tag.RETREAT_SUNGRAK:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);

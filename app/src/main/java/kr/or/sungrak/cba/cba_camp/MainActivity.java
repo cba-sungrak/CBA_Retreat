@@ -227,7 +227,6 @@ public class MainActivity extends AppCompatActivity
             //logOut
             logOutBtn.setVisibility(View.GONE);
             logInBtn.setVisibility(View.VISIBLE);
-//            loginText.setText("홍길동      |      OJ조      |      조원");
         } else {
             //logIn
             logInBtn.setVisibility(View.GONE);
