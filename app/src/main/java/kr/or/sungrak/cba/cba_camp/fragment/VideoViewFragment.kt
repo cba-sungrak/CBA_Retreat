@@ -33,6 +33,7 @@ class VideoViewFragment : Fragment() {
         transaction.add(R.id.youtube_layout, youTubePlayerFragment as Fragment).commit()
         when (CBAUtil.getRetreat(activity)) {
             Tag.RETREAT_CBA -> {
+                rootView.videoViewLayout.background = ContextCompat.getDrawable(requireContext(), R.drawable.cba_bg)
             }
             Tag.RETREAT_SUNGRAK -> {
                 rootView.videoViewLayout.background = ContextCompat.getDrawable(requireContext(), R.drawable.sub_bg)
@@ -53,8 +54,6 @@ class VideoViewFragment : Fragment() {
                 // YouTube error
             }
         })
-
-
 
         return rootView
     }

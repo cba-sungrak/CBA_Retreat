@@ -227,6 +227,7 @@ public class MainActivity extends AppCompatActivity
             //logOut
             logOutBtn.setVisibility(View.GONE);
             logInBtn.setVisibility(View.VISIBLE);
+            loginText.setText("");
         } else {
             //logIn
             logInBtn.setVisibility(View.GONE);

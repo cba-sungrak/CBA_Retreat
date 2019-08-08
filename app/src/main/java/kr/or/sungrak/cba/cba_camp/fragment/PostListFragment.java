@@ -116,6 +116,14 @@ public class PostListFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             protected void onBindViewHolder(PostViewHolder viewHolder, int position, final Post model) {
+                switch (CBAUtil.getRetreat(getActivity())) {
+                    case Tag.RETREAT_CBA:
+                        viewHolder.bodyView.setTextSize(16);
+                        break;
+                    case Tag.RETREAT_SUNGRAK:
+                        break;
+                }
+
                 viewHolder.bindToPost(model, getContext());
             }
         };

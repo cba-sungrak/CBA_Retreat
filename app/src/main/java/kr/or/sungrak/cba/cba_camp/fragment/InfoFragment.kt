@@ -45,7 +45,7 @@ class InfoFragment : Fragment() {
                 cbaInfoLayout.visibleOrGone(true)
                 srInfoLayout.visibleOrGone(false)
                 myRef = database.child(Tag.RETREAT_CBA)
-
+                notiTextView.textSize = 16f
             }
             Tag.RETREAT_SUNGRAK -> {
                 backGroundImage.setImageResource(R.drawable.sr_background)

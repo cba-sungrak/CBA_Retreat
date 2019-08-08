@@ -34,6 +34,7 @@ constructor(private var mImage: String) : Fragment() {
         when (CBAUtil.getRetreat(activity)) {
             Tag.RETREAT_CBA -> {
                 storageReference = FirebaseStorage.getInstance().reference.child(Tag.RETREAT_CBA)
+                rootView.imageViewLayout.background = ContextCompat.getDrawable(requireContext(), R.drawable.cba_bg)
             }
             Tag.RETREAT_SUNGRAK -> {
                 storageReference = FirebaseStorage.getInstance().reference.child(Tag.RETREAT_SUNGRAK)
