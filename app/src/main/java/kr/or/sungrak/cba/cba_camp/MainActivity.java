@@ -53,8 +53,10 @@ import kr.or.sungrak.cba.cba_camp.common.Tag;
 import kr.or.sungrak.cba.cba_camp.dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_camp.dialog.MyProgessDialog;
 import kr.or.sungrak.cba.cba_camp.dialog.SelectDialog;
+import kr.or.sungrak.cba.cba_camp.fragment.AttendCampusFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.CampMemberListFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.CampRegistFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.DateStatisticFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.GBSFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.InfoFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.QAListFragment;
@@ -321,12 +323,12 @@ public class MainActivity extends AppCompatActivity
             case R.id.gbs_place:
                 replaceFragment(new SwipeImageFragment("gbs_place"));
                 break;
-//            case R.id.check_attendance:
-//                replaceFragment(new AttendCampusFragment());
-//                break;
-//            case R.id.statistic_attendance:
-//                replaceFragment(new DateStatisticFragment());
-//                break;
+            case R.id.check_attendance:
+                replaceFragment(new AttendCampusFragment());
+                break;
+            case R.id.statistic_attendance:
+                replaceFragment(new DateStatisticFragment());
+                break;
             case R.id.sr_welcom:
                 replaceFragment(new SwipeImageFragment("c1"));
                 break;

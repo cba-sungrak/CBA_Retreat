@@ -13,4 +13,11 @@
         <item >천안</item>
         <item >필레오</item>
     </string-array>
+    <string-array name="note">
+        <item >예배당</item>
+        <item >봉사</item>
+        <item >그냥</item>
+        <item >기타</item>
+
+    </string-array>
 </resources>

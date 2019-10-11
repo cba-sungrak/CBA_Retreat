@@ -16,14 +16,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import kr.or.sungrak.cba.cba_camp.R;
+import kr.or.sungrak.cba.cba_camp.databinding.AttendCampusLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.Campus;
 import kr.or.sungrak.cba.cba_camp.network.ApiService;
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
-import kr.or.sungrak.cba.cba_camp.databinding.AttendCampusLayoutBinding;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,7 +47,7 @@ public class AttendCampusFragment extends Fragment {
         String uid = FirebaseAuth.getInstance().getUid();
         // API 요청.
 //        Call<List<String>> request = service.getCampusList(uid);
-        Call<Campus> request = service.getCampusList("application/json","0003");
+        Call<Campus> request = service.getCampusList("application/json",uid);
         request.enqueue(new Callback<Campus>() {
             @Override
             public void onResponse(Call<Campus> call, Response<Campus> response) {
@@ -77,12 +74,5 @@ public class AttendCampusFragment extends Fragment {
                 Log.e("OKHttp_ERR", t.getMessage());
             }
         });
-    }
-
-    private List<String> getCampusListInfoDebug() {
-        List<String> campus = new ArrayList<>();
-        campus.add("인성경");
-        campus.add("천안");
-        return campus;
     }
 }

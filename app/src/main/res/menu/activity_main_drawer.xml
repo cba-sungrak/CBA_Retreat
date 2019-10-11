@@ -33,12 +33,12 @@
             android:title="캠모 장소"
             android:icon="@drawable/arrow"/>
 
-        <!--<item-->
-        <!--android:id="@+id/check_attendance"-->
-        <!--android:title="출석체크"></item>-->
-        <!--<item-->
-        <!--android:id="@+id/statistic_attendance"-->
-        <!--android:title="출석통계"></item>-->
+        <item
+        android:id="@+id/check_attendance"
+        android:title="출석체크"></item>
+        <item
+        android:id="@+id/statistic_attendance"
+        android:title="출석통계"></item>
 
 
 </menu>

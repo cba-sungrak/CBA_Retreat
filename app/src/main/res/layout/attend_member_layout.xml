@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -41,6 +42,12 @@
                 android:layout_height="wrap_content"
                 android:onCheckedChanged="@{(button,isChecked)->attend.setChecked(isChecked)}"
                 android:checked="@{attend.status.equals(`ATTENDED`) ? true : false}" />
+
+<!--            <Spinner-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:entries="@array/note"/>-->
+<!--                bind:selectedValue="@={attend.note}"/>-->
 
             <EditText
                 android:id="@+id/attend_note"

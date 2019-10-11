@@ -42,7 +42,7 @@ public class AttendList {
         this.attended = attended;
     }
 
-    public class AttendInfo {
+    public class AttendInfo{
         @SerializedName("id")
         @Expose
         private Integer id;
@@ -100,7 +100,6 @@ public class AttendList {
             } else {
                 this.status = "ABSENT";
             }
-            Log.e("CBA", this.status);
             return;
         }
 

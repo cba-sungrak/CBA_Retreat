@@ -3,18 +3,22 @@ package kr.or.sungrak.cba.cba_camp.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,9 +28,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
 import kr.or.sungrak.cba.cba_camp.R;
 import kr.or.sungrak.cba.cba_camp.adapter.AttendMemeberAdapter;
+import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
 import kr.or.sungrak.cba.cba_camp.databinding.AttendLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.AttendList;
 import kr.or.sungrak.cba.cba_camp.network.ApiService;
@@ -50,6 +54,7 @@ public class AttendFragment extends Fragment {
     RecyclerView mRecyclerView;
     String mRequestCampusName;
     String mSelectedDate;
+    AttendList mAttendMemberList;
 
     @SuppressLint("ValidFragment")
     public AttendFragment(CharSequence campusName) {
@@ -73,6 +78,17 @@ public class AttendFragment extends Fragment {
         getAttendInfo(mSelectedDate, mRequestCampusName, NAVI_CURRENT);
 
         mRecyclerView.setAdapter(mAttendMemberAdapter);
+
+        mAttendMemberAdapter.setCustomOnItemClickListener(v -> {
+            CheckBox cb = (CheckBox) v;
+            if (cb.isChecked()) {
+                mAttendMemberList.setAttended(mAttendMemberList.getAttended() + 1);
+            } else {
+                mAttendMemberList.setAttended(mAttendMemberList.getAttended() - 1);
+            }
+            binding.attendTotal.setText(getString(mAttendMemberList));
+        });
+
         return rootView;
     }
 
@@ -86,18 +102,24 @@ public class AttendFragment extends Fragment {
             @Override
             public void onResponse(Call<AttendList> call, Response<AttendList> response) {
                 if (response.code() / 100 == 4) {
-                    binding.createAttend.setVisibility(getView().VISIBLE);
-                    binding.attendMemberList.setVisibility(getView().GONE);
-                    binding.confirmAttend.setVisibility(getView().GONE);
+                    if (navi.equalsIgnoreCase(NAVI_CURRENT)) {
+                        binding.createAttend.setVisibility(getView().VISIBLE);
+                        binding.attendMemberList.setVisibility(getView().GONE);
+                        binding.confirmAttend.setVisibility(getView().GONE);
+                    } else {
+                        Toast.makeText(getContext(),
+                                "출석 내역이 존재 하지 않습니다.", Toast.LENGTH_SHORT)
+                                .show();
+                    }
                 } else {
                     binding.createAttend.setVisibility(getView().GONE);
                     binding.attendMemberList.setVisibility(getView().VISIBLE);
                     binding.confirmAttend.setVisibility(getView().VISIBLE);
 
-                    AttendList as = response.body();
-                    binding.attendTotal.setText(getString(as));
-                    mAttendMemberAdapter.updateItems(as.getAttendInfos());
-                    mSelectedDate = as.getAttendInfos().get(0).getDate();
+                    mAttendMemberList = response.body();
+                    binding.attendTotal.setText(getString(mAttendMemberList));
+                    mAttendMemberAdapter.updateItems(mAttendMemberList.getAttendInfos());
+                    mSelectedDate = mAttendMemberList.getAttendInfos().get(0).getDate();
                     binding.attendDate.setText(mSelectedDate);
                 }
             }
@@ -113,7 +135,7 @@ public class AttendFragment extends Fragment {
     @NonNull
     private String getString(AttendList as) {
         int percent = (int) ((double) as.getAttended() / (double) as.getRegistered() * 100.0);
-        return mRequestCampusName + " 출석 " + as.getAttended() + " / 전체 " + as.getRegistered() + " / " + percent + "%";
+        return "[" + mRequestCampusName + "] 출석 " + as.getAttended() + " / 전체 " + as.getRegistered() + " / " + percent + "%";
     }
 
     private void createAttendList(String date, String campus) {
@@ -169,9 +191,8 @@ public class AttendFragment extends Fragment {
                 jsonArray.put(jsonObject);
             }
 
-
             obj.put("checkList", jsonArray);
-            obj.put("leaderUid", "9999");
+            obj.put("leaderUid", FirebaseAuth.getInstance().getUid());
 
             Log.d(TAG, obj.toString());
 
