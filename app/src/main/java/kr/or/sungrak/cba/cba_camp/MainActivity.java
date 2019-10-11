@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
                 logInLayout.setVisibility(View.VISIBLE);
                 if (CBAUtil.isAdmin(this)) {
+                    navigationView.getMenu().findItem(R.id.statistic_attendance).setVisible(true);
                     FirebaseMessaging.getInstance().subscribeToTopic(Tag.CBA_ADMIN);
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.SR_ADMIN);
                 } else {
