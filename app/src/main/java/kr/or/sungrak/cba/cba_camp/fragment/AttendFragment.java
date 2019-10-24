@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -106,6 +107,7 @@ public class AttendFragment extends Fragment {
                         binding.createAttend.setVisibility(getView().VISIBLE);
                         binding.attendMemberList.setVisibility(getView().GONE);
                         binding.confirmAttend.setVisibility(getView().GONE);
+                        binding.deleteAttend.setVisibility(getView().GONE);
                     } else {
                         Toast.makeText(getContext(),
                                 "출석 내역이 존재 하지 않습니다.", Toast.LENGTH_SHORT)
@@ -115,6 +117,7 @@ public class AttendFragment extends Fragment {
                     binding.createAttend.setVisibility(getView().GONE);
                     binding.attendMemberList.setVisibility(getView().VISIBLE);
                     binding.confirmAttend.setVisibility(getView().VISIBLE);
+                    binding.deleteAttend.setVisibility(getView().VISIBLE);
 
                     mAttendMemberList = response.body();
                     binding.attendTotal.setText(getString(mAttendMemberList));
@@ -164,7 +167,7 @@ public class AttendFragment extends Fragment {
                     AttendList as = response.body();
                     mAttendMemberAdapter.updateItems(as.getAttendInfos());
                     Toast.makeText(getContext(),
-                            "load make attend win", Toast.LENGTH_SHORT)
+                            "출석부가 생성 되었습니다.", Toast.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -224,6 +227,46 @@ public class AttendFragment extends Fragment {
         });
     }
 
+    private void deleteAtteand() {
+        ApiService service = ServiceGenerator.createService(ApiService.class);
+        JSONObject jsonObject = new JSONObject();
+        //  {date: "2019-05-05", campus: "천안", "leaderUid": "9999"}
+        try {
+            jsonObject.put("date", mSelectedDate);
+            jsonObject.put("campus", mRequestCampusName);
+            jsonObject.put("leaderUid", FirebaseAuth.getInstance().getUid());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        Log.d(TAG, jsonObject.toString());
+
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
+        Call<ResponseBody> request = service.deleteAttend(body);
+
+        request.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.code() / 100 == 4) {
+                    Toast.makeText(getContext(),
+                            "Delete attend failed ", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Toast.makeText(getContext(),
+                            "Delete attend success", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                getAttendInfo(mSelectedDate, mRequestCampusName, NAVI_CURRENT);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("OKHttp_ERR", t.getMessage());
+            }
+        });
+    }
+
     public void onButtonClick(View v) {
         switch (v.getId()) {
             case R.id.attend_prev_date:
@@ -257,6 +300,19 @@ public class AttendFragment extends Fragment {
                 break;
             case R.id.confirm_attend:
                 postAttendList();
+                break;
+            case R.id.delete_attend:
+                new AlertDialog.Builder(getActivity())
+                        .setTitle("출석부 삭제")
+                        .setMessage(mSelectedDate + "날짜의 출석부를 삭제 하시겠습니까?")
+                        .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                            deleteAtteand();
+                        })
+                        .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
+                            // 취소시 처리 로직
+                            Toast.makeText(getActivity(), "취소하였습니다.", Toast.LENGTH_SHORT).show();
+                        })
+                        .show();
                 break;
         }
     }

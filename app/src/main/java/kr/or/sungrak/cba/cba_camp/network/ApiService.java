@@ -12,6 +12,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -44,6 +45,10 @@ public interface ApiService {
     //7. 출석부 명단 수정
     @POST("/attendance/members/edit")
     Call<ResponseBody> postEditAttendMember(@Body RequestBody body);
+
+    //8. 출석부 삭제
+    @HTTP(method = "DELETE", path = "/attendance/list", hasBody = true)
+    Call<ResponseBody> deleteAttend(@Body RequestBody object);
 
     //-------- 통 계 --------------------------------------------------------------------------------------------------------------//
 
