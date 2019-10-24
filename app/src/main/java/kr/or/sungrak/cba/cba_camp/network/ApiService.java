@@ -41,6 +41,10 @@ public interface ApiService {
     @POST("attendance/list/report")
     Call<ResponseBody> postAttend(@Body RequestBody body);
 
+    //7. 출석부 명단 수정
+    @POST("/attendance/members/edit")
+    Call<ResponseBody> postEditAttendMember(@Body RequestBody body);
+
     //-------- 통 계 --------------------------------------------------------------------------------------------------------------//
 
     //1. 기간 통계

@@ -9,12 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.DatePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,8 +45,7 @@ import retrofit2.Response;
 
 @SuppressLint("ValidFragment")
 public class AttendFragment extends Fragment {
-
-    private static final String TAG = "GBSFragment";
+    private static final String TAG = "AttendFragment";
     private static final String NAVI_PREV = "PREV";
     private static final String NAVI_NEXT = "NEXT";
     private static final String NAVI_CURRENT = "CURRENT";
@@ -233,25 +233,24 @@ public class AttendFragment extends Fragment {
                 getAttendInfo(mSelectedDate, mRequestCampusName, NAVI_NEXT);
                 break;
             case R.id.attend_date:
-                new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        try {
-                            String selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1,
-                                    dayOfMonth);
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-                            String date = sdf.format(sdf.parse(selectedTime));
-                            mSelectedDate = date;
-                            binding.attendDate.setText(date);
-                            getAttendInfo(date, mRequestCampusName, NAVI_CURRENT);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                new DatePickerDialog(getContext(), (view, year, monthOfYear, dayOfMonth) -> {
+                    try {
+                        String selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1,
+                                dayOfMonth);
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                        String date = sdf.format(sdf.parse(selectedTime));
+                        mSelectedDate = date;
+                        binding.attendDate.setText(date);
+                        getAttendInfo(date, mRequestCampusName, NAVI_CURRENT);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 }, Integer.parseInt(mSelectedDate.split("-")[0]), Integer.parseInt(mSelectedDate.split("-")[1]) - 1, Integer.parseInt(mSelectedDate.split("-")[2])).show();
                 break;
             case R.id.edit_attend:
-
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.fragment_container, new AttendEditFragment(mRequestCampusName, mAttendMemberList)).commit();
                 break;
             case R.id.create_attend:
                 createAttendList(mSelectedDate, mRequestCampusName);

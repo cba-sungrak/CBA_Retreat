@@ -46,24 +46,36 @@ public class AttendList {
         @SerializedName("id")
         @Expose
         private Integer id;
+
         @SerializedName("date")
         @Expose
         private String date;
+
         @SerializedName("name")
         @Expose
         private String name;
+
         @SerializedName("mobile")
         @Expose
         private String mobile;
+
         @SerializedName("status")
         @Expose
         private String status;
+
         @SerializedName("note")
         @Expose
         private String note;
+
         @SerializedName("attended")
         @Expose
         private Boolean attended;
+
+        @SerializedName("hidden")
+        @Expose
+        private Boolean hidden;
+
+        private Boolean deleted = false;
 
         public int getId() {
             return id;
@@ -79,6 +91,15 @@ public class AttendList {
 
         public String getStatus() {
             return status;
+        }
+
+        public Boolean getHidden(){
+            return hidden;
+        }
+
+        public Boolean getDeleted() {
+            if (deleted == null) return false;
+            return deleted;
         }
 
         public String getNote() {
@@ -99,6 +120,24 @@ public class AttendList {
                 this.status = "ATTENDED";
             } else {
                 this.status = "ABSENT";
+            }
+            return;
+        }
+
+        public void setHiddenChecked(boolean isChecked) {
+            if (isChecked) {
+                this.hidden = true;
+            } else {
+                this.hidden = false;
+            }
+            return;
+        }
+
+        public void setDeleteChecked(boolean isChecked) {
+            if (isChecked) {
+                this.deleted = true;
+            } else {
+                this.deleted = false;
             }
             return;
         }

@@ -108,12 +108,6 @@ public class QAListFragment extends Fragment {
 
             @Override
             public QAViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
-//                switch (viewType) {
-//                    case NOTI:
-//                        break;
-//                    case MESSAGE:
-//                        break;
-//                }
                 LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
                 return new QAViewHolder(inflater.inflate(R.layout.qa_item, viewGroup, false));
             }

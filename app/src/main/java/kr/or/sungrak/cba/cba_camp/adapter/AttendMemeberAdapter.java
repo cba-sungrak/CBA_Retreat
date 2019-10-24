@@ -16,6 +16,8 @@ import kr.or.sungrak.cba.cba_camp.viewholder.AttendViewHolder;
 
 public class AttendMemeberAdapter extends RecyclerView.Adapter<AttendViewHolder> {
     private List<AttendList.AttendInfo> mAttendInfoList;
+    private static final int SHOW = 1;
+    private static final int HIDDEN = 2;
 
     public interface OnItemClickListener {
         void onItemClick(View v);
@@ -40,12 +42,29 @@ public class AttendMemeberAdapter extends RecyclerView.Adapter<AttendViewHolder>
         AttendList.AttendInfo attendInfo = mAttendInfoList.get(i);
         memberViewHolder.binding.setAttend(attendInfo);
 
+        if (memberViewHolder.getItemViewType() == HIDDEN) {
+            memberViewHolder.binding.memberLayout.setVisibility(View.GONE);
+            memberViewHolder.binding.memberLayout.setLayoutParams(new RecyclerView.LayoutParams(0, 0));
+        } else {
+            memberViewHolder.binding.memberLayout.setVisibility(View.VISIBLE);
+            memberViewHolder.binding.memberLayout.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
+
         memberViewHolder.binding.attendStatus.setOnClickListener(v -> {
             if (mListener != null) {
                 mListener.onItemClick(v);
             }
         });
 
+    }
+    @Override
+    public int getItemViewType(int position) {
+        AttendList.AttendInfo item = mAttendInfoList.get(position);
+        if (item.getHidden()) {
+            return HIDDEN;
+        } else {
+            return SHOW;
+        }
     }
 
     @Override

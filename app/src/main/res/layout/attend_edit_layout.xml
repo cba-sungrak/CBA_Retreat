@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
+
         <variable
             name="fragment"
-            type="kr.or.sungrak.cba.cba_camp.fragment.AttendEditFragment"/>
+            type="kr.or.sungrak.cba.cba_camp.fragment.AttendEditFragment" />
     </data>
 
     <LinearLayout
@@ -17,24 +19,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/attend_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="캠퍼스 출석 / 전체 / 50% "
+                android:text="숨김 및 삭제할 영혼을 선택 하신 후 편집 완료를 선택해주세요.\n숨김시 출석부에 보이지 않게되며 추후 숨김해제를 할 수 있습니다.\n삭제시 출석부와 편집창 에서 모두 보이지 않게되며 추후에도 보이지 않게 됩니다."
                 android:textColor="@android:color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
+                android:textSize="15sp"
                 android:typeface="sans" />
 
             <Button
-                android:id="@+id/edit_attend"
+                android:id="@+id/confirm_edit_attend"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:onClick="@{fragment::onButtonClick}"
-                android:text="Edit" />
+                android:text="편집 완료" />
         </LinearLayout>
 
         <View
@@ -50,19 +52,13 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/attend_member_list"
+                android:id="@+id/attend_edit_member_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:scrollbars="vertical" />
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/confirm_edit_attend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{fragment::onButtonClick}"
-            android:text="편집 완료" />
     </LinearLayout>
 </layout>
 

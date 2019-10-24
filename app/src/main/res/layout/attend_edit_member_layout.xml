@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
 
@@ -11,7 +12,6 @@
     </data>
 
     <LinearLayout
-        android:id="@+id/member_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -36,26 +36,32 @@
                 android:textColor="@android:color/black"
                 android:typeface="serif" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="숨김"
+                android:textColor="@android:color/black"
+                android:typeface="serif" />
+
             <CheckBox
-                android:id="@+id/attend_status"
+                android:id="@+id/hidden_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onCheckedChanged="@{(button,isChecked)->attend.setChecked(isChecked)}"
-                android:checked="@{attend.status.equals(`ATTENDED`) ? true : false}" />
+                android:checked="@{attend.hidden ? true : false}"
+                android:onCheckedChanged="@{(button,isChecked)->attend.setHiddenChecked(isChecked)}" />
 
-<!--            <Spinner-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:entries="@array/note"/>-->
-<!--                bind:selectedValue="@={attend.note}"/>-->
-
-            <EditText
-                android:id="@+id/attend_note"
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:afterTextChanged="@{(s)->attend.setNote(s)}"
-                android:text="@{attend.note}" />
+                android:text="삭제"
+                android:textColor="@android:color/black"
+                android:typeface="serif" />
+
+            <CheckBox
+                android:id="@+id/delete_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onCheckedChanged="@{(button,isChecked)->attend.setDeleteChecked(isChecked)}" />
 
         </LinearLayout>
     </LinearLayout>
