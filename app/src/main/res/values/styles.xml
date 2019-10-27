@@ -98,6 +98,16 @@
         <item name="android:background">@drawable/edge</item>
 
     </style>
+    <style name="AttendMember">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_margin">1dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:background">@drawable/edge</item>
+
+    </style>
 
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <!-- Gets rid of the search icon -->

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -48,6 +49,7 @@ public class AttendEditFragment extends Fragment {
     AttendList mAttendEditMemberList;
     AttendEditMemebeAdapter mAttendEditMemberAdapter;
     String mRequestCampus;
+    boolean mCheckDelete = false;
 
     public AttendEditFragment(String campus, AttendList list) {
         mAttendEditMemberList = list;
@@ -75,12 +77,19 @@ public class AttendEditFragment extends Fragment {
             CheckBox cb = (CheckBox) v;
             switch (v.getId()) {
                 case R.id.delete_check:
-                    if (cb.isChecked())
-                        Toast.makeText(getActivity(), "deletecheck", Toast.LENGTH_SHORT).show();
+                    if (cb.isChecked()) {
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("인원 삭제")
+                                .setMessage("삭제시 해당 영혼은 다시 표시 되지 않습니다. 정말 삭제 하시겠습니까?")
+                                .setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                                })
+                                .setNegativeButton(android.R.string.no, (dialog, whichButton) -> {
+                                    cb.setChecked(false);
+                                })
+                                .show();
+                    }
                     break;
                 case R.id.hidden_check:
-                    if (cb.isChecked())
-                        Toast.makeText(getActivity(), "hiddencheck", Toast.LENGTH_SHORT).show();
                     break;
 
             }

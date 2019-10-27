@@ -164,8 +164,15 @@ public class AttendFragment extends Fragment {
                     binding.createAttend.setVisibility(getView().GONE);
                     binding.attendMemberList.setVisibility(getView().VISIBLE);
                     binding.confirmAttend.setVisibility(getView().VISIBLE);
-                    AttendList as = response.body();
-                    mAttendMemberAdapter.updateItems(as.getAttendInfos());
+
+
+                    mAttendMemberList = response.body();
+                    binding.attendTotal.setText(getString(mAttendMemberList));
+                    mAttendMemberAdapter.updateItems(mAttendMemberList.getAttendInfos());
+                    mSelectedDate = mAttendMemberList.getAttendInfos().get(0).getDate();
+                    binding.attendDate.setText(mSelectedDate);
+
+
                     Toast.makeText(getContext(),
                             "출석부가 생성 되었습니다.", Toast.LENGTH_SHORT)
                             .show();
