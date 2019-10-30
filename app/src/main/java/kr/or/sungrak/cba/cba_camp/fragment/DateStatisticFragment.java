@@ -1,25 +1,25 @@
 package kr.or.sungrak.cba.cba_camp.fragment;
 
 import android.app.DatePickerDialog;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.DatePicker;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
 import kr.or.sungrak.cba.cba_camp.R;
 import kr.or.sungrak.cba.cba_camp.adapter.StatisticCampusAdapter;
+import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
 import kr.or.sungrak.cba.cba_camp.databinding.DateStatisticLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.CampusStatisticList;
 import kr.or.sungrak.cba.cba_camp.network.ApiService;
@@ -53,6 +53,11 @@ public class DateStatisticFragment extends Fragment {
 
         getStatisticCampus(mSelectedDate, NAVI_CURRENT);
         mRecyclerView.setAdapter(mStatisticCampusAdapter);
+
+        mStatisticCampusAdapter.setCustomOnItemClickListener((v, date, campusName) -> {
+            if (!campusName.equalsIgnoreCase("CBA"))
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendFragment(campusName, date)).addToBackStack(null).commit();
+        });
 
 
         return rootView;
@@ -92,26 +97,21 @@ public class DateStatisticFragment extends Fragment {
                 getStatisticCampus(mSelectedDate, NAVI_NEXT);
                 break;
             case R.id.statistic_date:
-                new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        try {
-                            String selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1,
-                                    dayOfMonth);
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-                            String date = sdf.format(sdf.parse(selectedTime));
-                            mSelectedDate = date;
-                            binding.statisticDate.setText(date);
-                            getStatisticCampus(date, NAVI_CURRENT);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+                new DatePickerDialog(getContext(), (view, year, monthOfYear, dayOfMonth) -> {
+                    try {
+                        String selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1,
+                                dayOfMonth);
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+                        String date = sdf.format(sdf.parse(selectedTime));
+                        mSelectedDate = date;
+                        binding.statisticDate.setText(date);
+                        getStatisticCampus(date, NAVI_CURRENT);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 }, Integer.parseInt(mSelectedDate.split("-")[0]), Integer.parseInt(mSelectedDate.split("-")[1])-1, Integer.parseInt(mSelectedDate.split("-")[2])).show();
                 break;
             case R.id.period_statistic:
-
-
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.fragment_container, new PeriodStatisticFragment()).commit();

@@ -9,8 +9,8 @@ android {
         applicationId "kr.or.sungrak.cba.cba_camp"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 37
-        versionName "3.7"
+        versionCode 38
+        versionName "3.8"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

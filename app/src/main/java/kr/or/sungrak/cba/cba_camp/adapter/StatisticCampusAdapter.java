@@ -1,10 +1,11 @@
 package kr.or.sungrak.cba.cba_camp.adapter;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,17 @@ import kr.or.sungrak.cba.cba_camp.viewholder.StatisticCampusViewHolder;
 
 public class StatisticCampusAdapter extends RecyclerView.Adapter<StatisticCampusViewHolder> {
     private List<CampusStatisticList.CampusStatisticInfo> mStatisticCampusList;
+
+    public interface OnItemClickListener {
+        void onItemClick(View v, String date, String campusName);
+    }
+
+    private OnItemClickListener mListener = null;
+
+    // OnItemClickListener 리스너 객체 참조를 어댑터에 전달하는 메서드
+    public void setCustomOnItemClickListener(OnItemClickListener listener) {
+        this.mListener = listener;
+    }
 
     @NonNull
     @Override
@@ -27,6 +39,12 @@ public class StatisticCampusAdapter extends RecyclerView.Adapter<StatisticCampus
     public void onBindViewHolder(@NonNull StatisticCampusViewHolder memberViewHolder, int i) {
         CampusStatisticList.CampusStatisticInfo campusStatisticInfo = mStatisticCampusList.get(i);
         memberViewHolder.binding.setStatistic(campusStatisticInfo);
+
+        memberViewHolder.itemView.setOnClickListener(v -> {
+            if (mListener != null) {
+                mListener.onItemClick(v, campusStatisticInfo.getDate(), campusStatisticInfo.getCampus());
+            }
+        });
     }
 
     @Override

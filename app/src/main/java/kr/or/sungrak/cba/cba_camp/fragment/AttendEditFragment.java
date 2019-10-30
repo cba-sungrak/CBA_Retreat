@@ -11,8 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +24,7 @@ import java.util.List;
 
 import kr.or.sungrak.cba.cba_camp.R;
 import kr.or.sungrak.cba.cba_camp.adapter.AttendEditMemebeAdapter;
+import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
 import kr.or.sungrak.cba.cba_camp.databinding.AttendEditLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.AttendList;
 import kr.or.sungrak.cba.cba_camp.network.ApiService;
@@ -142,10 +141,7 @@ public class AttendEditFragment extends Fragment {
                             "post attend succes", Toast.LENGTH_SHORT)
                             .show();
                 }
-
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new AttendFragment(mRequestCampus)).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendFragment(mRequestCampus, CBAUtil.getCurrentDate())).commit();
             }
 
             @Override

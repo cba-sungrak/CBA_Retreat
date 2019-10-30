@@ -15,8 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +30,6 @@ import java.util.List;
 
 import kr.or.sungrak.cba.cba_camp.R;
 import kr.or.sungrak.cba.cba_camp.adapter.AttendMemeberAdapter;
-import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
 import kr.or.sungrak.cba.cba_camp.databinding.AttendLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.AttendList;
 import kr.or.sungrak.cba.cba_camp.network.ApiService;
@@ -58,8 +55,9 @@ public class AttendFragment extends Fragment {
     AttendList mAttendMemberList;
 
     @SuppressLint("ValidFragment")
-    public AttendFragment(CharSequence campusName) {
+    public AttendFragment(CharSequence campusName, String date) {
         mRequestCampusName = campusName.toString();
+        mSelectedDate = date;
     }
 
     @Override
@@ -69,7 +67,6 @@ public class AttendFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.attend_layout, container, false);
         binding.setFragment(this);
         View rootView = binding.getRoot();
-        mSelectedDate = CBAUtil.getCurrentDate();
         binding.attendDate.setText(mSelectedDate);
 
         mRecyclerView = binding.attendMemberList;
@@ -298,9 +295,7 @@ public class AttendFragment extends Fragment {
                 }, Integer.parseInt(mSelectedDate.split("-")[0]), Integer.parseInt(mSelectedDate.split("-")[1]) - 1, Integer.parseInt(mSelectedDate.split("-")[2])).show();
                 break;
             case R.id.edit_attend:
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment_container, new AttendEditFragment(mRequestCampusName, mAttendMemberList)).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendEditFragment(mRequestCampusName, mAttendMemberList)).addToBackStack(null).commit();
                 break;
             case R.id.create_attend:
                 createAttendList(mSelectedDate, mRequestCampusName);
