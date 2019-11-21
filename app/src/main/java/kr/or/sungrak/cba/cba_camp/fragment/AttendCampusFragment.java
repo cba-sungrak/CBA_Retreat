@@ -51,15 +51,22 @@ public class AttendCampusFragment extends Fragment {
             @Override
             public void onResponse(Call<Campus> call, Response<Campus> response) {
                 Campus campusList = response.body();
-                Log.d(TAG,campusList.toString());
-                for (String campus : campusList.getNames()) {
-                    Button btn = new Button(getContext());
-                    btn.setText(campus);
-                    final CharSequence campusName = btn.getText();
-                    mBinding.checkAttendance.addView(btn);
-                    btn.setOnClickListener(view -> {
-                        getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendFragment(campusName, CBAUtil.getCurrentDate())).commit();
-                    });
+                if (response.code() / 100 == 4) {
+                    Log.e("CBA", "fail");
+                    TextView text = new TextView(getContext());
+                    text.setText("출석체크 할수 있는 캠퍼스가 없습니다. ");
+                    mBinding.checkAttendance.addView(text);
+                } else {
+                    Log.d(TAG, campusList.toString());
+                    for (String campus : campusList.getNames()) {
+                        Button btn = new Button(getContext());
+                        btn.setText(campus);
+                        final CharSequence campusName = btn.getText();
+                        mBinding.checkAttendance.addView(btn);
+                        btn.setOnClickListener(view -> {
+                            getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendFragment(campusName, CBAUtil.getCurrentDate())).commit();
+                        });
+                    }
                 }
             }
 
