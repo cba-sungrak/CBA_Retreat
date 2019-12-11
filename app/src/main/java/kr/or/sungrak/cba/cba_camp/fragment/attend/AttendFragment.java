@@ -1,4 +1,4 @@
-package kr.or.sungrak.cba.cba_camp.fragment;
+package kr.or.sungrak.cba.cba_camp.fragment.attend;
 
 
 import android.annotation.SuppressLint;

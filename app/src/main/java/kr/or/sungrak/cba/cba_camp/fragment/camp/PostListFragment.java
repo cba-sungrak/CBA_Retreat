@@ -1,4 +1,4 @@
-package kr.or.sungrak.cba.cba_camp.fragment;
+package kr.or.sungrak.cba.cba_camp.fragment.camp;
 
 import android.app.NotificationManager;
 import android.content.Context;

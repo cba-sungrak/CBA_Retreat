@@ -1,7 +1,9 @@
-package kr.or.sungrak.cba.cba_camp.fragment;
+package kr.or.sungrak.cba.cba_camp.fragment.attend;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +22,7 @@ import java.text.SimpleDateFormat;
 import kr.or.sungrak.cba.cba_camp.R;
 import kr.or.sungrak.cba.cba_camp.adapter.StatisticCampusAdapter;
 import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
-import kr.or.sungrak.cba.cba_camp.databinding.DateStatisticLayoutBinding;
+import kr.or.sungrak.cba.cba_camp.databinding.StatisticDateLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.CampusStatisticList;
 import kr.or.sungrak.cba.cba_camp.network.ApiService;
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
@@ -29,22 +31,26 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class DateStatisticFragment extends Fragment {
-    DateStatisticLayoutBinding binding;
+    StatisticDateLayoutBinding binding;
     String mSelectedDate;
     RecyclerView mRecyclerView;
     StatisticCampusAdapter mStatisticCampusAdapter;
     private static final String NAVI_PREV = "PREV";
     private static final String NAVI_NEXT = "NEXT";
     private static final String NAVI_CURRENT = "CURRENT";
+    @SuppressLint("ValidFragment")
+    public DateStatisticFragment(String date) {
+        mSelectedDate = date;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        binding = DataBindingUtil.inflate(inflater, R.layout.date_statistic_layout, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.statistic_date_layout, container, false);
         binding.setFragment(this);
         View rootView = binding.getRoot();
-        mSelectedDate = CBAUtil.getCurrentDate();
+        if (TextUtils.isEmpty(mSelectedDate)) mSelectedDate = CBAUtil.getCurrentDate();
         binding.statisticDate.setText(mSelectedDate);
 
         mRecyclerView = binding.campusStatisticItem;
@@ -58,7 +64,6 @@ public class DateStatisticFragment extends Fragment {
             if (!campusName.equalsIgnoreCase("CBA"))
                 getFragmentManager().beginTransaction().replace(R.id.fragment_container, new AttendFragment(campusName, date)).addToBackStack(null).commit();
         });
-
 
         return rootView;
     }

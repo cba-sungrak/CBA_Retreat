@@ -5,7 +5,7 @@
 
         <variable
             name="fragment"
-            type="kr.or.sungrak.cba.cba_camp.fragment.AttendFragment" />
+            type="kr.or.sungrak.cba.cba_camp.fragment.attend.AttendFragment" />
     </data>
 
     <LinearLayout
@@ -16,58 +16,60 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/attend_prev_date"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:onClick="@{fragment::onButtonClick}"
-                android:text="Prev" />
+                android:textSize="15dp"
+                android:text="이전" />
 
             <Button
                 android:id="@+id/attend_date"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:onClick="@{fragment::onButtonClick}"
                 android:text="2019-04-07"
-                android:textSize="20sp" />
+                android:textSize="15dp" />
 
             <Button
                 android:id="@+id/attend_next_date"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:onClick="@{fragment::onButtonClick}"
-                android:text="Next" />
+                android:textSize="15dp"
+                android:text="다음" />
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             android:background="#000000" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="40dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/attend_total"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="[캠퍼스] 출석 / 전체 / 50% "
                 android:textColor="@android:color/black"
-                android:textSize="20sp"
+                android:textSize="15dp"
                 android:textStyle="bold"
+                android:gravity="center"
                 android:typeface="sans" />
 
             <View
@@ -87,7 +89,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
             android:background="#000000" />
 
 
@@ -115,11 +118,16 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:background="#000000" />
+
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_height="40dp"
             android:orientation="horizontal">
 
             <Button
@@ -132,8 +140,8 @@
                 android:text="출석부삭제" />
 
             <View
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <Button

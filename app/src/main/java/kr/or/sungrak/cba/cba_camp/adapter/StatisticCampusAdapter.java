@@ -31,7 +31,7 @@ public class StatisticCampusAdapter extends RecyclerView.Adapter<StatisticCampus
     @NonNull
     @Override
     public StatisticCampusViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.campus_statistic_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.statistic_campus_item, viewGroup, false);
         return new StatisticCampusViewHolder(view);
     }
 

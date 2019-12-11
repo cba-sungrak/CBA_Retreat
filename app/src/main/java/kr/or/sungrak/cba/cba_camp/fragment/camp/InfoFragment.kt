@@ -1,4 +1,4 @@
-package kr.or.sungrak.cba.cba_camp.fragment
+package kr.or.sungrak.cba.cba_camp.fragment.camp
 
 import android.Manifest
 import android.content.Intent
@@ -18,6 +18,8 @@ import kr.or.sungrak.cba.cba_camp.MainActivity
 import kr.or.sungrak.cba.cba_camp.R
 import kr.or.sungrak.cba.cba_camp.common.CBAUtil
 import kr.or.sungrak.cba.cba_camp.common.Tag
+import kr.or.sungrak.cba.cba_camp.fragment.SwipeImageFragment
+import kr.or.sungrak.cba.cba_camp.fragment.VideoViewFragment
 import kr.or.sungrak.cba.cba_camp.models.Post
 class InfoFragment : Fragment() {
     companion object {

@@ -1,9 +1,7 @@
-package kr.or.sungrak.cba.cba_camp.fragment;
+package kr.or.sungrak.cba.cba_camp.fragment.attend;
 
 import android.app.DatePickerDialog;
-import androidx.databinding.DataBindingUtil;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -30,7 +31,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import kr.or.sungrak.cba.cba_camp.R;
-import kr.or.sungrak.cba.cba_camp.databinding.PeriodStatisticLayoutBinding;
+import kr.or.sungrak.cba.cba_camp.databinding.StatisticPeriodLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.PeriodStatistic;
 import kr.or.sungrak.cba.cba_camp.network.ApiService;
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
@@ -39,7 +40,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PeriodStatisticFragment extends Fragment {
-    PeriodStatisticLayoutBinding binding;
+    StatisticPeriodLayoutBinding binding;
     String mStartDate;
     String mEndDate;
     String mSelectedCampus;
@@ -50,7 +51,7 @@ public class PeriodStatisticFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        binding = DataBindingUtil.inflate(inflater, R.layout.period_statistic_layout, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.statistic_period_layout, container, false);
         binding.setFragment(this);
         View rootView = binding.getRoot();
         binding.spinner.setOnItemSelectedListener(onItemSelectedListener);

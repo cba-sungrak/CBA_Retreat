@@ -53,14 +53,14 @@ import kr.or.sungrak.cba.cba_camp.common.Tag;
 import kr.or.sungrak.cba.cba_camp.dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_camp.dialog.MyProgessDialog;
 import kr.or.sungrak.cba.cba_camp.dialog.SelectDialog;
-import kr.or.sungrak.cba.cba_camp.fragment.AttendCampusFragment;
-import kr.or.sungrak.cba.cba_camp.fragment.CampMemberListFragment;
-import kr.or.sungrak.cba.cba_camp.fragment.CampRegistFragment;
-import kr.or.sungrak.cba.cba_camp.fragment.DateStatisticFragment;
-import kr.or.sungrak.cba.cba_camp.fragment.GBSFragment;
-import kr.or.sungrak.cba.cba_camp.fragment.InfoFragment;
-import kr.or.sungrak.cba.cba_camp.fragment.QAListFragment;
-import kr.or.sungrak.cba.cba_camp.fragment.SRNotiFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.attend.AttendCampusFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.camp.CampMemberListFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.camp.CampRegistFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.attend.DateStatisticFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.camp.GBSFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.camp.InfoFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.camp.QAListFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.camp.SRNotiFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_camp.models.MyInfo;
 
@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity
                 replaceFragment(new AttendCampusFragment());
                 break;
             case R.id.statistic_attendance:
-                replaceFragment(new DateStatisticFragment());
+                replaceFragment(new DateStatisticFragment(CBAUtil.getCurrentDate()));
                 break;
             case R.id.sr_welcom:
                 replaceFragment(new SwipeImageFragment("c1"));

@@ -1,4 +1,4 @@
-package kr.or.sungrak.cba.cba_camp.fragment;
+package kr.or.sungrak.cba.cba_camp.fragment.attend;
 
 
 import android.os.Bundle;
@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
@@ -59,7 +60,8 @@ public class AttendCampusFragment extends Fragment {
                 } else {
                     Log.d(TAG, campusList.toString());
                     for (String campus : campusList.getNames()) {
-                        Button btn = new Button(getContext());
+                        ContextThemeWrapper newContext = new ContextThemeWrapper(getContext(), R.style.Widget_AppCompat_Button_Borderless);
+                        Button btn = new Button(newContext, null, R.style.Widget_AppCompat_Button_Borderless);
                         btn.setText(campus);
                         final CharSequence campusName = btn.getText();
                         mBinding.checkAttendance.addView(btn);

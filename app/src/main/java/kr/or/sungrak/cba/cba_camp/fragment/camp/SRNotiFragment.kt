@@ -1,4 +1,4 @@
-package kr.or.sungrak.cba.cba_camp.fragment
+package kr.or.sungrak.cba.cba_camp.fragment.camp
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.sr_noti_layout.*
 import kr.or.sungrak.cba.cba_camp.MainActivity
 import kr.or.sungrak.cba.cba_camp.R
+import kr.or.sungrak.cba.cba_camp.fragment.ImageViewFragment
 
 
 class SRNotiFragment : Fragment() {

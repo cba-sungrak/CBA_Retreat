@@ -1,6 +1,6 @@
 package kr.or.sungrak.cba.cba_camp.network;
 
-import kr.or.sungrak.cba.cba_camp.fragment.CampMemList;
+import kr.or.sungrak.cba.cba_camp.fragment.camp.CampMemList;
 import kr.or.sungrak.cba.cba_camp.models.AttendList;
 import kr.or.sungrak.cba.cba_camp.models.Campus;
 import kr.or.sungrak.cba.cba_camp.models.CampusStatisticList;
@@ -49,6 +49,12 @@ public interface ApiService {
     //8. 출석부 삭제
     @HTTP(method = "DELETE", path = "/attendance/list", hasBody = true)
     Call<ResponseBody> deleteAttend(@Body RequestBody object);
+
+    //9. 개인별 출석 현황 조희
+    @GET("attendance/{id}/history")
+    Call<AttendList> getindividualAttend(@Path("id") String id);
+
+
 
     //-------- 통 계 --------------------------------------------------------------------------------------------------------------//
 
