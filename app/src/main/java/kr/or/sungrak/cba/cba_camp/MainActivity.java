@@ -94,12 +94,15 @@ public class MainActivity extends AppCompatActivity
         myDialog = new MyProgessDialog(this);
         myDialog.showProgressDialog();
         setContentView(R.layout.activity_main);
-        if (TextUtils.isEmpty(CBAUtil.getRetreat(this))) {
+
+        String retreat = CBAUtil.getRetreat(this);
+
+        if (TextUtils.isEmpty(retreat)) {
             CBAUtil.setRetreat(this, Tag.RETREAT_SUNGRAK);
-//            showSelectDialog();
             initialActivity();
-        } else {
-            initialActivity();
+        } else if (!(retreat.equalsIgnoreCase(Tag.RETREAT_SUNGRAK) || retreat.equalsIgnoreCase(Tag.RETREAT_CBA))) {
+            myDialog.hideProgressDialog();
+            showSelectDialog();
         }
     }
 
@@ -110,9 +113,6 @@ public class MainActivity extends AppCompatActivity
         if (mCheckAttMenu != null) {
             mCheckAttMenu.setVisible(true);
             if (memberInfo != null) {
-//                if (memberInfo.isLeader()) {
-//                    mCheckAttMenu.setVisible(true);
-//                }
             }
             if (mAuth.getCurrentUser() == null) {
                 CBAUtil.removeAllPreferences(this);
@@ -140,6 +140,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.getMenu().clear();
         ImageView bannerImage = navigationView.getHeaderView(0).findViewById(R.id.bannerImage);
         LinearLayout logInLayout = navigationView.getHeaderView(0).findViewById(R.id.loginLayout);
+
+
         switch (CBAUtil.getRetreat(this)) {
             case Tag.RETREAT_CBA:
                 navigationView.inflateMenu(R.menu.activity_main_drawer);
@@ -219,6 +221,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void updateNavHeader() {
+        mAuth = FirebaseAuth.getInstance();
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         ImageButton logInBtn = headerView.findViewById(R.id.loginBtn);
@@ -394,7 +397,7 @@ public class MainActivity extends AppCompatActivity
         map.put("cleaning", cleaning);
         map.put("room", room);
 //and os on
-        mDatabase.child("images").updateChildren(map);
+        FirebaseDatabase.getInstance().getReference("2020_CBA_WINTER").child("images").updateChildren(map);
     }
 
     private void srImageDBmake() {
