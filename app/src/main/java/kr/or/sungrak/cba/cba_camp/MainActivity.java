@@ -103,6 +103,8 @@ public class MainActivity extends AppCompatActivity
         } else if (!(retreat.equalsIgnoreCase(Tag.RETREAT_SUNGRAK) || retreat.equalsIgnoreCase(Tag.RETREAT_CBA))) {
             myDialog.hideProgressDialog();
             showSelectDialog();
+        } else {
+            initialActivity();
         }
     }
 
