@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 data class MyInfo(
         @SerializedName("memId")
         @Expose
-        val memId: Int,
+        val memId: String,
         @SerializedName("retreat_id")
         @Expose
         val retreatId: Int,

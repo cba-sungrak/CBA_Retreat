@@ -53,16 +53,22 @@ import kr.or.sungrak.cba.cba_camp.common.Tag;
 import kr.or.sungrak.cba.cba_camp.dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_camp.dialog.MyProgessDialog;
 import kr.or.sungrak.cba.cba_camp.dialog.SelectDialog;
-import kr.or.sungrak.cba.cba_camp.fragment.attend.AttendCampusFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.attend.AttendCampusListFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.CampMemberListFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.CampRegistFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.attend.DateStatisticFragment;
-import kr.or.sungrak.cba.cba_camp.fragment.camp.GBSFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.camp.CampGBSFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.InfoFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.QAListFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.SRNotiFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.SwipeImageFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.gbs.GbsFragment;
 import kr.or.sungrak.cba.cba_camp.models.MyInfo;
+import kr.or.sungrak.cba.cba_camp.network.ApiService;
+import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -115,6 +121,7 @@ public class MainActivity extends AppCompatActivity
         if (mCheckAttMenu != null) {
             mCheckAttMenu.setVisible(true);
             if (memberInfo != null) {
+                getMyInfo(FirebaseAuth.getInstance().getUid());
             }
             if (mAuth.getCurrentUser() == null) {
                 CBAUtil.removeAllPreferences(this);
@@ -330,7 +337,10 @@ public class MainActivity extends AppCompatActivity
                 replaceFragment(new SwipeImageFragment("gbs_place"));
                 break;
             case R.id.check_attendance:
-                replaceFragment(new AttendCampusFragment());
+                replaceFragment(new AttendCampusListFragment());
+                break;
+            case R.id.gbs_check_attendance:
+                replaceFragment(new GbsFragment(CBAUtil.loadMyInfo(mContext).getMemId(), CBAUtil.getCurrentDate()));
                 break;
             case R.id.statistic_attendance:
                 replaceFragment(new DateStatisticFragment(CBAUtil.getCurrentDate()));
@@ -508,7 +518,7 @@ public class MainActivity extends AppCompatActivity
             updateNavHeader();
             if (loginDialog.changeFrament()) {
                 closeDrawer();
-                replaceFragment(new GBSFragment());
+                replaceFragment(new CampGBSFragment());
             }
         });
     }
@@ -622,8 +632,34 @@ public class MainActivity extends AppCompatActivity
             Log.e(TAG, "거절");
         }
 
-
     }
+
+    public void getMyInfo(String uid) {
+        ApiService service = ServiceGenerator.createService(ApiService.class);
+
+        // API 요청.
+        Call<MyInfo> request = service.getMyInfo(uid);
+        request.enqueue(new Callback<MyInfo>() {
+            @Override
+            public void onResponse(Call<MyInfo> call, Response<MyInfo> response) {
+                Log.i(TAG, "get My info success");
+                if (response.code() / 100 == 4) {
+                    //error 서버가 켜져 있으나 찾을 수가 없음
+                    CBAUtil.signOut(mContext);
+                } else {
+                    CBAUtil.saveMyInfo(mContext, response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyInfo> call, Throwable t) {
+                Log.i(TAG, "faild " + t.getMessage());
+                CBAUtil.signOut(mContext);
+            }
+        });
+    }
+
+
 }
 
 

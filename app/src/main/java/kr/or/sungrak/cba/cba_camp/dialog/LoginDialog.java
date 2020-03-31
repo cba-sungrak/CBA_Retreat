@@ -20,14 +20,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import kr.or.sungrak.cba.cba_camp.MainActivity;
 import kr.or.sungrak.cba.cba_camp.R;
-import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
-import kr.or.sungrak.cba.cba_camp.models.MyInfo;
-import kr.or.sungrak.cba.cba_camp.network.ApiService;
-import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
 public class LoginDialog extends MyProgessDialog implements View.OnClickListener {
@@ -71,7 +65,7 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            getMyInfo(FirebaseAuth.getInstance().getUid());
+                            ((MainActivity) mContext).getMyInfo(FirebaseAuth.getInstance().getUid());
                             mLoginSuccess = true;
                             Log.i(TAG, "FirebaseLogin success");
                         } else {
@@ -79,9 +73,9 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
                             Toast.makeText(mContext, "Authentication failed.", Toast.LENGTH_SHORT).show();
                             mLoginSuccess = false;
-                            dismiss();
-                            hideProgressDialog();
                         }
+                        dismiss();
+                        hideProgressDialog();
 
                     }
                 });
@@ -123,35 +117,6 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
 
     public boolean changeFrament() {
         return mLoginSuccess && mNeedToChangeFrament;
-    }
-
-    public void getMyInfo(String uid) {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
-
-        // API 요청.
-        Call<MyInfo> request = service.getMyInfo(uid);
-        request.enqueue(new Callback<MyInfo>() {
-            @Override
-            public void onResponse(Call<MyInfo> call, Response<MyInfo> response) {
-                Log.i(TAG, "get My info success");
-                if (response.code() / 100 == 4) {
-                    //error 서버가 켜져 있으나 찾을 수가 없음
-                    CBAUtil.signOut(mContext);
-                } else {
-                    CBAUtil.saveMyInfo(mContext, response);
-                }
-                dismiss();
-                hideProgressDialog();
-            }
-
-            @Override
-            public void onFailure(Call<MyInfo> call, Throwable t) {
-                Log.i(TAG, "faild " + t.getMessage());
-                CBAUtil.signOut(mContext);
-                dismiss();
-                hideProgressDialog();
-            }
-        });
     }
 
 }

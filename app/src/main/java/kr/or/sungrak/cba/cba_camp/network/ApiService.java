@@ -54,6 +54,29 @@ public interface ApiService {
     @GET("attendance/{id}/history")
     Call<AttendList> getindividualAttend(@Path("id") String id);
 
+    //--------gbs 관리-----------------------------------------------------------------------
+    //1. 출석부 조회
+    @GET("gbs/attendance/list")
+    Call<AttendList> getGBSAttendList(@Query("date") String date, @Query("leaderMemberId") String leaderMemId, @Query("nav") String nav);
+
+    //2. 출석부 생성
+    @POST("gbs/attendance/list/new")
+    Call<AttendList> createGBSAttend(@Body RequestBody body);
+
+    //3. 출석부 저장
+    @POST("gbs/attendance/list/report")
+    Call<ResponseBody> postGBSAttend(@Body RequestBody body);
+
+    //4. 출석부 삭제
+    @HTTP(method = "DELETE", path = "gbs/attendance/list", hasBody = true)
+    Call<ResponseBody> deleteGBSAttend(@Body RequestBody object);
+
+    //5. 출석부 명단 수정
+//    @POST("/attendance/members/edit")
+//    Call<ResponseBody> postEditAttendMember(@Body RequestBody body);
+
+
+
 
 
     //-------- 통 계 --------------------------------------------------------------------------------------------------------------//

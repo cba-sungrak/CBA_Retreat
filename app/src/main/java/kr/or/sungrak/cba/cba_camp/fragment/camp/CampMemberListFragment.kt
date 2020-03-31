@@ -33,10 +33,6 @@ data class CampMemList(
 
 class CampMemberListFragment : Fragment() {
 
-    private val adapter: CampMemberAdapter by lazy {
-        CampMemberAdapter()
-    }
-
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -47,6 +43,10 @@ class CampMemberListFragment : Fragment() {
                 container,
                 false
         )
+    }
+
+    private val adapter: CampMemberAdapter by lazy {
+        CampMemberAdapter()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

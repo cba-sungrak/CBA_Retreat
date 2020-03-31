@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-        <variable
-            name="fragment"
-            type="kr.or.sungrak.cba.cba_camp.fragment.attend.AttendFragment" />
-    </data>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,7 +19,6 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:onClick="@{fragment::onButtonClick}"
                 android:textSize="15dp"
                 android:text="이전" />
 
@@ -34,7 +27,6 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:onClick="@{fragment::onButtonClick}"
                 android:text="2019-04-07"
                 android:textSize="15dp" />
 
@@ -43,7 +35,6 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:onClick="@{fragment::onButtonClick}"
                 android:textSize="15dp"
                 android:text="다음" />
         </LinearLayout>
@@ -81,7 +72,6 @@
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:onClick="@{fragment::onButtonClick}"
                 android:text="Edit" />
         </LinearLayout>
 
@@ -105,7 +95,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="184dp"
                 android:layout_gravity="center"
-                android:onClick="@{fragment::onButtonClick}"
                 android:text="출석부 생성"
                 android:textSize="50sp" />
 
@@ -135,7 +124,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:onClick="@{fragment::onButtonClick}"
                 android:text="출석부삭제" />
 
             <View
@@ -149,7 +137,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:onClick="@{fragment::onButtonClick}"
                 android:text="출석완료" />
 
         </LinearLayout>

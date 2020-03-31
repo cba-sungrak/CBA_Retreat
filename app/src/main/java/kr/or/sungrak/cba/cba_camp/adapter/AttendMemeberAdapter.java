@@ -60,10 +60,10 @@ public class AttendMemeberAdapter extends RecyclerView.Adapter<AttendViewHolder>
     @Override
     public int getItemViewType(int position) {
         AttendList.AttendInfo item = mAttendInfoList.get(position);
-        if (item.getHidden()) {
-            return HIDDEN;
-        } else {
+        if (item.getHidden() == null || !item.getHidden()) {
             return SHOW;
+        } else {
+            return HIDDEN;
         }
     }
 

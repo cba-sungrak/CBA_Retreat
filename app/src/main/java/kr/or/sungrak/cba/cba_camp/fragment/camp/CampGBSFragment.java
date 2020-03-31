@@ -30,7 +30,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class GBSFragment extends Fragment {
+public class CampGBSFragment extends Fragment {
 
     private static final String TAG = "GBSFragment";
     GbsLayoutBinding binding;
@@ -50,10 +50,10 @@ public class GBSFragment extends Fragment {
             recyclerView = binding.gbsMemberList;
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
             gbsMemeberAdapter = new GBSMemberAdapter();
-            if (loadGBSInfo() == null || loadGBSInfo().getLeader() == null) {
-                getGBSInfo();
+            if (loadCampGBSInfo() == null || loadCampGBSInfo().getLeader() == null) {
+                getCampGBSInfo();
             } else {
-                updateGBSInfo();
+                updateCampGBSInfo();
             }
             recyclerView.setAdapter(gbsMemeberAdapter);
         }
@@ -61,8 +61,8 @@ public class GBSFragment extends Fragment {
         return rootView;
     }
 
-    private void updateGBSInfo() {
-        GBSInfo gbsInfo = loadGBSInfo();
+    private void updateCampGBSInfo() {
+        GBSInfo gbsInfo = loadCampGBSInfo();
         if (gbsInfo.getLeader() != null) {
             binding.setGbs(gbsInfo);
             gbsMemeberAdapter.updateItems(gbsInfo.getMembers());
@@ -70,7 +70,7 @@ public class GBSFragment extends Fragment {
 
     }
 
-    private void getGBSInfo() {
+    private void getCampGBSInfo() {
         ApiService service = ServiceGenerator.createService(ApiService.class);
         String uid = FirebaseAuth.getInstance().getUid();
         // API 요청.
@@ -84,8 +84,8 @@ public class GBSFragment extends Fragment {
                     if (response.body().getLeader() == null) {
                         //조배치 되지 않음
                     } else {
-                        saveGBSInfo(response);
-                        updateGBSInfo();
+                        saveCampGBSInfo(response);
+                        updateCampGBSInfo();
                     }
                 }
             }
@@ -97,7 +97,7 @@ public class GBSFragment extends Fragment {
         });
     }
 
-    private void saveGBSInfo(Response<GBSInfo> response) {
+    private void saveCampGBSInfo(Response<GBSInfo> response) {
         Gson gson = new Gson();
         String myInfo = gson.toJson(response.body());
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
@@ -106,7 +106,7 @@ public class GBSFragment extends Fragment {
         editor.commit();
     }
 
-    private GBSInfo loadGBSInfo() {
+    private GBSInfo loadCampGBSInfo() {
         Gson gson = new Gson();
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String json = pref.getString("GBSInfo", "");

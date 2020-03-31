@@ -102,7 +102,7 @@ class InfoFragment : Fragment() {
 //            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/channel/UCW6bF9L0ZK__Tlwl19B0FYQ")))
         }
         gbsBtn.setOnClickListener {
-            (activity as MainActivity).replaceFragment(GBSFragment())
+            (activity as MainActivity).replaceFragment(CampGBSFragment())
         }
         //cba
 
