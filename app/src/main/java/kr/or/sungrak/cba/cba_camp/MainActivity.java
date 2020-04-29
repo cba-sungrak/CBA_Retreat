@@ -162,14 +162,6 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.CBA_ADMIN);
                 }
-                MyInfo memberInfo = CBAUtil.loadMyInfo(this);
-                if (memberInfo.getGbsInfo().getPosition().equals("조장")) {
-                    navigationView.getMenu().findItem(R.id.gbs_check_attendance).setVisible(true);
-                }
-                if (memberInfo.getGrade().equals("LEADER")) {
-                    navigationView.getMenu().findItem(R.id.check_attendance).setVisible(true);
-                }
-
                 break;
             case Tag.RETREAT_SUNGRAK:
                 navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
@@ -246,13 +238,22 @@ public class MainActivity extends AppCompatActivity
             logOutBtn.setVisibility(View.GONE);
             logInBtn.setVisibility(View.VISIBLE);
             loginText.setText("");
+            navigationView.getMenu().findItem(R.id.gbs_check_attendance).setVisible(false);
+            navigationView.getMenu().findItem(R.id.check_attendance).setVisible(false);
         } else {
             //logIn
             logInBtn.setVisibility(View.GONE);
             logOutBtn.setVisibility(View.VISIBLE);
             MyInfo myInfo = CBAUtil.loadMyInfo(this);
             if (myInfo != null) {
-                String myinfoTxt = myInfo.getName() + "      |      " + myInfo.getCampus() + "\n";
+                if (myInfo.getGbsInfo() != null && myInfo.getGbsInfo().getPosition().equals("조장")) {
+                    navigationView.getMenu().findItem(R.id.gbs_check_attendance).setVisible(true);
+                }
+                if (myInfo.getGrade().equals("LEADER")) {
+                    navigationView.getMenu().findItem(R.id.check_attendance).setVisible(true);
+                }
+
+                String myinfoTxt = myInfo.getName() + "  |  " + myInfo.getCampus() + "\n";
                 if (myInfo.getRetreatGbsInfo() != null) {
                     myinfoTxt = myinfoTxt + myInfo.getRetreatGbsInfo().getGbs() + "/" + myInfo.getRetreatGbsInfo().getPosition() + "\n";
                 }
