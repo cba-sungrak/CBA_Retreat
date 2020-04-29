@@ -4,6 +4,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
 
         <variable
             name="attend"
@@ -31,6 +32,15 @@
             android:text="@{`  `+attend.name+`  `}"
             android:textColor="@android:color/black"
             android:typeface="serif" />
+
+        <TextView
+            android:id="@+id/attend_campus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{`  `+attend.campus+`  `}"
+            android:textColor="@android:color/black"
+            android:typeface="serif"
+            android:visibility="@{TextUtils.isEmpty(attend.campus) ? View.GONE:View.VISIBLE}" />
 
         <TextView
             android:id="@+id/attend_mobile"

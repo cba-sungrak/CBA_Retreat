@@ -12,12 +12,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import kr.or.sungrak.cba.cba_camp.MainActivity;
@@ -61,23 +57,19 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
         showProgressDialog();
         // [START sign_in_with_email]
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener((Activity) mContext, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            ((MainActivity) mContext).getMyInfo(FirebaseAuth.getInstance().getUid());
-                            mLoginSuccess = true;
-                            Log.i(TAG, "FirebaseLogin success");
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(mContext, "Authentication failed.", Toast.LENGTH_SHORT).show();
-                            mLoginSuccess = false;
-                        }
-                        dismiss();
-                        hideProgressDialog();
-
+                .addOnCompleteListener((Activity) mContext, task -> {
+                    if (task.isSuccessful()) {
+                        ((MainActivity) mContext).getMyInfo(FirebaseAuth.getInstance().getUid());
+                        mLoginSuccess = true;
+                        Log.i(TAG, "FirebaseLogin success");
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        Toast.makeText(mContext, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        mLoginSuccess = false;
                     }
+                    dismiss();
+                    hideProgressDialog();
                 });
     }
 

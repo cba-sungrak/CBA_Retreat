@@ -1,44 +1,27 @@
 package kr.or.sungrak.cba.cba_camp.models
 
-import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 
 data class MyInfo(
-        @SerializedName("memId")
-        @Expose
-        val memId: String,
-        @SerializedName("retreat_id")
-        @Expose
-        val retreatId: Int,
-        @SerializedName("name")
-        @Expose
-        val name: String,
-        @SerializedName("campus")
-        @Expose
-        val campus: String,
-        @SerializedName("retreatGbs")
-        @Expose
-        val retreatGbs: String,
-        @SerializedName("originalGbs")
-        @Expose
-        val originalGbs: String,
-        @SerializedName("position")
-        @Expose
-        val position: String,
-        @SerializedName("dt_birth")
-        @Expose
-        val dtBirth: String,
-        @SerializedName("sex")
-        @Expose
-        val sex: String,
-        @SerializedName("mobile")
-        @Expose
-        val mobile: String,
-        @SerializedName("uid")
-        @Expose
-        val uid: String,
-        @SerializedName("grade")
-        @Expose
-        val grade: String
+        @SerializedName("memId") val memId: String,
+        @SerializedName("name") val name: String,
+        @SerializedName("campus") val campus: String,
+        @SerializedName("dt_birth") val dt_birth: String,
+        @SerializedName("mobile") val mobile: String,
+        @SerializedName("uid") val uid: String,
+        @SerializedName("grade") val grade: String,
+        @SerializedName("retreatGbsInfo") val retreatGbsInfo: MyRetreatGbsInfo,
+        @SerializedName("gbsInfo") val gbsInfo: MyGbsInfo
+)
+
+data class MyGbsInfo(
+        @SerializedName("gbs") val gbs: String,
+        @SerializedName("position") val position: String
+)
+
+data class MyRetreatGbsInfo(
+        @SerializedName("retreatId") val retreatId: Int,
+        @SerializedName("gbs") val gbs: String,
+        @SerializedName("position") val position: String
 )

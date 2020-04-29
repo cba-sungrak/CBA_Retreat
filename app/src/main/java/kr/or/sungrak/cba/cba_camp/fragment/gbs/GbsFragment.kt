@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.attend_layout.*
 import kr.or.sungrak.cba.cba_camp.R
 import kr.or.sungrak.cba.cba_camp.adapter.AttendMemeberAdapter
+import kr.or.sungrak.cba.cba_camp.common.CBAUtil
 import kr.or.sungrak.cba.cba_camp.databinding.AttendLayoutBinding
 import kr.or.sungrak.cba.cba_camp.fragment.attend.AttendEditFragment
 import kr.or.sungrak.cba.cba_camp.models.AttendList
@@ -95,7 +96,7 @@ class GbsFragment(leaderMemId: String, date: String) : Fragment() {
             }, mSelectedDate!!.split("-").toTypedArray()[0].toInt(), mSelectedDate!!.split("-").toTypedArray()[1].toInt() - 1, mSelectedDate!!.split("-").toTypedArray()[2].toInt()).show()
         }
 
-//            R.id.edit_attend -> fragmentManager!!.beginTransaction().replace(R.id.fragment_container, AttendEditFragment(mleaderMemId, mAttendMemberList)).addToBackStack(null).commit()}
+        edit_attend.visibility = View.GONE;
         create_attend.setOnClickListener { createAttendList(mSelectedDate, mleaderMemId) }
         confirm_attend.setOnClickListener { postAttendList() }
         delete_attend.setOnClickListener {
@@ -148,7 +149,7 @@ class GbsFragment(leaderMemId: String, date: String) : Fragment() {
 
     private fun getString(`as`: AttendList?): String {
         val percent = (`as`!!.attended.toDouble() / `as`.registered.toDouble() * 100.0).toInt()
-        return "[" + mleaderMemId + "] 출석 " + `as`.attended + " / 전체 " + `as`.registered + " / " + percent + "%"
+        return "[" + CBAUtil.loadMyInfo(context).gbsInfo.gbs + "] 출석 " + `as`.attended + " / 전체 " + `as`.registered + " / " + percent + "%"
     }
 
     private fun createAttendList(date: String?, leaderMemberId: String?) {

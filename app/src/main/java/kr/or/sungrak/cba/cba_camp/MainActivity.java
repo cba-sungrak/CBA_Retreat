@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference mDatabase;
     FirebaseAuth mAuth;
     Context mContext;
-    MenuItem mCheckAttMenu;
     MyProgessDialog myDialog;
 
     private static int sHiddenCode[] = {
@@ -118,16 +117,12 @@ public class MainActivity extends AppCompatActivity
     protected void onResume() {
         super.onResume();
         MyInfo memberInfo = CBAUtil.loadMyInfo(this);
-        if (mCheckAttMenu != null) {
-            mCheckAttMenu.setVisible(true);
-            if (memberInfo != null) {
-                getMyInfo(FirebaseAuth.getInstance().getUid());
-            }
-            if (mAuth.getCurrentUser() == null) {
-                CBAUtil.removeAllPreferences(this);
-            }
+        if (memberInfo == null) {
+            getMyInfo(FirebaseAuth.getInstance().getUid());
         }
-        updateNavHeader();
+        if (mAuth.getCurrentUser() == null) {
+            CBAUtil.removeAllPreferences(this);
+        }
     }
 
     public void initialActivity() {
@@ -167,6 +162,14 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.CBA_ADMIN);
                 }
+                MyInfo memberInfo = CBAUtil.loadMyInfo(this);
+                if (memberInfo.getGbsInfo().getPosition().equals("조장")) {
+                    navigationView.getMenu().findItem(R.id.gbs_check_attendance).setVisible(true);
+                }
+                if (memberInfo.getGrade().equals("LEADER")) {
+                    navigationView.getMenu().findItem(R.id.check_attendance).setVisible(true);
+                }
+
                 break;
             case Tag.RETREAT_SUNGRAK:
                 navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
@@ -249,7 +252,16 @@ public class MainActivity extends AppCompatActivity
             logOutBtn.setVisibility(View.VISIBLE);
             MyInfo myInfo = CBAUtil.loadMyInfo(this);
             if (myInfo != null) {
-                loginText.setText(myInfo.getName() + "      |      " + myInfo.getRetreatGbs() + "      |      " + myInfo.getPosition());
+                String myinfoTxt = myInfo.getName() + "      |      " + myInfo.getCampus() + "\n";
+                if (myInfo.getRetreatGbsInfo() != null) {
+                    myinfoTxt = myinfoTxt + myInfo.getRetreatGbsInfo().getGbs() + "/" + myInfo.getRetreatGbsInfo().getPosition() + "\n";
+                }
+                if (myInfo.getGbsInfo() != null) {
+                    myinfoTxt = myinfoTxt + myInfo.getGbsInfo().getGbs() + "/" + myInfo.getGbsInfo().getPosition();
+                }
+                loginText.setText(myinfoTxt);
+            } else {
+                getMyInfo(FirebaseAuth.getInstance().getUid());
             }
         }
         logInBtn.setOnClickListener(v -> {
@@ -260,8 +272,8 @@ public class MainActivity extends AppCompatActivity
         logOutBtn.setOnClickListener(v -> {
             if (mAuth.getCurrentUser() != null) {
                 CBAUtil.signOut(getApplicationContext());
-                updateNavHeader();
                 closeDrawer();
+                updateNavHeader();
                 replaceFragment(new InfoFragment());
             }
         });
@@ -515,7 +527,6 @@ public class MainActivity extends AppCompatActivity
 
         loginDialog.setOnDismissListener(dialog -> {
             Log.i(TAG, "onDismiss");
-            updateNavHeader();
             if (loginDialog.changeFrament()) {
                 closeDrawer();
                 replaceFragment(new CampGBSFragment());
@@ -649,6 +660,7 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     CBAUtil.saveMyInfo(mContext, response);
                 }
+                updateNavHeader();
             }
 
             @Override

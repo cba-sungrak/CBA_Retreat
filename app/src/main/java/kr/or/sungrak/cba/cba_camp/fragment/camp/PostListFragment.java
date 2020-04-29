@@ -67,7 +67,7 @@ public class PostListFragment extends Fragment {
 
         MyInfo memberInfo = CBAUtil.loadMyInfo(getContext());
 
-        if ((memberInfo != null && (memberInfo.getRetreatGbs().equals("STAFF"))) || CBAUtil.isAdmin(getActivity())) {
+        if ((memberInfo != null && (memberInfo.getRetreatGbsInfo().getGbs().equals("STAFF"))) || CBAUtil.isAdmin(getActivity())) {
             mFab.show();
             mRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override

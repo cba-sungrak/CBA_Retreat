@@ -55,6 +55,14 @@ public class AttendList {
         @Expose
         private String name;
 
+        public String getCampus() {
+            return campus;
+        }
+
+        @SerializedName("campus")
+        @Expose
+        private String campus;
+
         @SerializedName("mobile")
         @Expose
         private String mobile;
