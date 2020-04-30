@@ -47,6 +47,13 @@ public class CBAUtil {
         editor.commit();
     }
 
+    public static void removeMyInfo(Context context){
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.remove("MyInfo");
+        editor.commit();
+    }
+
     public static void removeAllPreferences(Context context) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         pref.edit().remove("MyInfo").commit();

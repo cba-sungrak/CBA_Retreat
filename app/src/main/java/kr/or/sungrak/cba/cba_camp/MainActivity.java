@@ -238,8 +238,10 @@ public class MainActivity extends AppCompatActivity
             logOutBtn.setVisibility(View.GONE);
             logInBtn.setVisibility(View.VISIBLE);
             loginText.setText("");
-            navigationView.getMenu().findItem(R.id.gbs_check_attendance).setVisible(false);
-            navigationView.getMenu().findItem(R.id.check_attendance).setVisible(false);
+            if (navigationView.getMenu().findItem(R.id.gbs_check_attendance) != null) {
+                navigationView.getMenu().findItem(R.id.gbs_check_attendance).setVisible(false);
+                navigationView.getMenu().findItem(R.id.check_attendance).setVisible(false);
+            }
         } else {
             //logIn
             logInBtn.setVisibility(View.GONE);
