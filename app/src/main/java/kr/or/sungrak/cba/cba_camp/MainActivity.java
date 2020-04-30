@@ -248,18 +248,18 @@ public class MainActivity extends AppCompatActivity
             logOutBtn.setVisibility(View.VISIBLE);
             MyInfo myInfo = CBAUtil.loadMyInfo(this);
             if (myInfo != null) {
-                if (myInfo.getGbsInfo() != null && myInfo.getGbsInfo().getPosition().equals("조장")) {
+                if (myInfo.getGbsInfo() != null && myInfo.getGbsInfo().getPosition() != null && myInfo.getGbsInfo().getPosition().equals("조장")) {
                     navigationView.getMenu().findItem(R.id.gbs_check_attendance).setVisible(true);
                 }
-                if (myInfo.getGrade().equals("LEADER")) {
+                if (myInfo.getGrade() != null && myInfo.getGrade().equals("LEADER")) {
                     navigationView.getMenu().findItem(R.id.check_attendance).setVisible(true);
                 }
 
                 String myinfoTxt = myInfo.getName() + "  |  " + myInfo.getCampus() + "\n";
-                if (myInfo.getRetreatGbsInfo() != null) {
+                if (myInfo.getRetreatGbsInfo().getGbs() != null) {
                     myinfoTxt = myinfoTxt + myInfo.getRetreatGbsInfo().getGbs() + "/" + myInfo.getRetreatGbsInfo().getPosition() + "\n";
                 }
-                if (myInfo.getGbsInfo() != null) {
+                if (myInfo.getGbsInfo().getGbs() != null) {
                     myinfoTxt = myinfoTxt + myInfo.getGbsInfo().getGbs() + "/" + myInfo.getGbsInfo().getPosition();
                 }
                 loginText.setText(myinfoTxt);
