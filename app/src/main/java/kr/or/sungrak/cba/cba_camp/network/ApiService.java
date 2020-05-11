@@ -5,6 +5,7 @@ import kr.or.sungrak.cba.cba_camp.models.AttendList;
 import kr.or.sungrak.cba.cba_camp.models.Campus;
 import kr.or.sungrak.cba.cba_camp.models.CampusStatisticList;
 import kr.or.sungrak.cba.cba_camp.models.GBSInfo;
+import kr.or.sungrak.cba.cba_camp.models.GBSTotalStatisticDatas;
 import kr.or.sungrak.cba.cba_camp.models.MyInfo;
 import kr.or.sungrak.cba.cba_camp.models.PeriodStatistic;
 import okhttp3.RequestBody;
@@ -83,17 +84,29 @@ public interface ApiService {
 
 
 
-    //-------- 통 계 --------------------------------------------------------------------------------------------------------------//
+    //-------- 캠퍼스 통 계 --------------------------------------------------------------------------------------------------------------//
 
     //1. 기간 통계
     //GET /statistics?from=2019-05-05&to=2019-05-12&campus=천안
     @GET("/statistics")
-    Call<PeriodStatistic> getPeriodSatistic(@Query("from") String from, @Query("to") String to, @Query("campus") String campus);
+    Call<PeriodStatistic> getPeriodStatistics(@Query("from") String from, @Query("to") String to, @Query("campus") String campus);
 
     //2. 전체 통계(캠퍼스별 + 합계)
     //GET /statistics/total?date=2019-05-05&nav=PREV / NEXT / CURRENT(또는 빈값. 이외의 값은 에러)
     @GET("/statistics/total")
     Call<CampusStatisticList> getStatisticCampusList(@Query("date") String date, @Query("nav") String nav);
+
+    //-------- GBS 통 계 --------------------------------------------------------------------------------------------------------------//
+    //1. 전체 통계
+    //GET /statistics/total?date=2019-05-05&nav=PREV / NEXT / CURRENT(또는 빈값. 이외의 값은 에러)
+    @GET("/statistics/gbs/total")
+    Call<GBSTotalStatisticDatas> getStatisticTotalGBS(@Query("date") String date, @Query("nav") String nav);
+
+    //2. 단계 통계
+    //GET /statistics/gbs?date=2020-05-08&nav=CURRENT&gbsId=12
+    @GET("/statistics/gbs/total")
+    Call<PeriodStatistic> getStatisticGBS(@Query("date") String date, @Query("nav") String nav, @Query("nav") String gbsId);
+
 
     //-------- 몽산포 수련회 --------------------------------------------------------------------------------------------------------------//
     //1. 수련회 등록

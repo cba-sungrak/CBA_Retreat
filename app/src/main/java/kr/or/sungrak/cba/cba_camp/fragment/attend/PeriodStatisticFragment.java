@@ -259,7 +259,7 @@ public class PeriodStatisticFragment extends Fragment {
     private void getPeriodSatistic(String from, String to, String campus) {
         ApiService service = ServiceGenerator.createService(ApiService.class);
 
-        Call<PeriodStatistic> request = service.getPeriodSatistic(from, to, campus);
+        Call<PeriodStatistic> request = service.getPeriodStatistics(from, to, campus);
 
         request.enqueue(new Callback<PeriodStatistic>() {
             @Override

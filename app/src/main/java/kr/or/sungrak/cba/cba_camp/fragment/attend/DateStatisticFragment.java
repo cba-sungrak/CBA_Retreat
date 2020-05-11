@@ -30,14 +30,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static kr.or.sungrak.cba.cba_camp.common.Tag.NAVI_CURRENT;
+import static kr.or.sungrak.cba.cba_camp.common.Tag.NAVI_NEXT;
+import static kr.or.sungrak.cba.cba_camp.common.Tag.NAVI_PREV;
+
 public class DateStatisticFragment extends Fragment {
     StatisticDateLayoutBinding binding;
     String mSelectedDate;
     RecyclerView mRecyclerView;
     StatisticCampusAdapter mStatisticCampusAdapter;
-    private static final String NAVI_PREV = "PREV";
-    private static final String NAVI_NEXT = "NEXT";
-    private static final String NAVI_CURRENT = "CURRENT";
     @SuppressLint("ValidFragment")
     public DateStatisticFragment(String date) {
         mSelectedDate = date;

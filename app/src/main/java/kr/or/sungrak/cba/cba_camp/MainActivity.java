@@ -62,6 +62,7 @@ import kr.or.sungrak.cba.cba_camp.fragment.camp.InfoFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.QAListFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.SRNotiFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.SwipeImageFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.gbs.GBSTotalStatisticFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.gbs.GbsFragment;
 import kr.or.sungrak.cba.cba_camp.models.MyInfo;
 import kr.or.sungrak.cba.cba_camp.network.ApiService;
@@ -157,6 +158,7 @@ public class MainActivity extends AppCompatActivity
                 logInLayout.setVisibility(View.VISIBLE);
                 if (CBAUtil.isAdmin(this)) {
                     navigationView.getMenu().findItem(R.id.statistic_attendance).setVisible(true);
+                    navigationView.getMenu().findItem(R.id.gbs_statistic_attendance).setVisible(true);
                     FirebaseMessaging.getInstance().subscribeToTopic(Tag.CBA_ADMIN);
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.SR_ADMIN);
                 } else {
@@ -359,6 +361,9 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.statistic_attendance:
                 replaceFragment(new DateStatisticFragment(CBAUtil.getCurrentDate()));
+                break;
+            case R.id.gbs_statistic_attendance:
+                replaceFragment(new GBSTotalStatisticFragment(CBAUtil.getCurrentDate()));
                 break;
             case R.id.sr_welcom:
                 replaceFragment(new SwipeImageFragment("c1"));

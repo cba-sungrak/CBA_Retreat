@@ -19,6 +19,10 @@ class Tag {
 
         const val NOTI_ID = 265
 
+        const val NAVI_PREV = "PREV"
+        const val NAVI_NEXT = "NEXT"
+        const val NAVI_CURRENT = "CURRENT"
+
     }
 
 
