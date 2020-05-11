@@ -16,11 +16,12 @@
         android:orientation="horizontal">
 
         <LinearLayout
+            android:id="@+id/border"
             style="@style/GBSContentMember"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/statistic_campus"
+                android:id="@+id/statistic_gbs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{statistic.gbsLevel+`  `}"

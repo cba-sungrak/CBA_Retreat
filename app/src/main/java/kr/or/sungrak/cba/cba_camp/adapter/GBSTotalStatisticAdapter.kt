@@ -1,17 +1,24 @@
 package kr.or.sungrak.cba.cba_camp.adapter
 
+import android.app.PendingIntent.getActivity
+import android.content.Context
+import android.graphics.Color
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import kr.or.sungrak.cba.cba_camp.R
 import kr.or.sungrak.cba.cba_camp.databinding.StatisticTotalGbsItemBinding
 import kr.or.sungrak.cba.cba_camp.models.GBSTotalStatisticData
 
-class GBSTotalStatisticAdapter : RecyclerView.Adapter<GBSTotalStatisticAdapter.StatisticGBSTotalViewHolder>() {
+class GBSTotalStatisticAdapter(val context:Context?) : RecyclerView.Adapter<GBSTotalStatisticAdapter.StatisticGBSTotalViewHolder>() {
     companion object {
         private val TAG = "GBSTotalStatisticAdapter"
+        private const val CHECKED = 1
+        private const val NOTCHECKED = 0
     }
 
     private val items = mutableListOf<GBSTotalStatisticData>()
@@ -26,10 +33,33 @@ class GBSTotalStatisticAdapter : RecyclerView.Adapter<GBSTotalStatisticAdapter.S
     }
 
     override fun onBindViewHolder(memberViewHolder: StatisticGBSTotalViewHolder, i: Int) {
-
         memberViewHolder.binding.statistic = items[i]
+        val grey = ContextCompat.getColor(context!!, R.color.grey_500)
+
+        when (getItemViewType(i)) {
+            CHECKED -> {
+                memberViewHolder.binding.statisticGbs.setTextColor(Color.BLACK)
+                memberViewHolder.binding.statisticCount.setTextColor(Color.BLACK)
+                memberViewHolder.binding.statisticPercent.setTextColor(Color.BLACK)
+            }
+            NOTCHECKED -> {
+                memberViewHolder.binding.statisticGbs.setTextColor(grey)
+                memberViewHolder.binding.statisticCount.setTextColor(grey)
+                memberViewHolder.binding.statisticPercent.setTextColor(grey)
+            }
+        }
+
 
         memberViewHolder.itemView.setOnClickListener { v: View? ->
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        val item = items[position]
+        return if (TextUtils.isEmpty(item.date)) {
+            NOTCHECKED
+        } else {
+            CHECKED
         }
     }
 

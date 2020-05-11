@@ -32,7 +32,7 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
     private val TAG = "GBSTotalStatisticFragment"
     lateinit var mBinding: StatisticGbsTotalLayoutBinding
     private lateinit var recyclerView: RecyclerView
-    val mGBSTotalSatisticAdapter: GBSTotalStatisticAdapter = GBSTotalStatisticAdapter()
+    lateinit var mGBSTotalSatisticAdapter: GBSTotalStatisticAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +44,7 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
                               savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.statistic_gbs_total_layout, container, false)
         mBinding.fragment = this
-
+        mGBSTotalSatisticAdapter = GBSTotalStatisticAdapter(context)
         if (TextUtils.isEmpty(mSelectedDate)) mSelectedDate = CBAUtil.getCurrentDate()
         mBinding.statisticDate.text = mSelectedDate
 
@@ -76,11 +76,8 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
                 } else {
                     val gbsTSData = response.body()
                     mGBSTotalSatisticAdapter!!.updateItems(gbsTSData!!.data)
-//                    mGBSTotalSatisticAdapter!!.notifyDataSetChanged()
-//                    mGBSTotalSatisticAdapter!!.updateItems(gbsTSData!!.data)
                     mSelectedDate = gbsTSData!!.data[0].date
                     mBinding.statisticDate.text = mSelectedDate
-
                 }
             }
 
