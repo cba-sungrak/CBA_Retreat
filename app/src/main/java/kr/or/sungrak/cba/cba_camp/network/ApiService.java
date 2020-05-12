@@ -5,6 +5,7 @@ import kr.or.sungrak.cba.cba_camp.models.AttendList;
 import kr.or.sungrak.cba.cba_camp.models.Campus;
 import kr.or.sungrak.cba.cba_camp.models.CampusStatisticList;
 import kr.or.sungrak.cba.cba_camp.models.GBSInfo;
+import kr.or.sungrak.cba.cba_camp.models.GBSStepStatisticDatas;
 import kr.or.sungrak.cba.cba_camp.models.GBSTotalStatisticDatas;
 import kr.or.sungrak.cba.cba_camp.models.MyInfo;
 import kr.or.sungrak.cba.cba_camp.models.PeriodStatistic;
@@ -100,12 +101,12 @@ public interface ApiService {
     //1. 전체 통계
     //GET /statistics/total?date=2019-05-05&nav=PREV / NEXT / CURRENT(또는 빈값. 이외의 값은 에러)
     @GET("/statistics/gbs/total")
-    Call<GBSTotalStatisticDatas> getStatisticTotalGBS(@Query("date") String date, @Query("nav") String nav);
+    Call<GBSTotalStatisticDatas> getGBSTotalStatistic(@Query("date") String date, @Query("nav") String nav);
 
     //2. 단계 통계
     //GET /statistics/gbs?date=2020-05-08&nav=CURRENT&gbsId=12
-    @GET("/statistics/gbs/total")
-    Call<PeriodStatistic> getStatisticGBS(@Query("date") String date, @Query("nav") String nav, @Query("nav") String gbsId);
+    @GET("/statistics/gbs")
+    Call<GBSStepStatisticDatas> getGBSStepStatistic(@Query("date") String date, @Query("nav") String nav, @Query("gbsId") Integer gbsId);
 
 
     //-------- 몽산포 수련회 --------------------------------------------------------------------------------------------------------------//

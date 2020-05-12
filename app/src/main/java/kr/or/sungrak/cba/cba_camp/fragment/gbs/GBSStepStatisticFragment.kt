@@ -9,18 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.statistic_gbs_total_layout.view.*
 import kr.or.sungrak.cba.cba_camp.R
-import kr.or.sungrak.cba.cba_camp.adapter.GBSTotalStatisticAdapter
+import kr.or.sungrak.cba.cba_camp.adapter.GBSStepStatisticAdapter
 import kr.or.sungrak.cba.cba_camp.common.CBAUtil
 import kr.or.sungrak.cba.cba_camp.common.Tag
-import kr.or.sungrak.cba.cba_camp.databinding.StatisticGbsTotalLayoutBinding
-import kr.or.sungrak.cba.cba_camp.models.GBSTotalStatisticDatas
+import kr.or.sungrak.cba.cba_camp.databinding.StatisticGbsStepLayoutBinding
+import kr.or.sungrak.cba.cba_camp.models.GBSStepStatisticDatas
 import kr.or.sungrak.cba.cba_camp.network.ApiService
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator
 import retrofit2.Call
@@ -29,11 +28,11 @@ import retrofit2.Response
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
-class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
+class GBSStepStatisticFragment(var mSelectedDate: String, val mGbsId: Int) : Fragment() {
     private val TAG = "GBSTotalStatisticFragment"
-    lateinit var mBinding: StatisticGbsTotalLayoutBinding
+    lateinit var mBinding: StatisticGbsStepLayoutBinding
     private lateinit var recyclerView: RecyclerView
-    lateinit var mGBSTotalSatisticAdapter: GBSTotalStatisticAdapter
+    private lateinit var mGBSStepSatisticAdapter: GBSStepStatisticAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,49 +42,40 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.statistic_gbs_total_layout, container, false)
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.statistic_gbs_step_layout, container, false)
         mBinding.fragment = this
-        mGBSTotalSatisticAdapter = GBSTotalStatisticAdapter(context) { item ->
-            if (item.gbsId != 0)
-            fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GBSStepStatisticFragment(item.date!!, item.gbsId)).addToBackStack(null).commit()
-        }
+        mGBSStepSatisticAdapter = GBSStepStatisticAdapter(context)
         if (TextUtils.isEmpty(mSelectedDate)) mSelectedDate = CBAUtil.getCurrentDate()
         mBinding.statisticDate.text = mSelectedDate
 
         recyclerView = mBinding.gbsStatisticRecylerview
         recyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
 
-        getGBSTotalStatistic(mSelectedDate, Tag.NAVI_CURRENT)
+        getGBSStepStatistic(mSelectedDate, Tag.NAVI_CURRENT, mGbsId)
 
-        recyclerView.adapter = mGBSTotalSatisticAdapter
-
-//        mGBSTotalSatisticAdapter!!.setCustomOnItemClickListener { v: View?, date: String?, gbsId: Int? ->
-//            if (gbsId != null)
-//                fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GBSStepStatisticFragment(date!!, gbsId)).addToBackStack(null).commit()
-//        }
-
+        recyclerView.adapter = mGBSStepSatisticAdapter
 
         return mBinding.root
     }
 
-    private fun getGBSTotalStatistic(date: String, navi: String) {
+    private fun getGBSStepStatistic(date: String, navi: String, gbsId: Int) {
         val service = ServiceGenerator.createService(ApiService::class.java)
 
-        val request = service.getGBSTotalStatistic(date, navi)
+        val request = service.getGBSStepStatistic(date, navi, gbsId)
 
-        request.enqueue(object : Callback<GBSTotalStatisticDatas?> {
-            override fun onResponse(call: Call<GBSTotalStatisticDatas?>, response: Response<GBSTotalStatisticDatas?>) {
+        request.enqueue(object : Callback<GBSStepStatisticDatas?> {
+            override fun onResponse(call: Call<GBSStepStatisticDatas?>, response: Response<GBSStepStatisticDatas?>) {
                 if (response.code() / 100 == 4) {
                     Log.e("CBA", "fail")
                 } else {
                     val gbsTSData = response.body()
-                    mGBSTotalSatisticAdapter!!.updateItems(gbsTSData!!.data)
+                    mGBSStepSatisticAdapter!!.updateItems(gbsTSData!!.data)
                     mSelectedDate = gbsTSData!!.data[0].date
                     mBinding.statisticDate.text = mSelectedDate
                 }
             }
 
-            override fun onFailure(call: Call<GBSTotalStatisticDatas?>, t: Throwable) {
+            override fun onFailure(call: Call<GBSStepStatisticDatas?>, t: Throwable) {
                 Log.e("OKHttp_ERR", t.message)
             }
         })
@@ -93,8 +83,8 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
 
     fun onButtonClick(v: View) {
         when (v.id) {
-            R.id.statistic_prev_date -> getGBSTotalStatistic(mSelectedDate, Tag.NAVI_PREV)
-            R.id.statistic_next_date -> getGBSTotalStatistic(mSelectedDate, Tag.NAVI_NEXT)
+//            R.id.statistic_prev_date -> getGBSStepStatistic(mSelectedDate, Tag.NAVI_PREV, mGbsId)
+//            R.id.statistic_next_date -> getGBSStepStatistic(mSelectedDate, Tag.NAVI_NEXT, mGbsId)
             R.id.statistic_date -> DatePickerDialog(context, OnDateSetListener { view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
                 try {
                     val selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1,
@@ -103,7 +93,7 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
                     val date = sdf.format(sdf.parse(selectedTime))
                     mSelectedDate = date
                     v.statistic_date.text = date
-                    getGBSTotalStatistic(date, Tag.NAVI_CURRENT)
+                    getGBSStepStatistic(date, Tag.NAVI_CURRENT, mGbsId)
                 } catch (e: ParseException) {
                     e.printStackTrace()
                 }

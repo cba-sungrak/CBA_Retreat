@@ -10,29 +10,31 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import kr.or.sungrak.cba.cba_camp.R
+import kr.or.sungrak.cba.cba_camp.databinding.StatisticStepGbsItemBinding
 import kr.or.sungrak.cba.cba_camp.databinding.StatisticTotalGbsItemBinding
+import kr.or.sungrak.cba.cba_camp.models.GBSStepStatisticData
+import kr.or.sungrak.cba.cba_camp.models.GBSStepStatisticDatas
 import kr.or.sungrak.cba.cba_camp.models.GBSTotalStatisticData
 
-class GBSTotalStatisticAdapter(val context: Context?, val itemClick: (GBSTotalStatisticData) -> Unit) : RecyclerView.Adapter<GBSTotalStatisticAdapter.StatisticGBSTotalViewHolder>() {
+class GBSStepStatisticAdapter(val context:Context?) : RecyclerView.Adapter<GBSStepStatisticAdapter.ViewHolder>() {
     companion object {
-        private val TAG = "GBSTotalStatisticAdapter"
+        private val TAG = "GBSStepStatisticAdapter"
         private const val CHECKED = 1
         private const val NOTCHECKED = 0
     }
 
-    private val items = mutableListOf<GBSTotalStatisticData>()
+    private val items = mutableListOf<GBSStepStatisticData>()
 
-    inner class StatisticGBSTotalViewHolder(itemView: View, itemClick: (GBSTotalStatisticData) -> Unit) : RecyclerView.ViewHolder(itemView) {
-        val binding: StatisticTotalGbsItemBinding = DataBindingUtil.bind(itemView)!!
-
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val binding: StatisticStepGbsItemBinding = DataBindingUtil.bind(itemView)!!
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): StatisticGBSTotalViewHolder {
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.statistic_total_gbs_item, viewGroup, false)
-        return StatisticGBSTotalViewHolder(view, itemClick)
+    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.statistic_step_gbs_item, viewGroup, false)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(memberViewHolder: StatisticGBSTotalViewHolder, i: Int) {
+    override fun onBindViewHolder(memberViewHolder: ViewHolder, i: Int) {
         memberViewHolder.binding.statistic = items[i]
         val grey = ContextCompat.getColor(context!!, R.color.grey_500)
 
@@ -49,7 +51,9 @@ class GBSTotalStatisticAdapter(val context: Context?, val itemClick: (GBSTotalSt
             }
         }
 
-        memberViewHolder.itemView.setOnClickListener { itemClick(items[i]) }
+
+        memberViewHolder.itemView.setOnClickListener { v: View? ->
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -64,7 +68,7 @@ class GBSTotalStatisticAdapter(val context: Context?, val itemClick: (GBSTotalSt
 
     override fun getItemCount() = items!!.count()
 
-    fun updateItems(_items: List<GBSTotalStatisticData>) {
+    fun updateItems(_items: List<GBSStepStatisticData>) {
         items.clear()
         items.addAll(_items)
         notifyDataSetChanged()

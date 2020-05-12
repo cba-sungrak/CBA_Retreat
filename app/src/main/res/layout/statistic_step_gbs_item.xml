@@ -7,7 +7,7 @@
 
         <variable
             name="statistic"
-            type="kr.or.sungrak.cba.cba_camp.models.GBSTotalStatisticData" />
+            type="kr.or.sungrak.cba.cba_camp.models.GBSStepStatisticData" />
     </data>
 
     <LinearLayout
@@ -18,13 +18,14 @@
         <LinearLayout
             android:id="@+id/border"
             style="@style/GBSContentMember"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
-        <TextView
+            <TextView
                 android:id="@+id/statistic_gbs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{statistic.gbsLevel+`  `}"
+                android:text="@{statistic.leaderName+`  `}"
                 android:minWidth="50dp"
                 android:textColor="@android:color/black"
                 android:typeface="serif" />
