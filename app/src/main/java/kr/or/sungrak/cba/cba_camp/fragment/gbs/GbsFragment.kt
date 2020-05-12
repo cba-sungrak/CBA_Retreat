@@ -37,21 +37,17 @@ import retrofit2.Response
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
-class GbsFragment(leaderMemId: String, date: String) : Fragment() {
+class GbsFragment(leaderMemId: String, var mSelectedDate: String) : Fragment() {
     private val TAG = "GBSFragment"
     private val NAVI_PREV = "PREV"
     private val NAVI_NEXT = "NEXT"
     private val NAVI_CURRENT = "CURRENT"
     val mleaderMemId: String = leaderMemId
-    var mSelectedDate: String
     var mAttendMemberList: AttendList? = null
     private val mAttendMemberAdapter: AttendMemeberAdapter by lazy {
         AttendMemeberAdapter()
     }
 
-    init {
-        mSelectedDate = date
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {

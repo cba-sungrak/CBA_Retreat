@@ -8,8 +8,9 @@ data class GBSStepStatisticData(
         val attended: Int,
         val checked: Boolean,
         val date: String,
-        val leaderId: Any,
+        val leaderGbsMemberId: Int,
         val leaderName: String,
+        val leaderMemberId: String,
         val registered: Int
 ){
     val percent: Int

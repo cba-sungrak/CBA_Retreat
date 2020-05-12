@@ -16,7 +16,7 @@ import kr.or.sungrak.cba.cba_camp.models.GBSStepStatisticData
 import kr.or.sungrak.cba.cba_camp.models.GBSStepStatisticDatas
 import kr.or.sungrak.cba.cba_camp.models.GBSTotalStatisticData
 
-class GBSStepStatisticAdapter(val context:Context?) : RecyclerView.Adapter<GBSStepStatisticAdapter.ViewHolder>() {
+class GBSStepStatisticAdapter(val context:Context?, val itemClick: (GBSStepStatisticData) -> Unit) : RecyclerView.Adapter<GBSStepStatisticAdapter.ViewHolder>() {
     companion object {
         private val TAG = "GBSStepStatisticAdapter"
         private const val CHECKED = 1
@@ -25,13 +25,13 @@ class GBSStepStatisticAdapter(val context:Context?) : RecyclerView.Adapter<GBSSt
 
     private val items = mutableListOf<GBSStepStatisticData>()
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ViewHolder(itemView: View, val itemClick: (GBSStepStatisticData) -> Unit) : RecyclerView.ViewHolder(itemView) {
         val binding: StatisticStepGbsItemBinding = DataBindingUtil.bind(itemView)!!
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.statistic_step_gbs_item, viewGroup, false)
-        return ViewHolder(view)
+        return ViewHolder(view, itemClick)
     }
 
     override fun onBindViewHolder(memberViewHolder: ViewHolder, i: Int) {
@@ -51,9 +51,7 @@ class GBSStepStatisticAdapter(val context:Context?) : RecyclerView.Adapter<GBSSt
             }
         }
 
-
-        memberViewHolder.itemView.setOnClickListener { v: View? ->
-        }
+        memberViewHolder.itemView.setOnClickListener { itemClick(items[i]) }
     }
 
     override fun getItemViewType(position: Int): Int {

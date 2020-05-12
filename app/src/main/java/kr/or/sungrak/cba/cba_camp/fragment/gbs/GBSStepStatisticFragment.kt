@@ -29,7 +29,7 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 
 class GBSStepStatisticFragment(var mSelectedDate: String, val mGbsId: Int) : Fragment() {
-    private val TAG = "GBSTotalStatisticFragment"
+    private val TAG = "GBSStepStatisticFragment"
     lateinit var mBinding: StatisticGbsStepLayoutBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var mGBSStepSatisticAdapter: GBSStepStatisticAdapter
@@ -44,7 +44,10 @@ class GBSStepStatisticFragment(var mSelectedDate: String, val mGbsId: Int) : Fra
                               savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.statistic_gbs_step_layout, container, false)
         mBinding.fragment = this
-        mGBSStepSatisticAdapter = GBSStepStatisticAdapter(context)
+        mGBSStepSatisticAdapter = GBSStepStatisticAdapter(context) { item ->
+            if (item.leaderGbsMemberId != 0)
+                fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GbsFragment(item.leaderMemberId, item.date!!)).addToBackStack(null).commit()
+        }
         if (TextUtils.isEmpty(mSelectedDate)) mSelectedDate = CBAUtil.getCurrentDate()
         mBinding.statisticDate.text = mSelectedDate
 
