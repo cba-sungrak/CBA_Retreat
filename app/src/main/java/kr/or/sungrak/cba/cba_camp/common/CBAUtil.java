@@ -95,7 +95,14 @@ public class CBAUtil {
     }
 
     public static boolean isAdmin(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADMIN, false);
+        MyInfo myInfo = loadMyInfo(context);
+        if (myInfo != null && (myInfo.getGrade().equals("LEADER") || myInfo.getGrade().equals("GANSA") || myInfo.getGrade().equals("MISSION"))) {
+            return true;
+        }
+        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADMIN, false)) {
+            return true;
+        }
+        return false;
     }
 
     public static String getPhoneNumber(Context context) {

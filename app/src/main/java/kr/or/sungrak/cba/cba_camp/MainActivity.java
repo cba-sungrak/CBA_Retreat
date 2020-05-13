@@ -246,27 +246,31 @@ public class MainActivity extends AppCompatActivity
             }
         } else {
             //logIn
-            logInBtn.setVisibility(View.GONE);
-            logOutBtn.setVisibility(View.VISIBLE);
-            MyInfo myInfo = CBAUtil.loadMyInfo(this);
-            if (myInfo != null) {
-                if (myInfo.getGbsInfo() != null && myInfo.getGbsInfo().getPosition() != null && myInfo.getGbsInfo().getPosition().equals("조장")) {
-                    navigationView.getMenu().findItem(R.id.gbs_check_attendance).setVisible(true);
-                }
-                if (myInfo.getGrade() != null && myInfo.getGrade().equals("LEADER")) {
-                    navigationView.getMenu().findItem(R.id.check_attendance).setVisible(true);
-                }
+            try {
+                logInBtn.setVisibility(View.GONE);
+                logOutBtn.setVisibility(View.VISIBLE);
+                MyInfo myInfo = CBAUtil.loadMyInfo(this);
+                if (myInfo != null) {
+                    if (myInfo.getGbsInfo() != null && myInfo.getGbsInfo().getPosition() != null && (myInfo.getGbsInfo().getPosition().equals("조장") || myInfo.getGrade().equals("GANSA") || myInfo.getGrade().equals("MISSION"))) {
+                        navigationView.getMenu().findItem(R.id.gbs_check_attendance).setVisible(true);
+                    }
+                    if (myInfo.getGrade() != null && (myInfo.getGrade().equals("LEADER") || myInfo.getGrade().equals("GANSA") || myInfo.getGrade().equals("MISSION"))) {
+                        navigationView.getMenu().findItem(R.id.check_attendance).setVisible(true);
+                    }
 
-                String myinfoTxt = myInfo.getName() + "  |  " + myInfo.getCampus() + "\n";
-                if (myInfo.getRetreatGbsInfo().getGbs() != null) {
-                    myinfoTxt = myinfoTxt + myInfo.getRetreatGbsInfo().getGbs() + "/" + myInfo.getRetreatGbsInfo().getPosition() + "\n";
+                    String myinfoTxt = myInfo.getName() + "  |  " + myInfo.getCampus() + "\n";
+                    if (myInfo.getRetreatGbsInfo().getGbs() != null) {
+                        myinfoTxt = myinfoTxt + myInfo.getRetreatGbsInfo().getGbs() + "/" + myInfo.getRetreatGbsInfo().getPosition() + "\n";
+                    }
+                    if (myInfo.getGbsInfo().getGbs() != null) {
+                        myinfoTxt = myinfoTxt + myInfo.getGbsInfo().getGbs() + "/" + myInfo.getGbsInfo().getPosition();
+                    }
+                    loginText.setText(myinfoTxt);
+                } else {
+                    getMyInfo(FirebaseAuth.getInstance().getUid());
                 }
-                if (myInfo.getGbsInfo().getGbs() != null) {
-                    myinfoTxt = myinfoTxt + myInfo.getGbsInfo().getGbs() + "/" + myInfo.getGbsInfo().getPosition();
-                }
-                loginText.setText(myinfoTxt);
-            } else {
-                getMyInfo(FirebaseAuth.getInstance().getUid());
+            } catch (NullPointerException e) {
+                CBAUtil.removeAllPreferences(this);
             }
         }
         logInBtn.setOnClickListener(v -> {

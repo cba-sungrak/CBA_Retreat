@@ -37,12 +37,11 @@ import retrofit2.Response
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
-class GbsFragment(leaderMemId: String, var mSelectedDate: String) : Fragment() {
+class GbsFragment(val mleaderMemId: String, var mSelectedDate: String) : Fragment() {
     private val TAG = "GBSFragment"
     private val NAVI_PREV = "PREV"
     private val NAVI_NEXT = "NEXT"
     private val NAVI_CURRENT = "CURRENT"
-    val mleaderMemId: String = leaderMemId
     var mAttendMemberList: AttendList? = null
     private val mAttendMemberAdapter: AttendMemeberAdapter by lazy {
         AttendMemeberAdapter()
@@ -221,12 +220,15 @@ class GbsFragment(leaderMemId: String, var mSelectedDate: String) : Fragment() {
     }
 
     private fun deleteAtteand() {
+
+
         val service = ServiceGenerator.createService(ApiService::class.java)
         val jsonObject = JSONObject()
         //  {date: "2019-05-05", campus: "천안", "leaderUid": "9999"}
         try {
             jsonObject.put("date", mSelectedDate)
             jsonObject.put("leaderUid", FirebaseAuth.getInstance().uid)
+            jsonObject.put("leaderMemberId", mleaderMemId)
         } catch (e: JSONException) {
             e.printStackTrace()
         }

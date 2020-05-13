@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -47,7 +46,7 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
         mBinding.fragment = this
         mGBSTotalSatisticAdapter = GBSTotalStatisticAdapter(context) { item ->
             if (item.gbsId != 0)
-            fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GBSStepStatisticFragment(mSelectedDate, item.gbsId)).addToBackStack(null).commit()
+            fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GBSStepStatisticFragment(mSelectedDate, item.gbsId, item.gbsLevel)).addToBackStack(null).commit()
         }
         if (TextUtils.isEmpty(mSelectedDate)) mSelectedDate = CBAUtil.getCurrentDate()
         mBinding.statisticDate.text = mSelectedDate

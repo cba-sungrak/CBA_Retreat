@@ -19,6 +19,7 @@ import kr.or.sungrak.cba.cba_camp.adapter.GBSStepStatisticAdapter
 import kr.or.sungrak.cba.cba_camp.common.CBAUtil
 import kr.or.sungrak.cba.cba_camp.common.Tag
 import kr.or.sungrak.cba.cba_camp.databinding.StatisticGbsStepLayoutBinding
+import kr.or.sungrak.cba.cba_camp.models.GBSStepStatisticData
 import kr.or.sungrak.cba.cba_camp.models.GBSStepStatisticDatas
 import kr.or.sungrak.cba.cba_camp.network.ApiService
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator
@@ -28,7 +29,7 @@ import retrofit2.Response
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
-class GBSStepStatisticFragment(var mSelectedDate: String, val mGbsId: Int) : Fragment() {
+class GBSStepStatisticFragment(var mSelectedDate: String, val mGbsId: Int, val mGbsName: String) : Fragment() {
     private val TAG = "GBSStepStatisticFragment"
     lateinit var mBinding: StatisticGbsStepLayoutBinding
     private lateinit var recyclerView: RecyclerView
@@ -71,7 +72,10 @@ class GBSStepStatisticFragment(var mSelectedDate: String, val mGbsId: Int) : Fra
                 if (response.code() / 100 == 4) {
                     Log.e("CBA", "fail")
                 } else {
-                    val gbsTSData = response.body()
+                    var gbsTSData = response.body()
+
+                    gbsTSData?.data?.find { it.leaderName == "전체" }?.leaderName = mGbsName
+
                     mGBSStepSatisticAdapter!!.updateItems(gbsTSData!!.data)
                     mSelectedDate = gbsTSData!!.data[0].date
                     mBinding.statisticDate.text = mSelectedDate

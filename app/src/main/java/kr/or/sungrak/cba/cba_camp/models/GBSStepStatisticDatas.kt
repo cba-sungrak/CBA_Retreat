@@ -1,7 +1,7 @@
 package kr.or.sungrak.cba.cba_camp.models
 
 data class GBSStepStatisticDatas(
-    val `data`: List<GBSStepStatisticData>
+    val `data`: MutableList<GBSStepStatisticData>
 )
 
 data class GBSStepStatisticData(
@@ -9,7 +9,7 @@ data class GBSStepStatisticData(
         val checked: Boolean,
         val date: String,
         val leaderGbsMemberId: Int,
-        val leaderName: String,
+        var leaderName: String,
         val leaderMemberId: String,
         val registered: Int
 ){
