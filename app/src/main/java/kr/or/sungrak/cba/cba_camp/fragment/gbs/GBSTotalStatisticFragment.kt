@@ -47,7 +47,7 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
         mBinding.fragment = this
         mGBSTotalSatisticAdapter = GBSTotalStatisticAdapter(context) { item ->
             if (item.gbsId != 0)
-            fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GBSStepStatisticFragment(item.date!!, item.gbsId)).addToBackStack(null).commit()
+            fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GBSStepStatisticFragment(mSelectedDate, item.gbsId)).addToBackStack(null).commit()
         }
         if (TextUtils.isEmpty(mSelectedDate)) mSelectedDate = CBAUtil.getCurrentDate()
         mBinding.statisticDate.text = mSelectedDate
@@ -59,10 +59,6 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
 
         recyclerView.adapter = mGBSTotalSatisticAdapter
 
-//        mGBSTotalSatisticAdapter!!.setCustomOnItemClickListener { v: View?, date: String?, gbsId: Int? ->
-//            if (gbsId != null)
-//                fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GBSStepStatisticFragment(date!!, gbsId)).addToBackStack(null).commit()
-//        }
 
 
         return mBinding.root
