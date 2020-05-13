@@ -47,7 +47,7 @@ class GBSStepStatisticFragment(var mSelectedDate: String, val mGbsId: Int, val m
         mBinding.fragment = this
         mGBSStepSatisticAdapter = GBSStepStatisticAdapter(context) { item ->
             if (item.leaderGbsMemberId != 0)
-                fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GbsFragment(item.leaderMemberId, mSelectedDate)).addToBackStack(null).commit()
+                fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GbsFragment(mGbsName, item.leaderMemberId, mSelectedDate)).addToBackStack(null).commit()
         }
         if (TextUtils.isEmpty(mSelectedDate)) mSelectedDate = CBAUtil.getCurrentDate()
         mBinding.statisticDate.text = mSelectedDate

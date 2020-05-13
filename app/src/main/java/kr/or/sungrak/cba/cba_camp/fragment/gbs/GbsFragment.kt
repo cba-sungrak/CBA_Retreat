@@ -37,7 +37,7 @@ import retrofit2.Response
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
-class GbsFragment(val mleaderMemId: String, var mSelectedDate: String) : Fragment() {
+class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDate: String) : Fragment() {
     private val TAG = "GBSFragment"
     private val NAVI_PREV = "PREV"
     private val NAVI_NEXT = "NEXT"
@@ -144,7 +144,7 @@ class GbsFragment(val mleaderMemId: String, var mSelectedDate: String) : Fragmen
 
     private fun getString(`as`: AttendList?): String {
         val percent = (`as`!!.attended.toDouble() / `as`.registered.toDouble() * 100.0).toInt()
-        return "[" + CBAUtil.loadMyInfo(context).gbsInfo.gbs + "] 출석 " + `as`.attended + " / 전체 " + `as`.registered + " / " + percent + "%"
+        return "[" + mGbsName + "] 출석 " + `as`.attended + " / 전체 " + `as`.registered + " / " + percent + "%"
     }
 
     private fun createAttendList(date: String?, leaderMemberId: String?) {

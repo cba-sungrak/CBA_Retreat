@@ -361,7 +361,7 @@ public class MainActivity extends AppCompatActivity
                 replaceFragment(new AttendCampusListFragment());
                 break;
             case R.id.gbs_check_attendance:
-                replaceFragment(new GbsFragment(CBAUtil.loadMyInfo(mContext).getMemId(), CBAUtil.getCurrentDate()));
+                replaceFragment(new GbsFragment(CBAUtil.loadMyInfo(mContext).getGbsInfo().getGbs(),CBAUtil.loadMyInfo(mContext).getMemId(), CBAUtil.getCurrentDate()));
                 break;
             case R.id.statistic_attendance:
                 replaceFragment(new DateStatisticFragment(CBAUtil.getCurrentDate()));
