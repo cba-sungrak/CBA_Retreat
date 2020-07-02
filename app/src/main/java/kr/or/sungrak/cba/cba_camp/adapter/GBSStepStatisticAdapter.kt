@@ -29,7 +29,7 @@ class GBSStepStatisticAdapter(val context:Context?, val itemClick: (GBSStepStati
         val binding: StatisticStepGbsItemBinding = DataBindingUtil.bind(itemView)!!
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.statistic_step_gbs_item, viewGroup, false)
         return ViewHolder(view, itemClick)
     }

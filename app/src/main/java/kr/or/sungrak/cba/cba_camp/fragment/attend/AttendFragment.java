@@ -32,7 +32,6 @@ import kr.or.sungrak.cba.cba_camp.R;
 import kr.or.sungrak.cba.cba_camp.adapter.AttendMemeberAdapter;
 import kr.or.sungrak.cba.cba_camp.databinding.AttendLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.AttendList;
-import kr.or.sungrak.cba.cba_camp.network.ApiService;
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -92,9 +91,7 @@ public class AttendFragment extends Fragment {
 
 
     private void getAttendInfo(String date, String campus, String navi) {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
-
-        Call<AttendList> request = service.getAttendList(date, campus, navi);
+        Call<AttendList> request = ServiceGenerator.createService.getAttendList(date, campus, navi);
 
         request.enqueue(new Callback<AttendList>() {
             @Override
@@ -139,7 +136,7 @@ public class AttendFragment extends Fragment {
     }
 
     private void createAttendList(String date, String campus) {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
+
         JSONObject obj = new JSONObject();
         try {
             obj.put("date", date);
@@ -148,9 +145,10 @@ public class AttendFragment extends Fragment {
             e.printStackTrace();
         }
         RequestBody body = RequestBody.create(MediaType.parse("application/json"), obj.toString());
-        Call<AttendList> request = service.createAttend(body);
 
-        request.enqueue(new Callback<AttendList>() {
+        Call<AttendList> service = ServiceGenerator.createService.createAttend(body);
+
+        service.enqueue(new Callback<AttendList>() {
             @Override
             public void onResponse(Call<AttendList> call, Response<AttendList> response) {
                 if (response.code() / 100 == 4) {
@@ -184,8 +182,6 @@ public class AttendFragment extends Fragment {
     }
 
     private void postAttendList() {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
-
         List<AttendList.AttendInfo> attendInfoList = mAttendMemberAdapter.getAttendInfoList();
         JSONArray jsonArray = new JSONArray();
         JSONObject obj = new JSONObject();
@@ -208,9 +204,9 @@ public class AttendFragment extends Fragment {
         }
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json"), obj.toString());
-        Call<ResponseBody> request = service.postAttend(body);
 
-        request.enqueue(new Callback<ResponseBody>() {
+        Call<ResponseBody> service =  ServiceGenerator.createService.postAttend(body);
+        service.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() / 100 == 4) {
@@ -232,7 +228,6 @@ public class AttendFragment extends Fragment {
     }
 
     private void deleteAtteand() {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
         JSONObject jsonObject = new JSONObject();
         //  {date: "2019-05-05", campus: "천안", "leaderUid": "9999"}
         try {
@@ -243,13 +238,13 @@ public class AttendFragment extends Fragment {
             e.printStackTrace();
         }
 
-
         Log.d(TAG, jsonObject.toString());
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString());
-        Call<ResponseBody> request = service.deleteAttend(body);
 
-        request.enqueue(new Callback<ResponseBody>() {
+        Call<ResponseBody> service = ServiceGenerator.createService.deleteAttend(body);
+
+        service.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.code() / 100 == 4) {

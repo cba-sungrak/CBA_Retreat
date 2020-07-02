@@ -109,9 +109,8 @@ class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDa
 
 
     private fun getAttendInfo(date: String?, leaderMemId: String?, navi: String) {
-        val service = ServiceGenerator.createService(ApiService::class.java)
-        val request = service.getGBSAttendList(date, leaderMemId, navi)
-        request.enqueue(object : Callback<AttendList?> {
+        val service = ServiceGenerator.createService.getGBSAttendList(date, leaderMemId, navi)
+        service.enqueue(object : Callback<AttendList?> {
             override fun onResponse(call: Call<AttendList?>, response: Response<AttendList?>) {
                 if (response.code() / 100 == 4) {
                     if (navi.equals(NAVI_CURRENT, ignoreCase = true)) {
@@ -148,7 +147,6 @@ class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDa
     }
 
     private fun createAttendList(date: String?, leaderMemberId: String?) {
-        val service = ServiceGenerator.createService(ApiService::class.java)
         val obj = JSONObject()
         try {
             obj.put("date", date)
@@ -157,8 +155,9 @@ class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDa
             e.printStackTrace()
         }
         val body = RequestBody.create(MediaType.parse("application/json"), obj.toString())
-        val request = service.createGBSAttend(body)
-        request.enqueue(object : Callback<AttendList?> {
+
+        val service = ServiceGenerator.createService.createGBSAttend(body)
+        service.enqueue(object : Callback<AttendList?> {
             override fun onResponse(call: Call<AttendList?>, response: Response<AttendList?>) {
                 if (response.code() / 100 == 4) {
                     Toast.makeText(context,
@@ -184,7 +183,6 @@ class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDa
     }
 
     private fun postAttendList() {
-        val service = ServiceGenerator.createService(ApiService::class.java)
         val attendInfoList = mAttendMemberAdapter!!.attendInfoList
         val jsonArray = JSONArray()
         val obj = JSONObject()
@@ -203,8 +201,9 @@ class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDa
             e.printStackTrace()
         }
         val body = RequestBody.create(MediaType.parse("application/json"), obj.toString())
-        val request = service.postGBSAttend(body)
-        request.enqueue(object : Callback<ResponseBody?> {
+
+        val service = ServiceGenerator.createService.postGBSAttend(body)
+        service.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response.code() / 100 == 4) {
                     Toast.makeText(context, "post attend failed ", Toast.LENGTH_SHORT).show()
@@ -220,9 +219,6 @@ class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDa
     }
 
     private fun deleteAtteand() {
-
-
-        val service = ServiceGenerator.createService(ApiService::class.java)
         val jsonObject = JSONObject()
         //  {date: "2019-05-05", campus: "천안", "leaderUid": "9999"}
         try {
@@ -234,12 +230,13 @@ class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDa
         }
         Log.d(TAG, jsonObject.toString())
         val body = RequestBody.create(MediaType.parse("application/json"), jsonObject.toString())
-        val request = service.deleteGBSAttend(body)
-        request.enqueue(object : Callback<ResponseBody?> {
+
+        val service = ServiceGenerator.createService.deleteGBSAttend(body)
+        service.enqueue(object : Callback<ResponseBody?> {
             override fun onResponse(call: Call<ResponseBody?>, response: Response<ResponseBody?>) {
                 if (response.code() / 100 == 4) {
                     Toast.makeText(context,
-                                    "Delete attend failed ", Toast.LENGTH_SHORT)
+                            "Delete attend failed ", Toast.LENGTH_SHORT)
                             .show()
                 } else {
                     Toast.makeText(context,

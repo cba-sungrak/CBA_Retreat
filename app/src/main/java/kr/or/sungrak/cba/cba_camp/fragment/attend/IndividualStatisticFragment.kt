@@ -21,11 +21,9 @@ class IndividualStatisticFragment : Fragment() {
     }
 
     private fun callIndividualAttend(id: Integer) {
-        val service = ServiceGenerator.createService(ApiService::class.java)
+        val service = ServiceGenerator.createService.getindividualAttend(id.toString())
 
-        val request = service.getindividualAttend(id.toString())
-
-        request.enqueue(object : Callback<AttendList> {
+        service.enqueue(object : Callback<AttendList> {
             override fun onResponse(call: Call<AttendList>, response: Response<AttendList>) {
                 if (response.code() / 100 == 4) {
                     Log.e("CBA", "fail")

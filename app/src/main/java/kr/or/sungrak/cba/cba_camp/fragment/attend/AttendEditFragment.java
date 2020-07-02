@@ -27,7 +27,6 @@ import kr.or.sungrak.cba.cba_camp.adapter.AttendEditMemebeAdapter;
 import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
 import kr.or.sungrak.cba.cba_camp.databinding.AttendEditLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.AttendList;
-import kr.or.sungrak.cba.cba_camp.network.ApiService;
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -97,7 +96,6 @@ public class AttendEditFragment extends Fragment {
     }
 
     private void postEditAttendMemberList() {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
         List<AttendList.AttendInfo> attendInfoList = mAttendEditMemberAdapter.getAttendInfoList();
 
         JSONArray jsonArray = new JSONArray();
@@ -127,7 +125,7 @@ public class AttendEditFragment extends Fragment {
         }
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json"), obj.toString());
-        Call<ResponseBody> request = service.postEditAttendMember(body);
+        Call<ResponseBody> request = ServiceGenerator.createService.postEditAttendMember(body);
 
         request.enqueue(new Callback<ResponseBody>() {
             @Override

@@ -19,7 +19,6 @@ import kr.or.sungrak.cba.cba_camp.R;
 import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
 import kr.or.sungrak.cba.cba_camp.databinding.AttendCampusLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.Campus;
-import kr.or.sungrak.cba.cba_camp.network.ApiService;
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,11 +42,10 @@ public class AttendCampusListFragment extends Fragment {
     }
 
     private void getCampusListInfo() {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
         String uid = FirebaseAuth.getInstance().getUid();
         // API 요청.
 //        Call<List<String>> request = service.getCampusList(uid);
-        Call<Campus> request = service.getCampusList("application/json",uid);
+        Call<Campus> request = ServiceGenerator.createService.getCampusList("application/json",uid);
         request.enqueue(new Callback<Campus>() {
             @Override
             public void onResponse(Call<Campus> call, Response<Campus> response) {

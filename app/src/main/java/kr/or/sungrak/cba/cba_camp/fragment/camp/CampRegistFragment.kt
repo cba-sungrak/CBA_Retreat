@@ -15,6 +15,7 @@ import kr.or.sungrak.cba.cba_camp.R
 import kr.or.sungrak.cba.cba_camp.common.CBAUtil
 import kr.or.sungrak.cba.cba_camp.network.ApiService
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator
+import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator.createService
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -59,8 +60,6 @@ class CampRegistFragment() : Fragment() {
 
 
         view.campRegiBtn.setOnClickListener {
-            val service = ServiceGenerator.createService(ApiService::class.java)
-
             if (view.isHaveCar.isChecked) {
                 if (view.regiName.text.isEmpty() || view.regiChurch.text.isEmpty() || view.regiPhone.text.isEmpty() || view.carModel.text.isEmpty() || view.carNo.text.isEmpty()) {
                     Toast.makeText(context,
@@ -83,7 +82,7 @@ class CampRegistFragment() : Fragment() {
             val obj = Gson().toJson(regiMem)
 
             val body = RequestBody.create(MediaType.parse("application/json"), obj.toString())
-            val request = service.regiCampMember(body)
+            val request = createService.regiCampMember(body)
             request.enqueue(object : Callback<ResponseBody> {
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                     when {

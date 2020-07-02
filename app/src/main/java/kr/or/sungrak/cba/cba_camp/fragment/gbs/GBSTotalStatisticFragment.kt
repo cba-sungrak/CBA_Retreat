@@ -64,11 +64,9 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
     }
 
     private fun getGBSTotalStatistic(date: String, navi: String) {
-        val service = ServiceGenerator.createService(ApiService::class.java)
+        val service = ServiceGenerator.createService.getGBSTotalStatistic(date, navi)
 
-        val request = service.getGBSTotalStatistic(date, navi)
-
-        request.enqueue(object : Callback<GBSTotalStatisticDatas?> {
+        service.enqueue(object : Callback<GBSTotalStatisticDatas?> {
             override fun onResponse(call: Call<GBSTotalStatisticDatas?>, response: Response<GBSTotalStatisticDatas?>) {
                 if (response.code() / 100 == 4) {
                     Log.e("CBA", "fail")

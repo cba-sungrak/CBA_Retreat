@@ -63,11 +63,9 @@ class GBSStepStatisticFragment(var mSelectedDate: String, val mGbsId: Int, val m
     }
 
     private fun getGBSStepStatistic(date: String, navi: String, gbsId: Int) {
-        val service = ServiceGenerator.createService(ApiService::class.java)
+        val service = ServiceGenerator.createService.getGBSStepStatistic(date, navi, gbsId)
 
-        val request = service.getGBSStepStatistic(date, navi, gbsId)
-
-        request.enqueue(object : Callback<GBSStepStatisticDatas?> {
+        service.enqueue(object : Callback<GBSStepStatisticDatas?> {
             override fun onResponse(call: Call<GBSStepStatisticDatas?>, response: Response<GBSStepStatisticDatas?>) {
                 if (response.code() / 100 == 4) {
                     Log.e("CBA", "fail")

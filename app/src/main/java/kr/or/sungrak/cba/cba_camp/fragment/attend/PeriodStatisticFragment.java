@@ -33,7 +33,6 @@ import java.util.List;
 import kr.or.sungrak.cba.cba_camp.R;
 import kr.or.sungrak.cba.cba_camp.databinding.StatisticPeriodLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.PeriodStatistic;
-import kr.or.sungrak.cba.cba_camp.network.ApiService;
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -257,11 +256,9 @@ public class PeriodStatisticFragment extends Fragment {
     }
 
     private void getPeriodSatistic(String from, String to, String campus) {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
+        Call<PeriodStatistic> service = ServiceGenerator.createService.getPeriodStatistics(from, to, campus);
 
-        Call<PeriodStatistic> request = service.getPeriodStatistics(from, to, campus);
-
-        request.enqueue(new Callback<PeriodStatistic>() {
+        service.enqueue(new Callback<PeriodStatistic>() {
             @Override
             public void onResponse(Call<PeriodStatistic> call, Response<PeriodStatistic> response) {
                 if (response.code() / 100 == 4) {

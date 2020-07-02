@@ -53,19 +53,18 @@ import kr.or.sungrak.cba.cba_camp.common.Tag;
 import kr.or.sungrak.cba.cba_camp.dialog.LoginDialog;
 import kr.or.sungrak.cba.cba_camp.dialog.MyProgessDialog;
 import kr.or.sungrak.cba.cba_camp.dialog.SelectDialog;
+import kr.or.sungrak.cba.cba_camp.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.attend.AttendCampusListFragment;
-import kr.or.sungrak.cba.cba_camp.fragment.camp.CampMemberListFragment;
-import kr.or.sungrak.cba.cba_camp.fragment.camp.CampRegistFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.attend.DateStatisticFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.CampGBSFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.camp.CampMemberListFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.camp.CampRegistFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.InfoFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.QAListFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.SRNotiFragment;
-import kr.or.sungrak.cba.cba_camp.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.gbs.GBSTotalStatisticFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.gbs.GbsFragment;
 import kr.or.sungrak.cba.cba_camp.models.MyInfo;
-import kr.or.sungrak.cba.cba_camp.network.ApiService;
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -658,11 +657,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getMyInfo(String uid) {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
-
-        // API 요청.
-        Call<MyInfo> request = service.getMyInfo(uid);
-        request.enqueue(new Callback<MyInfo>() {
+        Call<MyInfo> service = ServiceGenerator.createService.getMyInfo(uid);
+        service.enqueue(new Callback<MyInfo>() {
             @Override
             public void onResponse(Call<MyInfo> call, Response<MyInfo> response) {
                 Log.i(TAG, "get My info success");

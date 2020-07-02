@@ -24,7 +24,6 @@ import kr.or.sungrak.cba.cba_camp.adapter.StatisticCampusAdapter;
 import kr.or.sungrak.cba.cba_camp.common.CBAUtil;
 import kr.or.sungrak.cba.cba_camp.databinding.StatisticDateLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.CampusStatisticList;
-import kr.or.sungrak.cba.cba_camp.network.ApiService;
 import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,11 +69,9 @@ public class DateStatisticFragment extends Fragment {
     }
 
     private void getStatisticCampus(String date, String navi) {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
+        Call<CampusStatisticList>  service = ServiceGenerator.createService.getStatisticCampusList(date, navi);
 
-        Call<CampusStatisticList> request = service.getStatisticCampusList(date, navi);
-
-        request.enqueue(new Callback<CampusStatisticList>() {
+        service.enqueue(new Callback<CampusStatisticList>() {
             @Override
             public void onResponse(Call<CampusStatisticList> call, Response<CampusStatisticList> response) {
                 if (response.code() / 100 == 4) {

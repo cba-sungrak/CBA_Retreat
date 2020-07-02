@@ -24,11 +24,11 @@ import kr.or.sungrak.cba.cba_camp.R;
 import kr.or.sungrak.cba.cba_camp.adapter.GBSMemberAdapter;
 import kr.or.sungrak.cba.cba_camp.databinding.GbsLayoutBinding;
 import kr.or.sungrak.cba.cba_camp.models.GBSInfo;
-import kr.or.sungrak.cba.cba_camp.network.ApiService;
-import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static kr.or.sungrak.cba.cba_camp.network.ServiceGenerator.createService;
 
 public class CampGBSFragment extends Fragment {
 
@@ -71,10 +71,9 @@ public class CampGBSFragment extends Fragment {
     }
 
     private void getCampGBSInfo() {
-        ApiService service = ServiceGenerator.createService(ApiService.class);
         String uid = FirebaseAuth.getInstance().getUid();
         // API 요청.
-        Call<GBSInfo> request = service.getGBSRepositories(uid);
+        Call<GBSInfo> request = createService.getGBSRepositories(uid);
         request.enqueue(new Callback<GBSInfo>() {
             @Override
             public void onResponse(Call<GBSInfo> call, Response<GBSInfo> response) {

@@ -19,8 +19,7 @@ import kotlinx.android.synthetic.main.camp_member_list.*
 import kotlinx.android.synthetic.main.camp_member_list.view.*
 import kotlinx.android.synthetic.main.sr_camp_member_listitem.view.*
 import kr.or.sungrak.cba.cba_camp.R
-import kr.or.sungrak.cba.cba_camp.network.ApiService
-import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator
+import kr.or.sungrak.cba.cba_camp.network.ServiceGenerator.createService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,16 +32,9 @@ data class CampMemList(
 
 class CampMemberListFragment : Fragment() {
 
-    override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(
-                R.layout.camp_member_list,
-                container,
-                false
-        )
+        return inflater.inflate(R.layout.camp_member_list, container, false)
     }
 
     private val adapter: CampMemberAdapter by lazy {
@@ -56,9 +48,7 @@ class CampMemberListFragment : Fragment() {
             campMemberRecyclerView.adapter = adapter
         }
 
-        val service = ServiceGenerator.createService(ApiService::class.java)
-
-        val request = service.regiCampMember
+        val request = createService.regiCampMember
         request.enqueue(object : Callback<CampMemList> {
             override fun onResponse(call: Call<CampMemList>, response: Response<CampMemList>) {
                 if (response.code() / 100 == 4) {
