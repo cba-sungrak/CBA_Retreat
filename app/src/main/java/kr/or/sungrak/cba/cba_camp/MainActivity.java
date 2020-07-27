@@ -120,6 +120,9 @@ public class MainActivity extends AppCompatActivity
         if (memberInfo == null) {
             getMyInfo(FirebaseAuth.getInstance().getUid());
         }
+        if(mAuth==null){
+            mAuth = FirebaseAuth.getInstance();
+        }
         if (mAuth.getCurrentUser() == null) {
             CBAUtil.removeAllPreferences(this);
         }

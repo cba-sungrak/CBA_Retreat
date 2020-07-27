@@ -20,7 +20,6 @@ import kr.or.sungrak.cba.cba_camp.common.Tag
 @SuppressLint("ValidFragment")
 class VideoViewFragment : Fragment() {
     private val YUTUEBE = "AIzaSyAAnuBDpQaicuio3meFzq2ALwD9mfdL9R4"
-    private lateinit var database: DatabaseReference
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

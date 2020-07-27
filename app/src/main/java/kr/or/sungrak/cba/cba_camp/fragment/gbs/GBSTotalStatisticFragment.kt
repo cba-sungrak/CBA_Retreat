@@ -13,7 +13,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.statistic_date_layout.*
 import kotlinx.android.synthetic.main.statistic_gbs_total_layout.view.*
+import kotlinx.android.synthetic.main.statistic_gbs_total_layout.view.statistic_prev_date
 import kr.or.sungrak.cba.cba_camp.R
 import kr.or.sungrak.cba.cba_camp.adapter.GBSTotalStatisticAdapter
 import kr.or.sungrak.cba.cba_camp.common.CBAUtil
@@ -44,9 +46,14 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
                               savedInstanceState: Bundle?): View? {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.statistic_gbs_total_layout, container, false)
         mBinding.fragment = this
+        return mBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         mGBSTotalSatisticAdapter = GBSTotalStatisticAdapter(context) { item ->
             if (item.gbsId != 0)
-            fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GBSStepStatisticFragment(mSelectedDate, item.gbsId, item.gbsLevel)).addToBackStack(null).commit()
+                fragmentManager!!.beginTransaction().replace(R.id.fragment_container, GBSStepStatisticFragment(mSelectedDate, item.gbsId, item.gbsLevel)).addToBackStack(null).commit()
         }
         if (TextUtils.isEmpty(mSelectedDate)) mSelectedDate = CBAUtil.getCurrentDate()
         mBinding.statisticDate.text = mSelectedDate
@@ -58,9 +65,6 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
 
         recyclerView.adapter = mGBSTotalSatisticAdapter
 
-
-
-        return mBinding.root
     }
 
     private fun getGBSTotalStatistic(date: String, navi: String) {
@@ -90,8 +94,7 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
             R.id.statistic_next_date -> getGBSTotalStatistic(mSelectedDate, Tag.NAVI_NEXT)
             R.id.statistic_date -> DatePickerDialog(context, OnDateSetListener { view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
                 try {
-                    val selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1,
-                            dayOfMonth)
+                    val selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth)
                     val sdf = SimpleDateFormat("yyyy-mm-dd")
                     val date = sdf.format(sdf.parse(selectedTime))
                     mSelectedDate = date

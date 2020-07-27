@@ -93,7 +93,6 @@ public class LoginDialog extends MyProgessDialog implements View.OnClickListener
     }
 
     public void onClick(View v) {
-        int i = v.getId();
         switch (v.getId()) {
             case R.id.emailSignInButton:
                 signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());

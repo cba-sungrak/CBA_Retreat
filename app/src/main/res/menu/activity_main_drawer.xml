@@ -22,32 +22,39 @@
     <item
         android:id="@+id/lecture"
         android:icon="@drawable/arrow"
-        android:title="또래별 강의" />
+        android:title="또래별 강의"
+        android:visible="false"/>
     <!--android:icon="@drawable/ic_menu_share"-->
     <item
         android:id="@+id/gbs_place"
         android:icon="@drawable/arrow"
-        android:title="GBS 장소" />
+        android:title="GBS 장소"
+        android:visible="false"/>
     <item
         android:id="@+id/menu"
         android:icon="@drawable/arrow"
-        android:title="식단" />
+        android:title="식단"
+        android:visible="false"/>
     <item
         android:id="@+id/mealwork"
         android:icon="@drawable/arrow"
-        android:title="식사/간식 봉사" />
+        android:title="식사/간식 봉사"
+        android:visible="false"/>
     <item
         android:id="@+id/cleaning"
         android:icon="@drawable/arrow"
-        android:title="청소 구역" />
+        android:title="청소 구역"
+        android:visible="false"/>
     <item
         android:id="@+id/room"
         android:icon="@drawable/arrow"
-        android:title="숙소" />
+        android:title="숙소"
+        android:visible="false"/>
     <item
         android:id="@+id/campus_place"
         android:icon="@drawable/arrow"
-        android:title="캠모 장소" />
+        android:title="캠모 장소"
+        android:visible="false"/>
 
 
 </menu>

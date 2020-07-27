@@ -70,7 +70,7 @@ public class PostDialog extends MyProgessDialog {
             case Tag.RETREAT_CBA:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
                 mNameField.setText("CBA 본부");
-                mTitle = "예수로 사는 교회";
+                mTitle = "사랑이 넘치는 우리 교회";
                 break;
             case Tag.RETREAT_SUNGRAK:
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
