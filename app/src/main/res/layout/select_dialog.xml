@@ -37,6 +37,16 @@
         android:layout_height="80dp"
         android:layout_gravity="center"
         app:srcCompat="@drawable/cba_selected_banner" />
+
+    <ImageView
+        android:id="@+id/selectBWM"
+        android:layout_width="match_parent"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/bwm_selected_banner" />
+
     <View
         android:layout_width="30dp"
         android:layout_height="200dp"

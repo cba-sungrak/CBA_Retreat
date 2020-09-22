@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
         if (TextUtils.isEmpty(retreat)) {
             CBAUtil.setRetreat(this, Tag.RETREAT_SUNGRAK);
             initialActivity();
-        } else if (!(retreat.equalsIgnoreCase(Tag.RETREAT_SUNGRAK) || retreat.equalsIgnoreCase(Tag.RETREAT_CBA))) {
+        } else if (!(retreat.equalsIgnoreCase(Tag.RETREAT_SUNGRAK) || retreat.equalsIgnoreCase(Tag.RETREAT_CBA) || retreat.equalsIgnoreCase(Tag.BWM))) {
             myDialog.hideProgressDialog();
             showSelectDialog();
         } else {
@@ -151,12 +151,14 @@ public class MainActivity extends AppCompatActivity
 
         switch (CBAUtil.getRetreat(this)) {
             case Tag.RETREAT_CBA:
-                navigationView.inflateMenu(R.menu.activity_main_drawer);
+                navigationView.inflateMenu(R.menu.menu_drawer_cba);
                 mainTitle.setText(Tag.CBA_TITLE);
                 bannerImage.setImageResource(R.drawable.banner);
+
                 FirebaseMessaging.getInstance().subscribeToTopic(Tag.RETREAT_CBA);
                 FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.RETREAT_SUNGRAK);
                 mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
+
                 logInLayout.setVisibility(View.VISIBLE);
                 if (CBAUtil.isAdmin(this)) {
                     navigationView.getMenu().findItem(R.id.statistic_attendance).setVisible(true);
@@ -168,7 +170,7 @@ public class MainActivity extends AppCompatActivity
                 }
                 break;
             case Tag.RETREAT_SUNGRAK:
-                navigationView.inflateMenu(R.menu.sungrak_drawer_menu);
+                navigationView.inflateMenu(R.menu.menu_drawer_sungrak);
                 mainTitle.setText(Tag.SR_TITLE);
                 bannerImage.setImageResource(R.drawable.sr_banner);
                 logInLayout.setVisibility(View.GONE);
@@ -184,6 +186,20 @@ public class MainActivity extends AppCompatActivity
                     FirebaseMessaging.getInstance().unsubscribeFromTopic(Tag.SR_ADMIN);
                 }
                 break;
+            case Tag.BWM:
+                navigationView.inflateMenu(R.menu.menu_drawer_bwm);
+                mainTitle.setText(Tag.BWM_TITLE);
+                bannerImage.setImageResource(R.drawable.bwm_banner);
+
+                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.BWM);
+                logInLayout.setVisibility(View.VISIBLE);
+                if (CBAUtil.isAdmin(this)) {
+                    navigationView.getMenu().findItem(R.id.statistic_attendance).setVisible(true);
+                    navigationView.getMenu().findItem(R.id.gbs_statistic_attendance).setVisible(true);
+                } else {
+                }
+                break;
+
         }
 
         mDatabase.child(Tag.SETTING).child(Tag.YOUTUBE).addListenerForSingleValueEvent(
@@ -219,9 +235,8 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        mainTitle.setOnClickListener(v -> {
-            replaceFragment(new InfoFragment());
-        });
+        mainTitle.setOnClickListener(v -> replaceFragment(new InfoFragment()));
+
         replaceFragment(new InfoFragment());
 
         updateNavHeader();

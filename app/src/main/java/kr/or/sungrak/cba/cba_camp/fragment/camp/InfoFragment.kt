@@ -21,6 +21,7 @@ import kr.or.sungrak.cba.cba_camp.common.Tag
 import kr.or.sungrak.cba.cba_camp.fragment.SwipeImageFragment
 import kr.or.sungrak.cba.cba_camp.fragment.VideoViewFragment
 import kr.or.sungrak.cba.cba_camp.models.Post
+
 class InfoFragment : Fragment() {
     companion object {
         private val TAG = "CBA/InfoFragment"
@@ -31,11 +32,7 @@ class InfoFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(
-                R.layout.info_layout2,
-                container,
-                false
-        )
+        return inflater.inflate(R.layout.info_layout2, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,17 +40,23 @@ class InfoFragment : Fragment() {
         lateinit var myRef: DatabaseReference
         when (CBAUtil.getRetreat(this.activity)) {
             Tag.RETREAT_CBA -> {
-                backGroundImage.setImageResource(R.drawable.backgroundtext)
+                backGroundImage.setImageResource(R.drawable.background_cba)
                 cbaInfoLayout.visibleOrGone(true)
                 srInfoLayout.visibleOrGone(false)
                 myRef = database.child(Tag.RETREAT_CBA)
                 notiTextView.textSize = 16f
             }
             Tag.RETREAT_SUNGRAK -> {
-                backGroundImage.setImageResource(R.drawable.sr_background)
+                backGroundImage.setImageResource(R.drawable.background_sr)
                 cbaInfoLayout.visibleOrGone(false)
                 srInfoLayout.visibleOrGone(true)
                 myRef = database.child(Tag.RETREAT_SUNGRAK)
+            }
+            Tag.BWM -> {
+                backGroundImage.setImageResource(R.drawable.background_bwm)
+                cbaInfoLayout.visibleOrGone(false)
+                srInfoLayout.visibleOrGone(false)
+                myRef = database.child(Tag.BWM)
             }
         }
 
