@@ -4,23 +4,23 @@
     tools:showIn="navigation_view">
     <item
         android:id="@+id/check_attendance"
-        android:title="목장 출석"
+        android:title="목장 출석 체크"
         android:visible="false">
     </item>
 
     <item
         android:id="@+id/gbs_check_attendance"
-        android:title="GBS 출석"
-        android:visible="false"></item>
+        android:title="GBS 출석 체크"
+        android:visible="false" />
 
     <item
         android:id="@+id/statistic_attendance"
         android:title="목장 출석 통계"
-        android:visible="false"></item>
+        android:visible="false" />
 
     <item
         android:id="@+id/gbs_statistic_attendance"
-        android:title="GBS 통계"
-        android:visible="false"></item>
+        android:title="GBS 출석 통계"
+        android:visible="false" />
 
 </menu>

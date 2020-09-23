@@ -4,21 +4,22 @@
     tools:showIn="navigation_view">
     <item
         android:id="@+id/check_attendance"
-        android:title="캠퍼스 출석"
+        android:title="캠퍼스 출석 체크"
         android:visible="false">
     </item>
     <item
-        android:id="@+id/statistic_attendance"
-        android:title="캠퍼스 통계"
-        android:visible="false"></item>
-    <item
         android:id="@+id/gbs_check_attendance"
-        android:title="GBS 출석"
-        android:visible="false"></item>
+        android:title="GBS 출석 체크"
+        android:visible="false" />
+    <item
+        android:id="@+id/statistic_attendance"
+        android:title="캠퍼스 출석 통계"
+        android:visible="false" />
+
     <item
         android:id="@+id/gbs_statistic_attendance"
-        android:title="GBS 통계"
-        android:visible="false"></item>
+        android:title="GBS 출석 통계"
+        android:visible="false" />
     <item
         android:id="@+id/lecture"
         android:icon="@drawable/arrow"

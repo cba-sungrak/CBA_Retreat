@@ -1,6 +1,7 @@
 package kr.or.sungrak.cba.cba_camp.common;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -34,31 +35,26 @@ public class CBAUtil {
         if (TextUtils.isEmpty(json)) {
             return null;
         }
-        Log.i(TAG, "MyInfo " + json);
         return gson.fromJson(json, MyInfo.class);
     }
 
     public static void saveMyInfo(Context context, Response<MyInfo> response) {
-        Gson gson = new Gson();
-        String myInfo = gson.toJson(response.body());
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString("MyInfo", myInfo);
-        editor.commit();
+        String myInfo =  new Gson().toJson(response.body());
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putString("MyInfo", myInfo).apply();
     }
 
     public static void removeMyInfo(Context context){
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.remove("MyInfo");
-        editor.commit();
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.remove("MyInfo").apply();
     }
 
     public static void removeAllPreferences(Context context) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        pref.edit().remove("MyInfo").commit();
-        pref.edit().remove("GBSInfo").commit();
-        pref.edit().remove(ADMIN).commit();
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.remove("MyInfo")
+                .remove("GBSInfo")
+                .remove(ADMIN)
+                .apply();
     }
 
     public static void signOut(Context context) {
@@ -77,10 +73,8 @@ public class CBAUtil {
     }
 
     public static void setRetreat(Context context, String s) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putString(RETREAT_TITLE, s);
-        editor.commit();
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putString(RETREAT_TITLE, s).apply();
     }
 
     public static String getRetreat(Context context) {
@@ -88,10 +82,8 @@ public class CBAUtil {
     }
 
     public static void setAdmin(Context context, boolean isAdmin) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putBoolean(ADMIN, isAdmin);
-        editor.commit();
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putBoolean(ADMIN, isAdmin).apply();
     }
 
     public static boolean isAdmin(Context context) {
@@ -99,10 +91,7 @@ public class CBAUtil {
         if (myInfo != null && (myInfo.getGrade().equals("LEADER") || myInfo.getGrade().equals("GANSA") || myInfo.getGrade().equals("MISSION"))) {
             return true;
         }
-        if (PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADMIN, false)) {
-            return true;
-        }
-        return false;
+        return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADMIN, false);
     }
 
     public static String getPhoneNumber(Context context) {
@@ -111,12 +100,12 @@ public class CBAUtil {
             return "";
 
         }
-        String phoneNumber = "";
+        String phoneNumber;
 
         TelephonyManager mgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         try {
 
-            String tmpPhoneNumber = mgr.getLine1Number();
+            @SuppressLint("HardwareIds") String tmpPhoneNumber = mgr.getLine1Number();
             phoneNumber = tmpPhoneNumber.replace("+82", "0");
 
         } catch (Exception e) {
@@ -128,11 +117,10 @@ public class CBAUtil {
     }
 
     public static void setPref(Context context, String key, String s) {
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = pref.edit();
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.putString(key, s);
         Log.e(TAG, "setPref : key[" + key + "] value[" + s + "]");
-        editor.commit();
+        editor.apply();
     }
 
     public static String getPref(Context context, String key) {

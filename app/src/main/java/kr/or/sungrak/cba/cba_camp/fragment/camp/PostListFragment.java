@@ -52,14 +52,7 @@ public class PostListFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_all_posts, container, false);
         clearNoti();
 
-        switch (CBAUtil.getRetreat(getActivity())) {
-            case Tag.RETREAT_CBA:
-                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_CBA);
-                break;
-            case Tag.RETREAT_SUNGRAK:
-                mDatabase = FirebaseDatabase.getInstance().getReference(Tag.RETREAT_SUNGRAK);
-                break;
-        }
+        mDatabase = FirebaseDatabase.getInstance().getReference(CBAUtil.getRetreat(getActivity()));
 
         mRecycler = rootView.findViewById(R.id.messages_list);
         mRecycler.setHasFixedSize(true);
@@ -151,10 +144,9 @@ public class PostListFragment extends Fragment {
         // [START recent_posts_query]
         // Last 100 posts, these are automatically the 100 most recent
         // due to sorting by push() keys
-        Query recentPostsQuery = databaseReference.child(Tag.NOTI).limitToFirst(1000);
         // [END recent_posts_query]
 
-        return recentPostsQuery;
+        return databaseReference.child(Tag.NOTI).limitToFirst(1000);
     }
 
     private void showPostDialog() {

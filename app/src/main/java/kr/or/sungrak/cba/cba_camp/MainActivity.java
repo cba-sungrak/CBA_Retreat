@@ -42,7 +42,6 @@ import com.google.gson.reflect.TypeToken;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -79,7 +78,7 @@ public class MainActivity extends AppCompatActivity
     Context mContext;
     MyProgessDialog myDialog;
 
-    private static int sHiddenCode[] = {
+    private static int[] sHiddenCode = {
             KeyEvent.KEYCODE_VOLUME_DOWN,
             KeyEvent.KEYCODE_VOLUME_DOWN,
             KeyEvent.KEYCODE_VOLUME_UP,
@@ -260,6 +259,8 @@ public class MainActivity extends AppCompatActivity
             if (navigationView.getMenu().findItem(R.id.gbs_check_attendance) != null) {
                 navigationView.getMenu().findItem(R.id.gbs_check_attendance).setVisible(false);
                 navigationView.getMenu().findItem(R.id.check_attendance).setVisible(false);
+                navigationView.getMenu().findItem(R.id.statistic_attendance).setVisible(false);
+                navigationView.getMenu().findItem(R.id.gbs_statistic_attendance).setVisible(false);
             }
         } else {
             //logIn
@@ -268,14 +269,19 @@ public class MainActivity extends AppCompatActivity
                 logOutBtn.setVisibility(View.VISIBLE);
                 MyInfo myInfo = CBAUtil.loadMyInfo(this);
                 if (myInfo != null) {
-                    if (myInfo.getGbsInfo() != null && myInfo.getGbsInfo().getPosition() != null && (myInfo.getGbsInfo().getPosition().equals("조장") || myInfo.getGrade().equals("GANSA") || myInfo.getGrade().equals("MISSION"))) {
+                    if ((myInfo.getGbsInfo() != null) && (myInfo.getGbsInfo().getPosition() != null) && (myInfo.getGbsInfo().getPosition().equals("조장") || myInfo.getGrade().equals("GANSA") || myInfo.getGrade().equals("MISSION"))) {
                         navigationView.getMenu().findItem(R.id.gbs_check_attendance).setVisible(true);
                     }
                     if (myInfo.getGrade() != null && (myInfo.getGrade().equals("LEADER") || myInfo.getGrade().equals("GANSA") || myInfo.getGrade().equals("MISSION"))) {
                         navigationView.getMenu().findItem(R.id.check_attendance).setVisible(true);
                     }
+                    if (myInfo.getGrade().equals("GANSA") || myInfo.getGrade().equals("MISSION")) {
+                        navigationView.getMenu().findItem(R.id.statistic_attendance).setVisible(true);
+                        navigationView.getMenu().findItem(R.id.gbs_statistic_attendance).setVisible(true);
+                        CBAUtil.setAdmin(this, true);
+                    }
 
-                    String myinfoTxt = myInfo.getName() + "  |  " + myInfo.getCampus() + "\n";
+                    String myinfoTxt = myInfo.getName() + "  |  " + myInfo.getCampus() + "|"+myInfo.getGrade()+ "\n";
                     if (myInfo.getRetreatGbsInfo().getGbs() != null) {
                         myinfoTxt = myinfoTxt + myInfo.getRetreatGbsInfo().getGbs() + "/" + myInfo.getRetreatGbsInfo().getPosition() + "\n";
                     }
@@ -623,11 +629,10 @@ public class MainActivity extends AppCompatActivity
     private void saveImage(String key, Map<String, String> td) {
         Gson gson = new Gson();
         String myInfo = gson.toJson(td);
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = pref.edit();
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
         editor.putString(key, myInfo);
         Log.e(TAG, "saveimgae //" + myInfo);
-        editor.commit();
+        editor.apply();
     }
 
     public Map<String, String> loadImage(String key) {
@@ -650,8 +655,7 @@ public class MainActivity extends AppCompatActivity
         Collections.sort(list, (Comparator<Object>) (o1, o2) -> ((Comparable<V>) ((Map.Entry<K, V>) (o1)).getValue()).compareTo(((Map.Entry<K, V>) (o2)).getValue()));
 
         Map<K, V> result = new LinkedHashMap<>();
-        for (Iterator<Map.Entry<K, V>> it = list.iterator(); it.hasNext(); ) {
-            Map.Entry<K, V> entry = it.next();
+        for (Map.Entry<K, V> entry : list) {
             result.put(entry.getKey(), entry.getValue());
         }
 
@@ -691,7 +695,7 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<MyInfo> call, Throwable t) {
-                Log.i(TAG, "faild " + t.getMessage());
+                Log.i(TAG, "failed " + t.getMessage());
                 CBAUtil.signOut(mContext);
             }
         });
