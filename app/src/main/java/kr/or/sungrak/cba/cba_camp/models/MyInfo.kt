@@ -11,6 +11,7 @@ data class MyInfo(
         @SerializedName("mobile") val mobile: String,
         @SerializedName("uid") val uid: String,
         @SerializedName("grade") val grade: String,
+        @SerializedName("department") val department: String,
         @SerializedName("retreatGbsInfo") val retreatGbsInfo: MyRetreatGbsInfo,
         @SerializedName("gbsInfo") val gbsInfo: MyGbsInfo
 )

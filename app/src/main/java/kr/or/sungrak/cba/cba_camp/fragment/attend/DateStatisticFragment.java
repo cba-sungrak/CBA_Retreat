@@ -69,7 +69,7 @@ public class DateStatisticFragment extends Fragment {
     }
 
     private void getStatisticCampus(String date, String navi) {
-        Call<CampusStatisticList>  service = ServiceGenerator.createService.getStatisticCampusList(date, navi);
+        Call<CampusStatisticList> service = ServiceGenerator.createService.getStatisticCampusList(date, navi, CBAUtil.loadMyInfo(getContext()).getDepartment());
 
         service.enqueue(new Callback<CampusStatisticList>() {
             @Override

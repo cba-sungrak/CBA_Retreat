@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity
         if (memberInfo == null) {
             getMyInfo(FirebaseAuth.getInstance().getUid());
         }
-        if(mAuth==null){
+        if (mAuth == null) {
             mAuth = FirebaseAuth.getInstance();
         }
         if (mAuth.getCurrentUser() == null) {
@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity
                         CBAUtil.setAdmin(this, true);
                     }
 
-                    String myinfoTxt = myInfo.getName() + "  |  " + myInfo.getCampus() + "|"+myInfo.getGrade()+ "\n";
+                    String myinfoTxt = myInfo.getName() + "  |  " + myInfo.getCampus() + "\n";
                     if (myInfo.getRetreatGbsInfo().getGbs() != null) {
                         myinfoTxt = myinfoTxt + myInfo.getRetreatGbsInfo().getGbs() + "/" + myInfo.getRetreatGbsInfo().getPosition() + "\n";
                     }
@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity
                 replaceFragment(new AttendCampusListFragment());
                 break;
             case R.id.gbs_check_attendance:
-                replaceFragment(new GbsFragment(CBAUtil.loadMyInfo(mContext).getGbsInfo().getGbs(),CBAUtil.loadMyInfo(mContext).getMemId(), CBAUtil.getCurrentDate()));
+                replaceFragment(new GbsFragment(CBAUtil.loadMyInfo(mContext).getGbsInfo().getGbs(), CBAUtil.loadMyInfo(mContext).getMemId(), CBAUtil.getCurrentDate()));
                 break;
             case R.id.statistic_attendance:
                 replaceFragment(new DateStatisticFragment(CBAUtil.getCurrentDate()));
@@ -688,7 +688,12 @@ public class MainActivity extends AppCompatActivity
                     //error 서버가 켜져 있으나 찾을 수가 없음
                     CBAUtil.signOut(mContext);
                 } else {
-                    CBAUtil.saveMyInfo(mContext, response);
+                    if (CBAUtil.getCurrentDepartment(mContext).equals(response.body().getDepartment())) {
+                        CBAUtil.saveMyInfo(mContext, response);
+                    } else {
+                        CBAUtil.signOut(mContext);
+                        Toast.makeText(mContext, response.body().getDepartment() + "메뉴를 선택 후 로그인해주세요 ", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 updateNavHeader();
             }

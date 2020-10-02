@@ -16,18 +16,21 @@ class SelectDialog(mContext: Context) : MyProgessDialog(mContext) {
         selectSungrak.setOnClickListener {
             CBAUtil.setRetreat(context, Tag.RETREAT_SUNGRAK)
             CBAUtil.signOut(context)
+            CBAUtil.setCurrentDepartment(context, Tag.SUNGRAK)
             dismiss()
         }
 
         selectCBA.setOnClickListener {
             CBAUtil.setRetreat(context, Tag.RETREAT_CBA)
             CBAUtil.signOut(context)
+            CBAUtil.setCurrentDepartment(context, Tag.CBA)
             dismiss()
         }
 
         selectBWM.setOnClickListener {
-            CBAUtil.setRetreat(context, Tag.BWM)
+            CBAUtil.setRetreat(context, Tag.RETREAT_BWM)
             CBAUtil.signOut(context)
+            CBAUtil.setCurrentDepartment(context, Tag.BWM)
             dismiss()
         }
 

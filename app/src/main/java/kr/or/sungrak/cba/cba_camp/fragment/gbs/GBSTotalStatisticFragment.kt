@@ -68,7 +68,7 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
     }
 
     private fun getGBSTotalStatistic(date: String, navi: String) {
-        val service = ServiceGenerator.createService.getGBSTotalStatistic(date, navi)
+        val service = ServiceGenerator.createService.getGBSTotalStatistic(date, navi, CBAUtil.loadMyInfo(context).department)
 
         service.enqueue(object : Callback<GBSTotalStatisticDatas?> {
             override fun onResponse(call: Call<GBSTotalStatisticDatas?>, response: Response<GBSTotalStatisticDatas?>) {

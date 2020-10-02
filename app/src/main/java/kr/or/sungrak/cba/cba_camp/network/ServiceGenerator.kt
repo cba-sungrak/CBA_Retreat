@@ -18,7 +18,8 @@ object ServiceGenerator {
                 addHeader("Content-Type", "application/json;charset=UTF-8")
             }.build()
             chain.proceed(newRequest)
-        }.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+        }
+        addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
     }.build()
 
 

@@ -26,7 +26,7 @@ public class CBAUtil {
     private static final String TAG = "CBA/CBAUtil";
     private static final String RETREAT_TITLE = "Retreat_Title";
     private static final String ADMIN = "check_admin";
-    private static final String YOUTUBE = "check_admin";
+    private static final String CURRENT_DEPARTMENT = "Current_Department";
 
     public static MyInfo loadMyInfo(Context context) {
         Gson gson = new Gson();
@@ -69,7 +69,6 @@ public class CBAUtil {
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         fmt.setCalendar(calendar);
         return fmt.format(calendar.getTime());
-//        return String.format("%d-%d-%d", mYear, mMonth + 1, mDay);
     }
 
     public static void setRetreat(Context context, String s) {
@@ -79,6 +78,15 @@ public class CBAUtil {
 
     public static String getRetreat(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(RETREAT_TITLE, "");
+    }
+
+    public static void setCurrentDepartment(Context context, String s) {
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+        editor.putString(CURRENT_DEPARTMENT, s).apply();
+    }
+
+    public static String getCurrentDepartment(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(CURRENT_DEPARTMENT, "");
     }
 
     public static void setAdmin(Context context, boolean isAdmin) {

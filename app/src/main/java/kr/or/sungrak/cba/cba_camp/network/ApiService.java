@@ -95,13 +95,13 @@ public interface ApiService {
     //2. 전체 통계(캠퍼스별 + 합계)
     //GET /statistics/total?date=2019-05-05&nav=PREV / NEXT / CURRENT(또는 빈값. 이외의 값은 에러)
     @GET("/statistics/total")
-    Call<CampusStatisticList> getStatisticCampusList(@Query("date") String date, @Query("nav") String nav);
+    Call<CampusStatisticList> getStatisticCampusList(@Query("date") String date, @Query("nav") String nav, @Query("department") String department);
 
     //-------- GBS 통 계 --------------------------------------------------------------------------------------------------------------//
     //1. 전체 통계
     //GET /statistics/total?date=2019-05-05&nav=PREV / NEXT / CURRENT(또는 빈값. 이외의 값은 에러)
     @GET("/statistics/gbs/total")
-    Call<GBSTotalStatisticDatas> getGBSTotalStatistic(@Query("date") String date, @Query("nav") String nav);
+    Call<GBSTotalStatisticDatas> getGBSTotalStatistic(@Query("date") String date, @Query("nav") String nav, @Query("department") String department);
 
     //2. 단계 통계
     //GET /statistics/gbs?date=2020-05-08&nav=CURRENT&gbsId=12

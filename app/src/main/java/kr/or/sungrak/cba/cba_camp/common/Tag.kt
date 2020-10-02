@@ -4,7 +4,7 @@ class Tag {
     companion object {
         const val RETREAT_SUNGRAK = "2019_SR_SUMMER"
         const val RETREAT_CBA = "2020_CBA_SUMMER"
-        const val BWM = "BWM"
+        const val RETREAT_BWM = "BWM"
 
         const val SR_TITLE = "2019 MONGSANPO SUMMER CAMP"
         const val CBA_TITLE = "CBA"
@@ -24,6 +24,10 @@ class Tag {
         const val NAVI_PREV = "PREV"
         const val NAVI_NEXT = "NEXT"
         const val NAVI_CURRENT = "CURRENT"
+
+        const val SUNGRAK = "SUNGRAK"
+        const val CBA = "CBA"
+        const val BWM = "BWM"
 
     }
 
