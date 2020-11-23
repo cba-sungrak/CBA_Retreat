@@ -15,7 +15,10 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -39,12 +42,12 @@ public class CBAUtil {
     }
 
     public static void saveMyInfo(Context context, Response<MyInfo> response) {
-        String myInfo =  new Gson().toJson(response.body());
+        String myInfo = new Gson().toJson(response.body());
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.putString("MyInfo", myInfo).apply();
     }
 
-    public static void removeMyInfo(Context context){
+    public static void removeMyInfo(Context context) {
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
         editor.remove("MyInfo").apply();
     }
@@ -95,10 +98,6 @@ public class CBAUtil {
     }
 
     public static boolean isAdmin(Context context) {
-        MyInfo myInfo = loadMyInfo(context);
-        if (myInfo != null && (myInfo.getGrade().equals("LEADER") || myInfo.getGrade().equals("GANSA") || myInfo.getGrade().equals("MISSION"))) {
-            return true;
-        }
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(ADMIN, false);
     }
 
@@ -134,6 +133,20 @@ public class CBAUtil {
     public static String getPref(Context context, String key) {
         Log.e(TAG, "getPref : [" + key + "]");
         return PreferenceManager.getDefaultSharedPreferences(context).getString(key, "");
+    }
+
+    public static boolean isSunDay(String inputDate) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        try {
+            date = dateFormat.parse(inputDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        return Calendar.SUNDAY == calendar.get(Calendar.DAY_OF_WEEK);
     }
 }
 

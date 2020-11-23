@@ -54,6 +54,7 @@ import kr.or.sungrak.cba.cba_camp.dialog.MyProgessDialog;
 import kr.or.sungrak.cba.cba_camp.dialog.SelectDialog;
 import kr.or.sungrak.cba.cba_camp.fragment.SwipeImageFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.attend.AttendCampusListFragment;
+import kr.or.sungrak.cba.cba_camp.fragment.attend.AttendFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.attend.DateStatisticFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.CampGBSFragment;
 import kr.or.sungrak.cba.cba_camp.fragment.camp.CampMemberListFragment;
@@ -347,6 +348,11 @@ public class MainActivity extends AppCompatActivity
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         if (fragment instanceof InfoFragment) {
+            super.onBackPressed();
+            return;
+
+        }
+        if (fragment instanceof AttendFragment) {
             super.onBackPressed();
             return;
 

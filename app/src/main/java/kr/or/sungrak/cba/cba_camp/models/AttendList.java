@@ -98,10 +98,11 @@ public class AttendList {
         }
 
         public String getStatus() {
-            if (status.equalsIgnoreCase("NOT_CHECKED")) {
-                status = "ABSENT";
-            }
             return status;
+        }
+
+        public void setStatus(String status){
+            this.status = status;
         }
 
         public Boolean getHidden(){

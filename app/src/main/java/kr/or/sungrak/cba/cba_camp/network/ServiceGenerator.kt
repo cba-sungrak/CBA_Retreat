@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ServiceGenerator {
 
-    private const val URL = "http://cba.sungrak.or.kr:9000"
+    private const val URL = "https://cba.sungrak.or.kr:9000"
 
     //    private static final String URL = "http://192.168.0.37:8080";
     private var client = OkHttpClient.Builder().apply {

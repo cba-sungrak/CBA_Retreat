@@ -32,14 +32,19 @@ ext {
     retrofitVersion = '2.5.0'
     okhttpVersion = '3.9.0'
     firebaseVersion = '18.0.0'
+    fragment_version = "1.2.5"
 }
 dependencies {
     testImplementation 'junit:junit:4.12'
 
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'androidx.multidex:multidex:2.0.0'
 
     // Needed to fix a dependency conflict with FirebaseUI'
     implementation 'androidx.arch.core:core-runtime:2.0.0'
+
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation "androidx.activity:activity:1.1.0"
+    implementation "androidx.fragment:fragment:$fragment_version"
 
     implementation 'com.google.firebase:firebase-core:17.0.0'
     // Google Sign In SDK (only required for Google Sign In)

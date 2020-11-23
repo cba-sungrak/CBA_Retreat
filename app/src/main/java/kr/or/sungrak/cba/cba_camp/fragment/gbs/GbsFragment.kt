@@ -37,7 +37,7 @@ import retrofit2.Response
 import java.text.ParseException
 import java.text.SimpleDateFormat
 
-class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDate: String) : Fragment() {
+class GbsFragment(val mGbsName: String, val mleaderMemId: String, var mSelectedDate: String) : Fragment() {
     private val TAG = "GBSFragment"
     private val NAVI_PREV = "PREV"
     private val NAVI_NEXT = "NEXT"
@@ -147,6 +147,12 @@ class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDa
     }
 
     private fun createAttendList(date: String?, leaderMemberId: String?) {
+
+        if (!CBAUtil.isSunDay(date)) {
+            Toast.makeText(context, "날짜를 주일로 변경해주세요 ", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val obj = JSONObject()
         try {
             obj.put("date", date)
@@ -161,13 +167,18 @@ class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDa
             override fun onResponse(call: Call<AttendList?>, response: Response<AttendList?>) {
                 if (response.code() / 100 == 4) {
                     Toast.makeText(context,
-                                    "failed make attend ", Toast.LENGTH_SHORT)
+                            "failed make attend ", Toast.LENGTH_SHORT)
                             .show()
                 } else {
+                    mAttendMemberList = response.body()
+                    if(mAttendMemberList?.attendInfos?.isEmpty()!!){
+                        Toast.makeText(context, "조원이 존재 하지 않습니다. 관리자에게 문의해주세요", Toast.LENGTH_SHORT).show()
+                        return
+                    }
                     create_attend.visibility = View.GONE
                     attend_member_list.visibility = View.VISIBLE
                     confirm_attend.visibility = View.VISIBLE
-                    mAttendMemberList = response.body()
+
                     attend_total.text = getString(mAttendMemberList)
                     mAttendMemberAdapter!!.updateItems(mAttendMemberList!!.attendInfos)
                     mSelectedDate = mAttendMemberList!!.attendInfos[0].date
@@ -240,7 +251,7 @@ class GbsFragment(val mGbsName:String, val mleaderMemId: String, var mSelectedDa
                             .show()
                 } else {
                     Toast.makeText(context,
-                                    "Delete attend success", Toast.LENGTH_SHORT)
+                            "Delete attend success", Toast.LENGTH_SHORT)
                             .show()
                 }
                 getAttendInfo(mSelectedDate, mleaderMemId, NAVI_CURRENT)
