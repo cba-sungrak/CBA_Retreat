@@ -75,7 +75,7 @@ class GbsFragment(val mGbsName: String, val mleaderMemId: String, var mSelectedD
         attend_next_date.setOnClickListener { getAttendInfo(mSelectedDate, mleaderMemId, NAVI_NEXT) }
 
         attend_date.setOnClickListener {
-            DatePickerDialog(context, OnDateSetListener { view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+            DatePickerDialog(requireContext(), OnDateSetListener { view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
                 try {
                     val selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1,
                             dayOfMonth)
@@ -94,7 +94,7 @@ class GbsFragment(val mGbsName: String, val mleaderMemId: String, var mSelectedD
         create_attend.setOnClickListener { createAttendList(mSelectedDate, mleaderMemId) }
         confirm_attend.setOnClickListener { postAttendList() }
         delete_attend.setOnClickListener {
-            AlertDialog.Builder(activity!!)
+            AlertDialog.Builder(requireActivity())
                     .setTitle("출석부 삭제")
                     .setMessage(mSelectedDate + "날짜의 출석부를 삭제 하시겠습니까?")
                     .setPositiveButton(android.R.string.yes) { dialog: DialogInterface?, whichButton: Int -> deleteAtteand() }

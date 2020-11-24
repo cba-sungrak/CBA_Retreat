@@ -92,7 +92,7 @@ class GBSTotalStatisticFragment(var mSelectedDate: String) : Fragment() {
         when (v.id) {
             R.id.statistic_prev_date -> getGBSTotalStatistic(mSelectedDate, Tag.NAVI_PREV)
             R.id.statistic_next_date -> getGBSTotalStatistic(mSelectedDate, Tag.NAVI_NEXT)
-            R.id.statistic_date -> DatePickerDialog(context, OnDateSetListener { view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+            R.id.statistic_date -> DatePickerDialog(requireContext(), OnDateSetListener { view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
                 try {
                     val selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1, dayOfMonth)
                     val sdf = SimpleDateFormat("yyyy-mm-dd")

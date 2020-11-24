@@ -49,9 +49,11 @@ constructor(private var mImage: String) : Fragment() {
         val imageView = rootView.singleImageView
 
         val previousUpdateTime = sharedPref.getString(mImage, "")
-        myDialog = MyProgessDialog(context!!)
-        if (previousUpdateTime.isEmpty()) {
-            myDialog.showProgressDialog()
+        myDialog = MyProgessDialog(requireContext())
+        if (previousUpdateTime != null) {
+            if (previousUpdateTime.isEmpty()) {
+                myDialog.showProgressDialog()
+            }
         }
 
 
@@ -62,7 +64,7 @@ constructor(private var mImage: String) : Fragment() {
                 editor.putString(mImage, updateTime)
                 editor.commit()
                 Log.d("CBA_ImageViewFragment", "image/$mImage UpdateTime/$updateTime")
-                GlideApp.with(activity!!)
+                GlideApp.with(requireActivity())
                         .load(pathReference)
                         .signature(ObjectKey(updateTime))
                         .into(imageView)
@@ -70,7 +72,7 @@ constructor(private var mImage: String) : Fragment() {
             }
         }
 
-        GlideApp.with(activity!!)
+        GlideApp.with(requireActivity())
                 .load(pathReference)
                 .signature(ObjectKey(previousUpdateTime!!))
                 .into(imageView)

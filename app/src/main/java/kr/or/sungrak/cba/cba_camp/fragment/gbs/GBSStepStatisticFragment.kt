@@ -90,7 +90,7 @@ class GBSStepStatisticFragment(var mSelectedDate: String, val mGbsId: Int, val m
         when (v.id) {
 //            R.id.statistic_prev_date -> getGBSStepStatistic(mSelectedDate, Tag.NAVI_PREV, mGbsId)
 //            R.id.statistic_next_date -> getGBSStepStatistic(mSelectedDate, Tag.NAVI_NEXT, mGbsId)
-            R.id.statistic_date -> DatePickerDialog(context, OnDateSetListener { view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
+            R.id.statistic_date -> DatePickerDialog(requireContext(), OnDateSetListener { view: DatePicker?, year: Int, monthOfYear: Int, dayOfMonth: Int ->
                 try {
                     val selectedTime = String.format("%d-%d-%d", year, monthOfYear + 1,
                             dayOfMonth)
