@@ -47,7 +47,6 @@ class GbsFragment(val mGbsName: String, val mleaderMemId: String, var mSelectedD
         AttendMemeberAdapter()
     }
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.gbs_attend_layout, container, false)
