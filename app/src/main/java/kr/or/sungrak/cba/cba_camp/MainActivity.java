@@ -685,6 +685,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getMyInfo(String uid) {
+        if(TextUtils.isEmpty(uid)){
+            return;
+        }
         Call<MyInfo> service = ServiceGenerator.createService.getMyInfo(uid);
         service.enqueue(new Callback<MyInfo>() {
             @Override
